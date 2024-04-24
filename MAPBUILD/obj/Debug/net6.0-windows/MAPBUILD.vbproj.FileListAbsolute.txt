@@ -1,0 +1,16 @@
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.frmDebug.resources
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.vbproj.GenerateResource.cache
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.AssemblyInfoInputs.cache
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.AssemblyInfo.vb
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.vbproj.CoreCompileInputs.cache
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\MAPBUILD.exe
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\MAPBUILD.deps.json
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\MAPBUILD.runtimeconfig.json
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\MAPBUILD.dll
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\MAPBUILD.pdb
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.dll
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\refint\MAPBUILD.dll
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.pdb
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.genruntimeconfig.cache
+C:\Users\Usuario\source\repos\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\ref\MAPBUILD.dll

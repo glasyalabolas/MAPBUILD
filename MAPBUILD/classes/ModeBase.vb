@@ -12,6 +12,8 @@ Public MustInherit Class ModeBase
   End Sub
   Public Overridable Sub OnMouseMove(e As MouseEventArgs) Implements IDebugMode.OnMouseMove
   End Sub
+  Public Overridable Sub OnMouseClick(e As MouseEventArgs) Implements IDebugMode.OnMouseClick
+  End Sub
   Public Overridable Sub OnKeyPress(e As KeyEventArgs) Implements IDebugMode.OnKeyPressed
   End Sub
 
@@ -29,5 +31,15 @@ Public MustInherit Class ModeBase
 
   Public Sub RenderParamLine(g As Graphics, l As ParamLine, c As Color)
     g.DrawLine(New Pen(c, 2), l.p0, l.GetPoint(100))
+  End Sub
+
+  Public Sub RenderPoly(g As Graphics, p As Poly, c As Color)
+    Using nPen As New Pen(c)
+      For i As Integer = 0 To p.Count - 1
+        Dim v0 = p(i), v1 = p(i + 1)
+
+        g.DrawLine(nPen, v0, v1)
+      Next
+    End Using
   End Sub
 End Class

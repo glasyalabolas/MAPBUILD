@@ -31,6 +31,7 @@ Partial Class frmDebug
     CutToolStripMenuItem = New ToolStripMenuItem()
     CopyToolStripMenuItem = New ToolStripMenuItem()
     PasteToolStripMenuItem = New ToolStripMenuItem()
+    Button2 = New Button()
     CType(picDisplay, ComponentModel.ISupportInitialize).BeginInit()
     MenuStrip1.SuspendLayout()
     SuspendLayout()
@@ -73,7 +74,7 @@ Partial Class frmDebug
     ' OpenToolStripMenuItem
     ' 
     OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-    OpenToolStripMenuItem.Size = New Size(270, 34)
+    OpenToolStripMenuItem.Size = New Size(158, 34)
     OpenToolStripMenuItem.Text = "Open"
     ' 
     ' EditToolStripMenuItem
@@ -86,26 +87,36 @@ Partial Class frmDebug
     ' CutToolStripMenuItem
     ' 
     CutToolStripMenuItem.Name = "CutToolStripMenuItem"
-    CutToolStripMenuItem.Size = New Size(270, 34)
+    CutToolStripMenuItem.Size = New Size(156, 34)
     CutToolStripMenuItem.Text = "Cut"
     ' 
     ' CopyToolStripMenuItem
     ' 
     CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
-    CopyToolStripMenuItem.Size = New Size(270, 34)
+    CopyToolStripMenuItem.Size = New Size(156, 34)
     CopyToolStripMenuItem.Text = "Copy"
     ' 
     ' PasteToolStripMenuItem
     ' 
     PasteToolStripMenuItem.Name = "PasteToolStripMenuItem"
-    PasteToolStripMenuItem.Size = New Size(270, 34)
+    PasteToolStripMenuItem.Size = New Size(156, 34)
     PasteToolStripMenuItem.Text = "Paste"
+    ' 
+    ' Button2
+    ' 
+    Button2.Location = New Point(12, 94)
+    Button2.Name = "Button2"
+    Button2.Size = New Size(212, 34)
+    Button2.TabIndex = 3
+    Button2.Text = "Test polygons"
+    Button2.UseVisualStyleBackColor = True
     ' 
     ' frmDebug
     ' 
     AutoScaleDimensions = New SizeF(10F, 25F)
     AutoScaleMode = AutoScaleMode.Font
     ClientSize = New Size(1042, 648)
+    Controls.Add(Button2)
     Controls.Add(picDisplay)
     Controls.Add(Button1)
     Controls.Add(MenuStrip1)
@@ -129,4 +140,5 @@ Partial Class frmDebug
   Friend WithEvents CutToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents CopyToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents PasteToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents Button2 As Button
 End Class

@@ -8,8 +8,20 @@
 
   Public Overrides Sub OnProcess()
     If (GetAsyncKeyState(Keys.Up)) Then
-      Debug.Print("Up pressed")
+      _ymin -= 1
     End If
+    If (GetAsyncKeyState(Keys.Down)) Then
+      _ymin += 1
+    End If
+    If (GetAsyncKeyState(Keys.Left)) Then
+      _xmin -= 1
+    End If
+    If (GetAsyncKeyState(Keys.Right)) Then
+      _xmin += 1
+    End If
+
+    _xmax = _xmin + 300
+    _ymax = _ymin + 200
 
     _angle = Wrap(_angle + 0.1!, 0.0!, 359.0!)
   End Sub
@@ -34,6 +46,38 @@
     ls.LookAt(_mp)
 
     RenderLineSeg(g, ls, Color.Yellow)
+
+    Dim closestPointLine = New LineSeg(
+      New Vec2(400, 100), New Vec2(500, 150))
+
+    RenderLineSeg(g, closestPointLine, Color.Green)
+
+    Dim cp = closestPointLine.GetClosestPoint(_mp)
+
+    RenderPoint(g, cp, 3, Color.AliceBlue)
+
+    Dim intersectLine = New LineSeg(New Vec2(100, 400), New Vec2(300, 450))
+
+    RenderLineSeg(g, intersectLine, Color.LightBlue)
+
+    Dim result As New Vec2()
+
+    If (intersectLine.Intersect(_lineSeg, result)) Then
+      RenderPoint(g, result, 3, Color.AliceBlue)
+    End If
+
+    Dim rc As Color = Color.Blue
+
+    With intersectLine
+      If (Maths.LiangBarsky(
+        _xmin, _ymin, _xmax, _ymax,
+        .p0.x, .p0.y, .p1.x, .p1.y)) Then
+
+        rc = Color.Yellow
+      End If
+    End With
+
+    g.DrawRectangle(New Pen(rc), _xmin, _ymin, 300, 200)
   End Sub
 
   Public Overrides Sub OnMouseMove(e As MouseEventArgs)
@@ -44,7 +88,6 @@
   End Sub
 
   Public Overrides Sub OnKeyPress(e As KeyEventArgs)
-    Debug.Print("Key pressed: " & e.KeyValue)
   End Sub
 
   Private _w As Long, _h As Long
@@ -53,4 +96,6 @@
   Private _paramLine As New ParamLine(New Vec2(0, 0), New Vec2(1, 0))
   Private _angle As Single = 0.0
   Private _mp As New Vec2()
+  Private _xmin As Single = 100, _ymin As Single = 100
+  Private _xmax As Single = _xmin + 300, _ymax As Single = _ymin + 200
 End Class

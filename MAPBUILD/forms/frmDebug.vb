@@ -39,8 +39,16 @@ Public Class frmDebug
     _mode?.OnMouseMove(e)
   End Sub
 
+  Private Sub picDisplay_MouseClick(sender As Object, e As MouseEventArgs) Handles picDisplay.MouseClick
+    _mode?.OnMouseClick(e)
+  End Sub
+
   Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-    _mode = New DebugMode()
+    _mode = New VectorDebugMode(picDisplay.Width, picDisplay.Height)
+  End Sub
+
+  Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    _mode = New PolyDebugMode()
   End Sub
 
   Private _mode As IDebugMode

@@ -67,13 +67,11 @@
         Else
           If (r > t0) Then t0 = r
         End If
-      Else
-        If (p > 0) Then
-          If (r < t0) Then
-            Return (False)
-          Else
-            If (r < t1) Then t1 = r
-          End If
+      ElseIf (p > 0) Then
+        If (r < t0) Then
+          Return (False)
+        Else
+          If (r < t1) Then t1 = r
         End If
       End If
     Next

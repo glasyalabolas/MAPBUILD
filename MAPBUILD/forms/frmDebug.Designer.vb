@@ -22,7 +22,6 @@ Partial Class frmDebug
   'Do not modify it using the code editor.
   <System.Diagnostics.DebuggerStepThrough()>
   Private Sub InitializeComponent()
-    Button1 = New Button()
     picDisplay = New PictureBox()
     MenuStrip1 = New MenuStrip()
     FileToolStripMenuItem = New ToolStripMenuItem()
@@ -31,97 +30,162 @@ Partial Class frmDebug
     CutToolStripMenuItem = New ToolStripMenuItem()
     CopyToolStripMenuItem = New ToolStripMenuItem()
     PasteToolStripMenuItem = New ToolStripMenuItem()
-    Button2 = New Button()
+    TestToolStripMenuItem = New ToolStripMenuItem()
+    LinesAndVectorsToolStripMenuItem = New ToolStripMenuItem()
+    PolygonsToolStripMenuItem = New ToolStripMenuItem()
+    OpenToolStripMenuItem1 = New ToolStripMenuItem()
+    SaveToolStripMenuItem = New ToolStripMenuItem()
+    SaveAsToolStripMenuItem = New ToolStripMenuItem()
+    PropertiesToolStripMenuItem = New ToolStripMenuItem()
+    ExitToolStripMenuItem = New ToolStripMenuItem()
+    UndoToolStripMenuItem = New ToolStripMenuItem()
+    RedoToolStripMenuItem = New ToolStripMenuItem()
+    ToolStripSeparator1 = New ToolStripSeparator()
+    ToolStripSeparator2 = New ToolStripSeparator()
     CType(picDisplay, ComponentModel.ISupportInitialize).BeginInit()
     MenuStrip1.SuspendLayout()
     SuspendLayout()
     ' 
-    ' Button1
-    ' 
-    Button1.Location = New Point(12, 54)
-    Button1.Name = "Button1"
-    Button1.Size = New Size(212, 34)
-    Button1.TabIndex = 0
-    Button1.Text = "Test Lines"
-    Button1.UseVisualStyleBackColor = True
-    ' 
     ' picDisplay
     ' 
     picDisplay.BackColor = Color.Black
-    picDisplay.Location = New Point(230, 40)
+    picDisplay.Location = New Point(161, 24)
+    picDisplay.Margin = New Padding(2)
     picDisplay.Name = "picDisplay"
-    picDisplay.Size = New Size(800, 600)
+    picDisplay.Size = New Size(560, 360)
     picDisplay.TabIndex = 1
     picDisplay.TabStop = False
     ' 
     ' MenuStrip1
     ' 
     MenuStrip1.ImageScalingSize = New Size(24, 24)
-    MenuStrip1.Items.AddRange(New ToolStripItem() {FileToolStripMenuItem, EditToolStripMenuItem})
+    MenuStrip1.Items.AddRange(New ToolStripItem() {FileToolStripMenuItem, EditToolStripMenuItem, TestToolStripMenuItem})
     MenuStrip1.Location = New Point(0, 0)
     MenuStrip1.Name = "MenuStrip1"
-    MenuStrip1.Size = New Size(1042, 33)
+    MenuStrip1.Padding = New Padding(4, 1, 0, 1)
+    MenuStrip1.Size = New Size(794, 24)
     MenuStrip1.TabIndex = 2
     MenuStrip1.Text = "MenuStrip1"
     ' 
     ' FileToolStripMenuItem
     ' 
-    FileToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OpenToolStripMenuItem})
+    FileToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OpenToolStripMenuItem, OpenToolStripMenuItem1, SaveToolStripMenuItem, SaveAsToolStripMenuItem, PropertiesToolStripMenuItem, ToolStripSeparator2, ExitToolStripMenuItem})
     FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-    FileToolStripMenuItem.Size = New Size(54, 29)
+    FileToolStripMenuItem.Size = New Size(37, 22)
     FileToolStripMenuItem.Text = "File"
     ' 
     ' OpenToolStripMenuItem
     ' 
     OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-    OpenToolStripMenuItem.Size = New Size(158, 34)
-    OpenToolStripMenuItem.Text = "Open"
+    OpenToolStripMenuItem.Size = New Size(180, 22)
+    OpenToolStripMenuItem.Text = "New"
     ' 
     ' EditToolStripMenuItem
     ' 
-    EditToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {CutToolStripMenuItem, CopyToolStripMenuItem, PasteToolStripMenuItem})
+    EditToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {UndoToolStripMenuItem, RedoToolStripMenuItem, ToolStripSeparator1, CutToolStripMenuItem, CopyToolStripMenuItem, PasteToolStripMenuItem})
     EditToolStripMenuItem.Name = "EditToolStripMenuItem"
-    EditToolStripMenuItem.Size = New Size(58, 29)
+    EditToolStripMenuItem.Size = New Size(39, 22)
     EditToolStripMenuItem.Text = "Edit"
     ' 
     ' CutToolStripMenuItem
     ' 
     CutToolStripMenuItem.Name = "CutToolStripMenuItem"
-    CutToolStripMenuItem.Size = New Size(156, 34)
+    CutToolStripMenuItem.Size = New Size(102, 22)
     CutToolStripMenuItem.Text = "Cut"
     ' 
     ' CopyToolStripMenuItem
     ' 
     CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
-    CopyToolStripMenuItem.Size = New Size(156, 34)
+    CopyToolStripMenuItem.Size = New Size(102, 22)
     CopyToolStripMenuItem.Text = "Copy"
     ' 
     ' PasteToolStripMenuItem
     ' 
     PasteToolStripMenuItem.Name = "PasteToolStripMenuItem"
-    PasteToolStripMenuItem.Size = New Size(156, 34)
+    PasteToolStripMenuItem.Size = New Size(102, 22)
     PasteToolStripMenuItem.Text = "Paste"
     ' 
-    ' Button2
+    ' TestToolStripMenuItem
     ' 
-    Button2.Location = New Point(12, 94)
-    Button2.Name = "Button2"
-    Button2.Size = New Size(212, 34)
-    Button2.TabIndex = 3
-    Button2.Text = "Test polygons"
-    Button2.UseVisualStyleBackColor = True
+    TestToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {LinesAndVectorsToolStripMenuItem, PolygonsToolStripMenuItem})
+    TestToolStripMenuItem.Name = "TestToolStripMenuItem"
+    TestToolStripMenuItem.Size = New Size(39, 22)
+    TestToolStripMenuItem.Text = "Test"
+    ' 
+    ' LinesAndVectorsToolStripMenuItem
+    ' 
+    LinesAndVectorsToolStripMenuItem.Name = "LinesAndVectorsToolStripMenuItem"
+    LinesAndVectorsToolStripMenuItem.Size = New Size(165, 22)
+    LinesAndVectorsToolStripMenuItem.Text = "Lines and vectors"
+    ' 
+    ' PolygonsToolStripMenuItem
+    ' 
+    PolygonsToolStripMenuItem.Name = "PolygonsToolStripMenuItem"
+    PolygonsToolStripMenuItem.Size = New Size(165, 22)
+    PolygonsToolStripMenuItem.Text = "Polygons"
+    ' 
+    ' OpenToolStripMenuItem1
+    ' 
+    OpenToolStripMenuItem1.Name = "OpenToolStripMenuItem1"
+    OpenToolStripMenuItem1.Size = New Size(180, 22)
+    OpenToolStripMenuItem1.Text = "Open..."
+    ' 
+    ' SaveToolStripMenuItem
+    ' 
+    SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
+    SaveToolStripMenuItem.Size = New Size(180, 22)
+    SaveToolStripMenuItem.Text = "Save"
+    ' 
+    ' SaveAsToolStripMenuItem
+    ' 
+    SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem"
+    SaveAsToolStripMenuItem.Size = New Size(180, 22)
+    SaveAsToolStripMenuItem.Text = "Save as..."
+    ' 
+    ' PropertiesToolStripMenuItem
+    ' 
+    PropertiesToolStripMenuItem.Name = "PropertiesToolStripMenuItem"
+    PropertiesToolStripMenuItem.Size = New Size(180, 22)
+    PropertiesToolStripMenuItem.Text = "Properties..."
+    ' 
+    ' ExitToolStripMenuItem
+    ' 
+    ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
+    ExitToolStripMenuItem.Size = New Size(180, 22)
+    ExitToolStripMenuItem.Text = "Exit"
+    ' 
+    ' UndoToolStripMenuItem
+    ' 
+    UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
+    UndoToolStripMenuItem.Size = New Size(103, 22)
+    UndoToolStripMenuItem.Text = "Undo"
+    ' 
+    ' RedoToolStripMenuItem
+    ' 
+    RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
+    RedoToolStripMenuItem.Size = New Size(103, 22)
+    RedoToolStripMenuItem.Text = "Redo"
+    ' 
+    ' ToolStripSeparator1
+    ' 
+    ToolStripSeparator1.Name = "ToolStripSeparator1"
+    ToolStripSeparator1.Size = New Size(100, 6)
+    ' 
+    ' ToolStripSeparator2
+    ' 
+    ToolStripSeparator2.Name = "ToolStripSeparator2"
+    ToolStripSeparator2.Size = New Size(133, 6)
     ' 
     ' frmDebug
     ' 
-    AutoScaleDimensions = New SizeF(10F, 25F)
+    AutoScaleDimensions = New SizeF(7F, 15F)
     AutoScaleMode = AutoScaleMode.Font
-    ClientSize = New Size(1042, 648)
-    Controls.Add(Button2)
+    ClientSize = New Size(794, 415)
     Controls.Add(picDisplay)
-    Controls.Add(Button1)
     Controls.Add(MenuStrip1)
     KeyPreview = True
     MainMenuStrip = MenuStrip1
+    Margin = New Padding(2)
     Name = "frmDebug"
     Text = "Debug"
     CType(picDisplay, ComponentModel.ISupportInitialize).EndInit()
@@ -130,8 +194,6 @@ Partial Class frmDebug
     ResumeLayout(False)
     PerformLayout()
   End Sub
-
-  Friend WithEvents Button1 As Button
   Friend WithEvents picDisplay As PictureBox
   Friend WithEvents MenuStrip1 As MenuStrip
   Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
@@ -140,5 +202,16 @@ Partial Class frmDebug
   Friend WithEvents CutToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents CopyToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents PasteToolStripMenuItem As ToolStripMenuItem
-  Friend WithEvents Button2 As Button
+  Friend WithEvents TestToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents LinesAndVectorsToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents PolygonsToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents OpenToolStripMenuItem1 As ToolStripMenuItem
+  Friend WithEvents SaveToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents SaveAsToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents PropertiesToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+  Friend WithEvents UndoToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents RedoToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
 End Class

@@ -30,3 +30,4 @@ C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\ref
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.pdb
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.genruntimeconfig.cache
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\ref\MAPBUILD.dll
+C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.sourcelink.json

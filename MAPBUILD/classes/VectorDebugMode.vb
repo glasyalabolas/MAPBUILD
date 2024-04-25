@@ -56,7 +56,7 @@
 
     RenderPoint(g, cp, 3, Color.AliceBlue)
 
-    Dim intersectLine = New LineSeg(New Vec2(100, 400), New Vec2(300, 450))
+    Dim intersectLine = New LineSeg(New Vec2(100, 200), New Vec2(300, 250))
 
     RenderLineSeg(g, intersectLine, Color.LightBlue)
 
@@ -85,9 +85,6 @@
 
     _lineSeg = New LineSeg(_center, _mp)
     _paramLine = New ParamLine(_center).PointTo(_mp)
-  End Sub
-
-  Public Overrides Sub OnKeyPress(e As KeyEventArgs)
   End Sub
 
   Private _w As Long, _h As Long

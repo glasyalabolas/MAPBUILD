@@ -1,20 +1,20 @@
 ﻿
 Public MustInherit Class ModeBase
-  Implements IDebugMode
+  Implements IMode
 
   <Runtime.InteropServices.DllImport("user32.dll")>
   Protected Shared Function GetAsyncKeyState(aKey As Keys) As Short
   End Function
 
-  Public Overridable Sub OnProcess() Implements IDebugMode.OnProcess
+  Public Overridable Sub OnProcess() Implements IMode.OnProcess
   End Sub
-  Public Overridable Sub OnRender(g As Graphics) Implements IDebugMode.OnRender
+  Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
   End Sub
-  Public Overridable Sub OnMouseMove(e As MouseEventArgs) Implements IDebugMode.OnMouseMove
+  Public Overridable Sub OnMouseMove(e As MouseEventArgs) Implements IMode.OnMouseMove
   End Sub
-  Public Overridable Sub OnMouseClick(e As MouseEventArgs) Implements IDebugMode.OnMouseClick
+  Public Overridable Sub OnMouseClick(e As MouseEventArgs) Implements IMode.OnMouseClick
   End Sub
-  Public Overridable Sub OnKeyPress(e As KeyEventArgs) Implements IDebugMode.OnKeyPressed
+  Public Overridable Sub OnKeyPress(e As KeyEventArgs) Implements IMode.OnKeyPressed
   End Sub
 
   '' Can be refactored to its own shared class

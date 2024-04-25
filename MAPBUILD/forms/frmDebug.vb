@@ -43,14 +43,14 @@ Public Class frmDebug
     _mode?.OnMouseClick(e)
   End Sub
 
-  Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+  Private Sub LinesAndVectorsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LinesAndVectorsToolStripMenuItem.Click
     _mode = New VectorDebugMode(picDisplay.Width, picDisplay.Height)
   End Sub
 
-  Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+  Private Sub PolygonsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PolygonsToolStripMenuItem.Click
     _mode = New PolyDebugMode()
   End Sub
 
-  Private _mode As IDebugMode
+  Private _mode As IMode
   Private _running As Boolean
 End Class

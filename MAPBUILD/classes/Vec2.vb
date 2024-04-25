@@ -160,6 +160,10 @@ Public Class Vec2
     Return (New Vec2(rv.x, rv.y))
   End Function
 
+  Public Function Interpolated(v As Vec2, t As Single) As Vec2
+    Return (Me * (1.0F - t) + v * t)
+  End Function
+
   Public Function DistanceTo(v As Vec2) As Single
     Return ((Me - v).Length())
   End Function

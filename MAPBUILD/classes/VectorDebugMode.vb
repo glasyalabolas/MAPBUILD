@@ -29,13 +29,18 @@
     rl.dir.Rotate(Rad(_angle))
 
     RenderParamLine(g, rl, Color.Green)
+
+    Dim ls = New LineSeg(New Vec2(100, 100), New Vec2(200, 50))
+    ls.LookAt(_mp)
+
+    RenderLineSeg(g, ls, Color.Yellow)
   End Sub
 
   Public Overrides Sub OnMouseMove(e As MouseEventArgs)
-    Dim mP = New Vec2(e.X, e.Y)
+    _mp = New Vec2(e.X, e.Y)
 
-    _lineSeg = New LineSeg(_center, mP)
-    _paramLine = New ParamLine(_center).PointTo(mP)
+    _lineSeg = New LineSeg(_center, _mp)
+    _paramLine = New ParamLine(_center).PointTo(_mp)
   End Sub
 
   Public Overrides Sub OnKeyPress(e As KeyEventArgs)
@@ -47,4 +52,5 @@
   Private _lineSeg As New LineSeg()
   Private _paramLine As New ParamLine(New Vec2(0, 0), New Vec2(1, 0))
   Private _angle As Single = 0.0
+  Private _mp As New Vec2()
 End Class

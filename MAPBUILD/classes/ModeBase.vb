@@ -23,6 +23,8 @@ Public MustInherit Class ModeBase
 
   Public Sub RenderLineSeg(g As Graphics, l As LineSeg, c As Color)
     g.DrawLine(New Pen(c), l.p0, l.p1)
+    RenderPoint(g, l.p0, 3, Color.Green)
+    RenderPoint(g, l.p1, 3, Color.Red)
   End Sub
 
   Public Sub RenderParamLine(g As Graphics, l As ParamLine, c As Color)

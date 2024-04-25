@@ -36,7 +36,19 @@ Public Class LineSeg
     Return (Me)
   End Function
 
-  Public Function OrientTowards(p As Vec2) As LineSeg
+  Public Function Direction() As Vec2
+    Return ((p1 - p0).Normalize)
+  End Function
+
+  Public Function LookAt(p As Vec2) As LineSeg
+    Dim midPoint = p0.Interpolated(p1, 0.5!)
+    Dim normal = (p - midPoint).Normalize()
+    Dim dir = normal.TurnLeft()
+
+    Dim hl As Single = Length() * 0.5!
+
+    p0 = midPoint - dir * hl
+    p1 = midPoint + dir * hl
 
     Return (Me)
   End Function

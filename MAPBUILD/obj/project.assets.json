@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuario\\source\\repos\\MAPBUILD\\MAPBUILD\\MAPBUILD.vbproj",
+      "projectUniqueName": "C:\\Users\\Usuario\\Documents\\GitHub\\MAPBUILD\\MAPBUILD\\MAPBUILD.vbproj",
       "projectName": "MAPBUILD",
-      "projectPath": "C:\\Users\\Usuario\\source\\repos\\MAPBUILD\\MAPBUILD\\MAPBUILD.vbproj",
+      "projectPath": "C:\\Users\\Usuario\\Documents\\GitHub\\MAPBUILD\\MAPBUILD\\MAPBUILD.vbproj",
       "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuario\\source\\repos\\MAPBUILD\\MAPBUILD\\obj\\",
+      "outputPath": "C:\\Users\\Usuario\\Documents\\GitHub\\MAPBUILD\\MAPBUILD\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -64,7 +64,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

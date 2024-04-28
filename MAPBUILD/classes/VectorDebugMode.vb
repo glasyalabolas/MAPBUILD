@@ -26,7 +26,7 @@
     _angle = Wrap(_angle + 0.1!, 0.0!, 359.0!)
   End Sub
 
-  Public Overrides Sub OnRender(g As Graphics)
+  Public Overrides Sub OnRender(g As Graphics, cam As Camera2D)
     RenderLineSeg(g, _lineSeg, Color.Red)
     RenderParamLine(g, _paramLine, Color.Yellow)
     RenderPoint(g, _center, 5, Color.Red)
@@ -85,6 +85,13 @@
 
     _lineSeg = New LineSeg(_center, _mp)
     _paramLine = New ParamLine(_center).PointTo(_mp)
+  End Sub
+
+  Public Overrides Sub OnKeyPress(e As KeyEventArgs)
+    If (e.KeyCode = Keys.Space) Then
+      OnModeChanged(Me, New ModeChangedEventArgs() With {
+        .Mode = New PolyDebugMode()})
+    End If
   End Sub
 
   Private _w As Long, _h As Long

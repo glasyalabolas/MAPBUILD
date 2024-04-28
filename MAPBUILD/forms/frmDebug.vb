@@ -1,56 +1,63 @@
-﻿Imports System.ComponentModel
-
-Public Class frmDebug
+﻿Public Class frmDebug
   Public Shared Sub Main(args() As String)
     Application.EnableVisualStyles()
     Application.SetHighDpiMode(HighDpiMode.SystemAware)
     Application.Run(New frmDebug)
   End Sub
 
-  Private Async Sub frmDebug_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    _mode = New VectorDebugMode(picDisplay.Width, picDisplay.Height)
+  Private Sub frmDebug_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    _mode = New VertexMode(_map)
 
-    _running = True
+    For i As Integer = 1 To 100
+      Dim p0 = New Vec2(Rng(-5000, 5000), Rng(-5000, 5000))
+      Dim p1 = New Vec2(Rng(-5000, 5000), Rng(-5000, 5000))
 
-    Do While (_running)
-      _mode?.OnProcess()
-      OnRender()
+      _map.AddVertex(p0)
+      _map.AddVertex(p1)
+      _map.AddLineDef(_map.VertexCount - 1, _map.VertexCount - 2)
+    Next
 
-      Await Task.Delay(1)
-    Loop
+    _map.AddVertex(New Vec2(0, 0))
+
+    MapView1.Mode = _mode
+    MapView1.Map = _map
   End Sub
 
-  Private Sub frmDebug_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
-    _running = False
-  End Sub
-
-  Private Sub OnRender()
-    picDisplay.Refresh()
-  End Sub
   Private Sub frmDebug_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
     _mode?.OnKeyPressed(e)
   End Sub
 
-  Private Sub picDisplay_Paint(sender As Object, e As PaintEventArgs) Handles picDisplay.Paint
-    _mode?.OnRender(e.Graphics)
-  End Sub
+  Private Sub MapView1_MapMouseMove(sender As Object, p As Vec2) Handles MapView1.MapMouseMove
+    Dim bs = New Vec2(MapView1.BlockSize, MapView1.BlockSize)
 
-  Private Sub picDisplay_MouseMove(sender As Object, e As MouseEventArgs) Handles picDisplay.MouseMove
-    _mode?.OnMouseMove(e)
-  End Sub
+    With MapView1.Camera
+      Dim tl = .TopLeft()
+      Dim br = .BottomRight()
 
-  Private Sub picDisplay_MouseClick(sender As Object, e As MouseEventArgs) Handles picDisplay.MouseClick
-    _mode?.OnMouseClick(e)
+      ToolStripStatusLabel1.Text = "Mouse: " & p.ToString() &
+      " TL: " & tl.ToString() & " BR: " & br.ToString() &
+      " Pos: " & .Position.ToString() &
+      " BlockSize: " & (.Scaling().Inversed() * bs).ToString()
+
+      Dim startP = New Vec2(tl.x \ bs.x, tl.y \ bs.y) * bs
+
+      Debug.Print("startP: " & startP.ToString())
+    End With
   End Sub
 
   Private Sub LinesAndVectorsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LinesAndVectorsToolStripMenuItem.Click
-    _mode = New VectorDebugMode(picDisplay.Width, picDisplay.Height)
+    '_mode = New VectorDebugMode(picDisplay.Width, picDisplay.Height)
   End Sub
 
   Private Sub PolygonsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PolygonsToolStripMenuItem.Click
     _mode = New PolyDebugMode()
   End Sub
 
-  Private _mode As IMode
-  Private _running As Boolean
+  Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
+    _mode = e.Mode
+    MapView1.Mode = _mode
+  End Sub
+
+  Private WithEvents _mode As IMode
+  Private _map As New Map()
 End Class

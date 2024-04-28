@@ -41,6 +41,14 @@
 
     Return ((x - start1) * (end2 - start2) / (end1 - start1) + start2)
   End Function
+  Public Function Rng(aMin As Integer, aMax As Integer) As Integer
+    Return (Int(Rnd() * ((aMax + 1) - aMin) + aMin))
+  End Function
+
+  Public Function Rng(aMin As Double, aMax As Double) As Double
+    Return (Rnd() * (aMax - aMin) + aMin)
+  End Function
+
   Public Function LiangBarsky(
     xmin As Single, ymin As Single, xmax As Single, ymax As Single,
     x0 As Single, y0 As Single, x1 As Single, y1 As Single,

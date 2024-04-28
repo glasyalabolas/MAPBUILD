@@ -172,6 +172,10 @@ Public Class Vec2
     Return ((Me - v).LengthSq())
   End Function
 
+  Public Overrides Function ToString() As String
+    Return (Number(x) & "," & Number(y))
+  End Function
+
   Public Shared Operator +(lhs As Vec2, rhs As Vec2) As Vec2
     Return (New Vec2(lhs.x + rhs.x, lhs.y + rhs.y))
   End Operator
@@ -200,12 +204,20 @@ Public Class Vec2
     Return (New Vec2(lhs.x / rhs, lhs.y / rhs))
   End Operator
 
+  Public Shared Operator -(rhs As Vec2) As Vec2
+    Return (New Vec2(-rhs.x, -rhs.y))
+  End Operator
+
   Public Shared Widening Operator CType(lhs As Vec2) As Point
     Return (New Point(Int(lhs.x), Int(lhs.y)))
   End Operator
 
   Public Shared Widening Operator CType(lhs As Vec2) As PointF
     Return (New PointF(lhs.x, lhs.y))
+  End Operator
+
+  Public Shared Widening Operator CType(lhs As Vec2) As String
+    Return (Number(lhs.x) & "," & Number(lhs.y))
   End Operator
 
   Public x As Single, y As Single

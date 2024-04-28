@@ -12,7 +12,7 @@
   Public Overrides Sub OnProcess()
   End Sub
 
-  Public Overrides Sub OnRender(g As Graphics)
+  Public Overrides Sub OnRender(g As Graphics, cam As Camera2D)
     Dim c = Color.Red
 
     If (_poly.Inside(_mp)) Then

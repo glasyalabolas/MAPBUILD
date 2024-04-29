@@ -4,7 +4,7 @@
     <Compile Update="controls\MapView.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="forms\frmDebug.vb">
+    <Compile Update="forms\frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="forms\frmTools.vb">

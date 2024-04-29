@@ -6,6 +6,8 @@ Public Class MapView
   End Function
 
   Public Event MapMouseMove(sender As Object, p As Vec2)
+  Public Event BlockSizeChanged(sender As Object, e As EventArgs)
+  Public Event ModeChanged(sender As Object, e As EventArgs)
 
   Public Sub New()
     'Esta llamada es exigida por el diseñador.
@@ -31,6 +33,8 @@ Public Class MapView
 
     Set(value As Map)
       _map = value
+
+      Refresh()
     End Set
   End Property
 
@@ -42,6 +46,10 @@ Public Class MapView
 
     Set(value As IMode)
       _mode = value
+
+      Refresh()
+
+      RaiseEvent ModeChanged(Me, EventArgs.Empty)
     End Set
   End Property
 
@@ -58,16 +66,20 @@ Public Class MapView
 
     Set(value As Single)
       _blockSize = value
+
+      Refresh()
+
+      RaiseEvent BlockSizeChanged(Me, EventArgs.Empty)
     End Set
   End Property
 
   Private Sub MapView_Load(sender As Object, e As EventArgs) Handles Me.Load
-    If (Not DesignMode) Then
-      _running = True
-      _blockSize = 32.0
+    'If (Not DesignMode) Then
+    '_running = True
+    BlockSize = 32.0
 
-      Run()
-    End If
+    '  Run()
+    'End If
   End Sub
 
   Private Async Sub Run()
@@ -114,6 +126,8 @@ Public Class MapView
         RenderBlocksizeGrid(e.Graphics, Color.DarkSlateGray)
       End If
 
+      RenderView(e.Graphics)
+
       _mode?.OnRender(e.Graphics, _cam)
     End If
   End Sub
@@ -122,6 +136,8 @@ Public Class MapView
     MyBase.OnSizeChanged(e)
 
     _cam.ViewPort = New Vec2(Width, Height)
+
+    Refresh()
   End Sub
 
   Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
@@ -129,19 +145,21 @@ Public Class MapView
 
     _mode?.OnMouseMove(e)
 
-    Dim p = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+    _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
 
     If (e.Button And MouseButtons.Right) Then
       If (_rdragging) Then
-        _rdelta = _rstart - p
+        _rdelta = _rstart - _mp
         Camera.Position += _rdelta
       Else
         _rdragging = True
-        _rstart = p
+        _rstart = _mp
       End If
     End If
 
-    RaiseEvent MapMouseMove(Me, p)
+    RaiseEvent MapMouseMove(Me, _mp)
+
+    Refresh()
   End Sub
 
   Protected Overrides Sub OnMouseUp(e As MouseEventArgs)
@@ -160,10 +178,12 @@ Public Class MapView
     Else
       _cam.Zoom *= 1.15
     End If
+
+    Refresh()
   End Sub
 
   Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
-    _mode = e.Mode
+    Mode = e.Mode
   End Sub
 
   Private Sub RenderBlocksizeGrid(g As Graphics, c As Color)
@@ -174,7 +194,7 @@ Public Class MapView
 
     Dim startP = New Vec2(tl.x \ BlockSize, tl.y \ BlockSize) * BlockSize
     Dim p = New Vec2(startP.x, startP.y)
-    Dim pn = New Pen(c)
+    Dim pn = VGAColors.DarkGrayPen
 
     Do While (p.y <= br.y)
       Do While (p.x <= br.x)
@@ -191,6 +211,90 @@ Public Class MapView
     Loop
   End Sub
 
+  Private Sub PreProcess()
+    _visibleLines.Clear()
+
+    'Dim inv = _cam.Transform().Inversed()
+    Dim tl = _cam.TopLeft()
+    Dim br = _cam.BottomRight()
+
+    _map.DisableEvents()
+
+    For l As Integer = 0 To _map.Layers - 1
+      _map.SelectLayer(l)
+
+      For i As Integer = 0 To _map.LineDefs - 1
+        With _map.LineDef(i)
+          Dim p0 = _map.Vertex(.p0)
+          Dim p1 = _map.Vertex(.p1)
+
+          If (Maths.LiangBarsky(
+            tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
+
+            _visibleLines.Add(_map.LineDef(i))
+
+            'Dim pp0 = _cam.Projection * inv * p0
+            'Dim pp1 = _cam.Projection * inv * p1
+
+            'g.DrawLine(Pens.White, pp0, pp1)
+          End If
+        End With
+      Next
+    Next
+
+    _map.EnableEvents()
+  End Sub
+
+  Private Sub RenderView(g As Graphics)
+    If (_map IsNot Nothing) Then
+      PreProcess()
+
+      Dim inv = _cam.Transform().Inversed()
+
+      'Dim tl = _cam.TopLeft()
+      'Dim br = _cam.BottomRight()
+
+      '_map.DisableEvents()
+
+      'For l As Integer = 0 To _map.Layers - 1
+      '_map.SelectLayer(l)
+      For i As Integer = 0 To _visibleLines.Count - 1
+        Dim p0 = _map.Vertex(_visibleLines(i).p0)
+        Dim p1 = _map.Vertex(_visibleLines(i).p1)
+
+        Dim pp0 = _cam.Projection * inv * p0
+        Dim pp1 = _cam.Projection * inv * p1
+
+        g.DrawLine(Pens.White, pp0, pp1)
+      Next
+      '  For i As Integer = 0 To _map.LineDefs - 1
+      '    With _map.LineDef(i)
+      '      Dim p0 = _map.Vertex(.p0)
+      '      Dim p1 = _map.Vertex(.p1)
+
+      '      If (Maths.LiangBarsky(
+      '        tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
+
+      '        Dim pp0 = _cam.Projection * inv * p0
+      '        Dim pp1 = _cam.Projection * inv * p1
+
+      '        g.DrawLine(Pens.White, pp0, pp1)
+      '      End If
+      '    End With
+      '  Next
+      'Next
+
+      '_map.EnableEvents()
+
+      'Dim cv As Integer = _map.FindClosestVertex(_mp)
+
+      'If (cv <> -1) Then
+      '  Dim p = _cam.Projection * inv * _map.Vertex(cv)
+      '  RenderPoint(g, p, 5, VGAColors.LightRed)
+      'End If
+    End If
+  End Sub
+
   Private WithEvents _mode As IMode
 
   Private _map As Map
@@ -201,4 +305,6 @@ Public Class MapView
   Private _rdragging As Boolean
   Private _rdelta As Vec2
   Private _rstart As Vec2
+  Private _mp As New Vec2()
+  Private _visibleLines As New List(Of LineDef)
 End Class

@@ -1,5 +1,4 @@
 ﻿Option Infer On
-Imports System.Numerics
 
 ''' <summary>
 ''' Defines a line segment by two endpoints.

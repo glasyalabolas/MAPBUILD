@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <StartupObject>MAPBUILD.frmDebug</StartupObject>
+    <StartupObject>MAPBUILD.frmMain</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
   </PropertyGroup>

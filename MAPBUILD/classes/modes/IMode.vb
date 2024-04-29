@@ -4,6 +4,7 @@
   Sub OnRender(g As Graphics, cam As Camera2D)
   Sub OnMouseMove(e As MouseEventArgs)
   Sub OnMouseClick(e As MouseEventArgs)
+  Sub OnMouseDoubleClick(e As MouseEventArgs)
   Sub OnMouseWheel(e As MouseEventArgs)
   Sub OnKeyPressed(e As KeyEventArgs)
 End Interface

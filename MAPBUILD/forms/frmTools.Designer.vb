@@ -22,31 +22,44 @@ Partial Class frmTools
   'No lo modifique con el editor de código.
   <System.Diagnostics.DebuggerStepThrough()> _
   Private Sub InitializeComponent()
-    Panel1 = New Panel()
+    lblPos = New Label()
+    pnlButtons = New Panel()
     SuspendLayout()
     ' 
-    ' Panel1
+    ' lblPos
     ' 
-    Panel1.BackColor = Color.FromArgb(CByte(0), CByte(0), CByte(170))
-    Panel1.Dock = DockStyle.Top
-    Panel1.Location = New Point(0, 0)
-    Panel1.Name = "Panel1"
-    Panel1.Size = New Size(353, 12)
-    Panel1.TabIndex = 0
+    lblPos.Dock = DockStyle.Top
+    lblPos.Location = New Point(0, 0)
+    lblPos.Name = "lblPos"
+    lblPos.Size = New Size(395, 26)
+    lblPos.TabIndex = 1
+    lblPos.Text = "Label1"
+    lblPos.TextAlign = ContentAlignment.MiddleCenter
+    ' 
+    ' pnlButtons
+    ' 
+    pnlButtons.Dock = DockStyle.Top
+    pnlButtons.Location = New Point(0, 26)
+    pnlButtons.Name = "pnlButtons"
+    pnlButtons.Size = New Size(395, 201)
+    pnlButtons.TabIndex = 2
     ' 
     ' frmTools
     ' 
-    AutoScaleDimensions = New SizeF(7F, 15F)
+    AutoScaleDimensions = New SizeF(12F, 26F)
     AutoScaleMode = AutoScaleMode.Font
-    ClientSize = New Size(353, 270)
-    Controls.Add(Panel1)
+    ClientSize = New Size(395, 275)
+    Controls.Add(pnlButtons)
+    Controls.Add(lblPos)
     DoubleBuffered = True
+    Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
     FormBorderStyle = FormBorderStyle.None
+    Margin = New Padding(5)
     Name = "frmTools"
     ShowInTaskbar = False
-    StartPosition = FormStartPosition.CenterParent
+    StartPosition = FormStartPosition.Manual
     ResumeLayout(False)
   End Sub
-
-  Friend WithEvents Panel1 As Panel
+  Friend WithEvents lblPos As Label
+  Friend WithEvents pnlButtons As Panel
 End Class

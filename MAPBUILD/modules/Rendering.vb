@@ -1,5 +1,8 @@
-﻿Public Module Rendering
-  '' Can be refactored to its own shared class
+﻿Option Infer On
+
+Public Module Rendering
+  Public ReadOnly BLACK = RGB(0, 0, 0)
+
   Public Sub RenderPoint(g As Graphics, p As Vec2, r As Long, c As Color)
     g.FillEllipse(New SolidBrush(c), New Rectangle(
       p.x - r, p.y - r, r * 2, r * 2))

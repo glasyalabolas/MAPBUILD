@@ -54,7 +54,8 @@ Partial Class frmDebug
     MenuStrip1.Items.AddRange(New ToolStripItem() {FileToolStripMenuItem, EditToolStripMenuItem, TestToolStripMenuItem})
     MenuStrip1.Location = New Point(0, 0)
     MenuStrip1.Name = "MenuStrip1"
-    MenuStrip1.Size = New Size(1134, 33)
+    MenuStrip1.Padding = New Padding(4, 1, 0, 1)
+    MenuStrip1.Size = New Size(794, 24)
     MenuStrip1.TabIndex = 2
     MenuStrip1.Text = "MenuStrip1"
     ' 
@@ -62,125 +63,126 @@ Partial Class frmDebug
     ' 
     FileToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OpenToolStripMenuItem, OpenToolStripMenuItem1, SaveToolStripMenuItem, SaveAsToolStripMenuItem, PropertiesToolStripMenuItem, ToolStripSeparator2, ExitToolStripMenuItem})
     FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-    FileToolStripMenuItem.Size = New Size(54, 29)
+    FileToolStripMenuItem.Size = New Size(37, 22)
     FileToolStripMenuItem.Text = "File"
     ' 
     ' OpenToolStripMenuItem
     ' 
     OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-    OpenToolStripMenuItem.Size = New Size(206, 34)
+    OpenToolStripMenuItem.Size = New Size(136, 22)
     OpenToolStripMenuItem.Text = "New"
     ' 
     ' OpenToolStripMenuItem1
     ' 
     OpenToolStripMenuItem1.Name = "OpenToolStripMenuItem1"
-    OpenToolStripMenuItem1.Size = New Size(206, 34)
+    OpenToolStripMenuItem1.Size = New Size(136, 22)
     OpenToolStripMenuItem1.Text = "Open..."
     ' 
     ' SaveToolStripMenuItem
     ' 
     SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-    SaveToolStripMenuItem.Size = New Size(206, 34)
+    SaveToolStripMenuItem.Size = New Size(136, 22)
     SaveToolStripMenuItem.Text = "Save"
     ' 
     ' SaveAsToolStripMenuItem
     ' 
     SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem"
-    SaveAsToolStripMenuItem.Size = New Size(206, 34)
+    SaveAsToolStripMenuItem.Size = New Size(136, 22)
     SaveAsToolStripMenuItem.Text = "Save as..."
     ' 
     ' PropertiesToolStripMenuItem
     ' 
     PropertiesToolStripMenuItem.Name = "PropertiesToolStripMenuItem"
-    PropertiesToolStripMenuItem.Size = New Size(206, 34)
+    PropertiesToolStripMenuItem.Size = New Size(136, 22)
     PropertiesToolStripMenuItem.Text = "Properties..."
     ' 
     ' ToolStripSeparator2
     ' 
     ToolStripSeparator2.Name = "ToolStripSeparator2"
-    ToolStripSeparator2.Size = New Size(203, 6)
+    ToolStripSeparator2.Size = New Size(133, 6)
     ' 
     ' ExitToolStripMenuItem
     ' 
     ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-    ExitToolStripMenuItem.Size = New Size(206, 34)
+    ExitToolStripMenuItem.Size = New Size(136, 22)
     ExitToolStripMenuItem.Text = "Exit"
     ' 
     ' EditToolStripMenuItem
     ' 
     EditToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {UndoToolStripMenuItem, RedoToolStripMenuItem, ToolStripSeparator1, CutToolStripMenuItem, CopyToolStripMenuItem, PasteToolStripMenuItem})
     EditToolStripMenuItem.Name = "EditToolStripMenuItem"
-    EditToolStripMenuItem.Size = New Size(58, 29)
+    EditToolStripMenuItem.Size = New Size(39, 22)
     EditToolStripMenuItem.Text = "Edit"
     ' 
     ' UndoToolStripMenuItem
     ' 
     UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
-    UndoToolStripMenuItem.Size = New Size(158, 34)
+    UndoToolStripMenuItem.Size = New Size(103, 22)
     UndoToolStripMenuItem.Text = "Undo"
     ' 
     ' RedoToolStripMenuItem
     ' 
     RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
-    RedoToolStripMenuItem.Size = New Size(158, 34)
+    RedoToolStripMenuItem.Size = New Size(103, 22)
     RedoToolStripMenuItem.Text = "Redo"
     ' 
     ' ToolStripSeparator1
     ' 
     ToolStripSeparator1.Name = "ToolStripSeparator1"
-    ToolStripSeparator1.Size = New Size(155, 6)
+    ToolStripSeparator1.Size = New Size(100, 6)
     ' 
     ' CutToolStripMenuItem
     ' 
     CutToolStripMenuItem.Name = "CutToolStripMenuItem"
-    CutToolStripMenuItem.Size = New Size(158, 34)
+    CutToolStripMenuItem.Size = New Size(103, 22)
     CutToolStripMenuItem.Text = "Cut"
     ' 
     ' CopyToolStripMenuItem
     ' 
     CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
-    CopyToolStripMenuItem.Size = New Size(158, 34)
+    CopyToolStripMenuItem.Size = New Size(103, 22)
     CopyToolStripMenuItem.Text = "Copy"
     ' 
     ' PasteToolStripMenuItem
     ' 
     PasteToolStripMenuItem.Name = "PasteToolStripMenuItem"
-    PasteToolStripMenuItem.Size = New Size(158, 34)
+    PasteToolStripMenuItem.Size = New Size(103, 22)
     PasteToolStripMenuItem.Text = "Paste"
     ' 
     ' TestToolStripMenuItem
     ' 
     TestToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {LinesAndVectorsToolStripMenuItem, PolygonsToolStripMenuItem})
     TestToolStripMenuItem.Name = "TestToolStripMenuItem"
-    TestToolStripMenuItem.Size = New Size(58, 29)
+    TestToolStripMenuItem.Size = New Size(39, 22)
     TestToolStripMenuItem.Text = "Test"
     ' 
     ' LinesAndVectorsToolStripMenuItem
     ' 
     LinesAndVectorsToolStripMenuItem.Name = "LinesAndVectorsToolStripMenuItem"
-    LinesAndVectorsToolStripMenuItem.Size = New Size(250, 34)
+    LinesAndVectorsToolStripMenuItem.Size = New Size(165, 22)
     LinesAndVectorsToolStripMenuItem.Text = "Lines and vectors"
     ' 
     ' PolygonsToolStripMenuItem
     ' 
     PolygonsToolStripMenuItem.Name = "PolygonsToolStripMenuItem"
-    PolygonsToolStripMenuItem.Size = New Size(250, 34)
+    PolygonsToolStripMenuItem.Size = New Size(165, 22)
     PolygonsToolStripMenuItem.Text = "Polygons"
     ' 
     ' StatusStrip1
     ' 
     StatusStrip1.ImageScalingSize = New Size(24, 24)
     StatusStrip1.Items.AddRange(New ToolStripItem() {ToolStripStatusLabel1})
-    StatusStrip1.Location = New Point(0, 660)
+    StatusStrip1.Location = New Point(0, 393)
     StatusStrip1.Name = "StatusStrip1"
-    StatusStrip1.Size = New Size(1134, 32)
+    StatusStrip1.Padding = New Padding(1, 0, 10, 0)
+    StatusStrip1.Size = New Size(794, 22)
     StatusStrip1.TabIndex = 3
     StatusStrip1.Text = "StatusStrip1"
     ' 
     ' ToolStripStatusLabel1
     ' 
     ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-    ToolStripStatusLabel1.Size = New Size(1119, 25)
+    ToolStripStatusLabel1.Size = New Size(783, 17)
     ToolStripStatusLabel1.Spring = True
     ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
     ToolStripStatusLabel1.TextAlign = ContentAlignment.MiddleLeft
@@ -189,25 +191,29 @@ Partial Class frmDebug
     ' 
     MapView1.BackColor = Color.Black
     MapView1.BlockSize = 0F
-    MapView1.Location = New Point(0, 33)
+    MapView1.Dock = DockStyle.Fill
+    MapView1.Location = New Point(0, 24)
     MapView1.Map = Nothing
+    MapView1.Margin = New Padding(1)
     MapView1.Mode = Nothing
     MapView1.Name = "MapView1"
-    MapView1.Size = New Size(800, 600)
+    MapView1.Size = New Size(794, 369)
     MapView1.TabIndex = 4
     ' 
     ' frmDebug
     ' 
-    AutoScaleDimensions = New SizeF(10F, 25F)
+    AutoScaleDimensions = New SizeF(7F, 15F)
     AutoScaleMode = AutoScaleMode.Font
-    ClientSize = New Size(1134, 692)
+    ClientSize = New Size(794, 415)
     Controls.Add(MapView1)
     Controls.Add(StatusStrip1)
     Controls.Add(MenuStrip1)
     KeyPreview = True
     MainMenuStrip = MenuStrip1
+    Margin = New Padding(2)
     Name = "frmDebug"
     Text = "Debug"
+    WindowState = FormWindowState.Maximized
     MenuStrip1.ResumeLayout(False)
     MenuStrip1.PerformLayout()
     StatusStrip1.ResumeLayout(False)

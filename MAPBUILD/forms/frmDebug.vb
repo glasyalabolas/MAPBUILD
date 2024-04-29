@@ -1,7 +1,7 @@
 ﻿Public Class frmDebug
   Public Shared Sub Main(args() As String)
-    Application.EnableVisualStyles()
     Application.SetHighDpiMode(HighDpiMode.SystemAware)
+    Application.EnableVisualStyles()
     Application.Run(New frmDebug)
   End Sub
 
@@ -21,6 +21,8 @@
 
     MapView1.Mode = _mode
     MapView1.Map = _map
+
+    frmTools.Show(Me)
   End Sub
 
   Private Sub frmDebug_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
@@ -39,9 +41,6 @@
       " Pos: " & .Position.ToString() &
       " BlockSize: " & (.Scaling().Inversed() * bs).ToString()
 
-      Dim startP = New Vec2(tl.x \ bs.x, tl.y \ bs.y) * bs
-
-      Debug.Print("startP: " & startP.ToString())
     End With
   End Sub
 

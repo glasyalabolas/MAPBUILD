@@ -19,12 +19,6 @@ Public Class MapView
     SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
   End Sub
 
-  Protected Overrides Sub Finalize()
-    _running = False
-
-    MyBase.Finalize()
-  End Sub
-
   <Browsable(False)>
   Public Property Map() As Map
     Get
@@ -74,51 +68,37 @@ Public Class MapView
   End Property
 
   Private Sub MapView_Load(sender As Object, e As EventArgs) Handles Me.Load
-    'If (Not DesignMode) Then
-    '_running = True
-    BlockSize = 32.0
-
-    '  Run()
-    'End If
+    'BlockSize = 32.0
   End Sub
 
-  Private Async Sub Run()
-    Do While (_running)
-      Process()
-      Refresh()
+  'Private Sub Process()
+  '  Dim dx As Single, dy As Single
 
-      Await Task.Delay(5)
-    Loop
-  End Sub
+  '  If (GetAsyncKeyState(Keys.Up)) Then
+  '    dy = -16
+  '  End If
+  '  If (GetAsyncKeyState(Keys.Down)) Then
+  '    dy = 16
+  '  End If
+  '  If (GetAsyncKeyState(Keys.Left)) Then
+  '    dx = -16
+  '  End If
+  '  If (GetAsyncKeyState(Keys.Right)) Then
+  '    dx = 16
+  '  End If
 
-  Private Sub Process()
-    Dim dx As Single, dy As Single
+  '  If (GetAsyncKeyState(Keys.A)) Then
+  '    _cam.Zoom *= 1.02
+  '  End If
 
-    If (GetAsyncKeyState(Keys.Up)) Then
-      dy = -16
-    End If
-    If (GetAsyncKeyState(Keys.Down)) Then
-      dy = 16
-    End If
-    If (GetAsyncKeyState(Keys.Left)) Then
-      dx = -16
-    End If
-    If (GetAsyncKeyState(Keys.Right)) Then
-      dx = 16
-    End If
+  '  If (GetAsyncKeyState(Keys.Z)) Then
+  '    _cam.Zoom *= 0.98
+  '  End If
 
-    If (GetAsyncKeyState(Keys.A)) Then
-      _cam.Zoom *= 1.02
-    End If
+  '  _cam.Position += New Vec2(dx, dy) * _cam.Zoom
 
-    If (GetAsyncKeyState(Keys.Z)) Then
-      _cam.Zoom *= 0.98
-    End If
-
-    _cam.Position += New Vec2(dx, dy) * _cam.Zoom
-
-    _mode?.OnProcess()
-  End Sub
+  '  _mode?.OnProcess()
+  'End Sub
 
   Protected Overrides Sub OnPaint(e As PaintEventArgs)
     If (Not DesignMode) Then
@@ -182,6 +162,12 @@ Public Class MapView
     Refresh()
   End Sub
 
+  Protected Overrides Sub OnMouseDoubleClick(e As MouseEventArgs)
+    MyBase.OnMouseDoubleClick(e)
+
+    _mode?.OnMouseDoubleClick(e)
+  End Sub
+
   Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
     Mode = e.Mode
   End Sub
@@ -214,7 +200,6 @@ Public Class MapView
   Private Sub PreProcess()
     _visibleLines.Clear()
 
-    'Dim inv = _cam.Transform().Inversed()
     Dim tl = _cam.TopLeft()
     Dim br = _cam.BottomRight()
 
@@ -232,11 +217,6 @@ Public Class MapView
             tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
 
             _visibleLines.Add(_map.LineDef(i))
-
-            'Dim pp0 = _cam.Projection * inv * p0
-            'Dim pp1 = _cam.Projection * inv * p1
-
-            'g.DrawLine(Pens.White, pp0, pp1)
           End If
         End With
       Next
@@ -251,13 +231,6 @@ Public Class MapView
 
       Dim inv = _cam.Transform().Inversed()
 
-      'Dim tl = _cam.TopLeft()
-      'Dim br = _cam.BottomRight()
-
-      '_map.DisableEvents()
-
-      'For l As Integer = 0 To _map.Layers - 1
-      '_map.SelectLayer(l)
       For i As Integer = 0 To _visibleLines.Count - 1
         Dim p0 = _map.Vertex(_visibleLines(i).p0)
         Dim p1 = _map.Vertex(_visibleLines(i).p1)
@@ -267,31 +240,6 @@ Public Class MapView
 
         g.DrawLine(Pens.White, pp0, pp1)
       Next
-      '  For i As Integer = 0 To _map.LineDefs - 1
-      '    With _map.LineDef(i)
-      '      Dim p0 = _map.Vertex(.p0)
-      '      Dim p1 = _map.Vertex(.p1)
-
-      '      If (Maths.LiangBarsky(
-      '        tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
-
-      '        Dim pp0 = _cam.Projection * inv * p0
-      '        Dim pp1 = _cam.Projection * inv * p1
-
-      '        g.DrawLine(Pens.White, pp0, pp1)
-      '      End If
-      '    End With
-      '  Next
-      'Next
-
-      '_map.EnableEvents()
-
-      'Dim cv As Integer = _map.FindClosestVertex(_mp)
-
-      'If (cv <> -1) Then
-      '  Dim p = _cam.Projection * inv * _map.Vertex(cv)
-      '  RenderPoint(g, p, 5, VGAColors.LightRed)
-      'End If
     End If
   End Sub
 
@@ -300,8 +248,6 @@ Public Class MapView
   Private _map As Map
   Private _cam As New Camera2D()
   Private _blockSize As Single
-
-  Private _running As Boolean
   Private _rdragging As Boolean
   Private _rdelta As Vec2
   Private _rstart As Vec2

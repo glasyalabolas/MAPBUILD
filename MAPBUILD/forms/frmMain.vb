@@ -5,8 +5,10 @@
     Application.Run(New frmMain)
   End Sub
 
-  Private Sub frmDebug_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    _mode = New VertexMode(_map)
+  Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    _blockSize = 64
+
+    _mode = New DrawLinesMode(_map, mvView.Camera, _blockSize)
 
     For i As Integer = 1 To 100
       Dim p0 = New Vec2(Rng(-5000, 5000), Rng(-5000, 5000))
@@ -19,6 +21,7 @@
 
     mvView.Mode = _mode
     mvView.Map = _map
+    mvView.BlockSize = _blockSize
 
     pnlSide.Hide()
 
@@ -31,7 +34,7 @@
     frmTools.Show(Me)
   End Sub
 
-  Private Sub frmDebug_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
+  Private Sub frmMain_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
     _mode?.OnKeyPressed(e)
   End Sub
 
@@ -41,7 +44,9 @@
 
   Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
     _mode = e.Mode
+
     mvView.Mode = _mode
+    tsslMode.Text = _mode.Name
   End Sub
 
   Private Sub _map_SelectedLayerChanged(sender As Object, e As SelectedLayerChangedEventArgs) Handles _map.SelectedLayerChanged
@@ -50,4 +55,5 @@
 
   Private WithEvents _mode As IMode
   Private WithEvents _map As New Map()
+  Private _blockSize As Integer
 End Class

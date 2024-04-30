@@ -4,6 +4,8 @@ Public Class VertexMode
   Inherits ModeBase
 
   Public Sub New(m As Map)
+    SetName("Vertex mode")
+
     _map = m
   End Sub
 

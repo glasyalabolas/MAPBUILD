@@ -1,5 +1,7 @@
 ﻿Public Interface IMode
   Event ModeChanged(sender As Object, e As ModeChangedEventArgs)
+  ReadOnly Property Name() As String
+  Property BlockSize() As Single
   Sub OnProcess()
   Sub OnRender(g As Graphics, cam As Camera2D)
   Sub OnMouseMove(e As MouseEventArgs)

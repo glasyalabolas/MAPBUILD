@@ -24,6 +24,9 @@ Partial Class frmTools
   Private Sub InitializeComponent()
     lblPos = New Label()
     pnlButtons = New Panel()
+    Label1 = New Label()
+    TextBox1 = New TextBox()
+    pnlButtons.SuspendLayout()
     SuspendLayout()
     ' 
     ' lblPos
@@ -38,11 +41,30 @@ Partial Class frmTools
     ' 
     ' pnlButtons
     ' 
+    pnlButtons.Controls.Add(TextBox1)
+    pnlButtons.Controls.Add(Label1)
     pnlButtons.Dock = DockStyle.Top
     pnlButtons.Location = New Point(0, 26)
     pnlButtons.Name = "pnlButtons"
     pnlButtons.Size = New Size(395, 201)
     pnlButtons.TabIndex = 2
+    ' 
+    ' Label1
+    ' 
+    Label1.AutoSize = True
+    Label1.Location = New Point(12, 15)
+    Label1.Name = "Label1"
+    Label1.Size = New Size(108, 26)
+    Label1.TabIndex = 3
+    Label1.Text = "Sector #"
+    ' 
+    ' TextBox1
+    ' 
+    TextBox1.BorderStyle = BorderStyle.None
+    TextBox1.Location = New Point(126, 12)
+    TextBox1.Name = "TextBox1"
+    TextBox1.Size = New Size(101, 26)
+    TextBox1.TabIndex = 4
     ' 
     ' frmTools
     ' 
@@ -58,8 +80,12 @@ Partial Class frmTools
     Name = "frmTools"
     ShowInTaskbar = False
     StartPosition = FormStartPosition.Manual
+    pnlButtons.ResumeLayout(False)
+    pnlButtons.PerformLayout()
     ResumeLayout(False)
   End Sub
   Friend WithEvents lblPos As Label
   Friend WithEvents pnlButtons As Panel
+  Friend WithEvents TextBox1 As TextBox
+  Friend WithEvents Label1 As Label
 End Class

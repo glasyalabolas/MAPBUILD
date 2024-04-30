@@ -178,6 +178,7 @@ Partial Class frmMain
     ssStatus.Items.AddRange(New ToolStripItem() {tsslHelp, tsslLayer, tsslBlockSize, tsslMode})
     ssStatus.Location = New Point(0, 659)
     ssStatus.Name = "ssStatus"
+    ssStatus.RenderMode = ToolStripRenderMode.ManagerRenderMode
     ssStatus.Size = New Size(1134, 33)
     ssStatus.SizingGrip = False
     ssStatus.TabIndex = 3
@@ -187,7 +188,7 @@ Partial Class frmMain
     ' 
     tsslHelp.Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
     tsslHelp.Name = "tsslHelp"
-    tsslHelp.Size = New Size(761, 26)
+    tsslHelp.Size = New Size(613, 26)
     tsslHelp.Spring = True
     tsslHelp.Text = "Help"
     tsslHelp.TextAlign = ContentAlignment.MiddleLeft
@@ -222,8 +223,7 @@ Partial Class frmMain
     ' 
     ' mvView
     ' 
-    mvView.BackColor = Color.Black
-    mvView.BlockSize = 0F
+    mvView.BackColor = Color.FromArgb(CByte(0), CByte(0), CByte(0))
     mvView.Dock = DockStyle.Fill
     mvView.Location = New Point(0, 33)
     mvView.Map = Nothing

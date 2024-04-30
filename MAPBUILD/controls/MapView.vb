@@ -53,56 +53,13 @@ Public Class MapView
     End Get
   End Property
 
-  Public Property BlockSize() As Single
-    Get
-      Return (_blockSize)
-    End Get
-
-    Set(value As Single)
-      _blockSize = value
-
-      Refresh()
-
-      RaiseEvent BlockSizeChanged(Me, EventArgs.Empty)
-    End Set
-  End Property
-
   Private Sub MapView_Load(sender As Object, e As EventArgs) Handles Me.Load
-    'BlockSize = 32.0
+    BackColor = VGAColors.Black
   End Sub
-
-  'Private Sub Process()
-  '  Dim dx As Single, dy As Single
-
-  '  If (GetAsyncKeyState(Keys.Up)) Then
-  '    dy = -16
-  '  End If
-  '  If (GetAsyncKeyState(Keys.Down)) Then
-  '    dy = 16
-  '  End If
-  '  If (GetAsyncKeyState(Keys.Left)) Then
-  '    dx = -16
-  '  End If
-  '  If (GetAsyncKeyState(Keys.Right)) Then
-  '    dx = 16
-  '  End If
-
-  '  If (GetAsyncKeyState(Keys.A)) Then
-  '    _cam.Zoom *= 1.02
-  '  End If
-
-  '  If (GetAsyncKeyState(Keys.Z)) Then
-  '    _cam.Zoom *= 0.98
-  '  End If
-
-  '  _cam.Position += New Vec2(dx, dy) * _cam.Zoom
-
-  '  _mode?.OnProcess()
-  'End Sub
 
   Protected Overrides Sub OnPaint(e As PaintEventArgs)
     If (Not DesignMode) Then
-      If (BlockSize / Camera.Zoom >= 10.0) Then
+      If (_mode.BlockSize / Camera.Zoom >= 10.0) Then
         RenderBlocksizeGrid(e.Graphics, Color.DarkSlateGray)
       End If
 
@@ -162,6 +119,12 @@ Public Class MapView
     Refresh()
   End Sub
 
+  Protected Overrides Sub OnMouseClick(e As MouseEventArgs)
+    MyBase.OnMouseClick(e)
+
+    _mode?.OnMouseClick(e)
+  End Sub
+
   Protected Overrides Sub OnMouseDoubleClick(e As MouseEventArgs)
     MyBase.OnMouseDoubleClick(e)
 
@@ -178,7 +141,7 @@ Public Class MapView
     Dim inv = Camera.Transform.Inversed()
     Dim prj = Camera.Projection()
 
-    Dim startP = New Vec2(tl.x \ BlockSize, tl.y \ BlockSize) * BlockSize
+    Dim startP = New Vec2(tl.x \ _mode.BlockSize, tl.y \ _mode.BlockSize) * _mode.BlockSize
     Dim p = New Vec2(startP.x, startP.y)
     Dim pn = VGAColors.DarkGrayPen
 
@@ -189,10 +152,10 @@ Public Class MapView
         g.DrawLine(pn, p1.x - 2, p1.y, p1.x + 2, p1.y)
         g.DrawLine(pn, p1.x, p1.y - 2, p1.x, p1.y + 2)
 
-        p.x += BlockSize
+        p.x += _mode.BlockSize
       Loop
 
-      p.y += BlockSize
+      p.y += _mode.BlockSize
       p.x = startP.x
     Loop
   End Sub

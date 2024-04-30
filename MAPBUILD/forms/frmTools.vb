@@ -4,6 +4,13 @@
     ForeColor = VGAColors.Cyan
 
     lblPos.Text = ""
+
+    For Each c As Control In pnlButtons.Controls
+      If (TypeOf c Is TextBox) Then
+        c.ForeColor = VGAColors.Cyan
+        c.BackColor = VGAColors.Black
+      End If
+    Next
   End Sub
 
   Public Sub AddHandlers(o As MapView)

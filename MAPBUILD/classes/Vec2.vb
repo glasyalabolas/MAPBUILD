@@ -9,12 +9,20 @@ Public Class Vec2
     x = nX : y = nY
   End Sub
 
+  Public Sub New(nv As Vec2)
+    x = nv.x : y = nv.y
+  End Sub
+
   Public Shared Function Zero() As Vec2
     Return (New Vec2(0.0!, 0.0!))
   End Function
 
   Public Function Clone() As Vec2
     Return (New Vec2(x, y))
+  End Function
+
+  Public Function IsEqual(v As Vec2) As Boolean
+    Return (x = v.x AndAlso y = v.y)
   End Function
 
   ''' <summary>

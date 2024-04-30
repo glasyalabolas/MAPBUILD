@@ -65,9 +65,11 @@
       If (edge = 2) Then p = -dy : q = -(ymin - y0)
       If (edge = 3) Then p = dy : q = (ymax - y0)
 
-      If (p = 0) Then Return (q < 0)
-
       r = q / p
+
+      If (p = 0 AndAlso q < 0) Then
+        Return (False)
+      End If
 
       If (p < 0) Then
         If (r > t1) Then

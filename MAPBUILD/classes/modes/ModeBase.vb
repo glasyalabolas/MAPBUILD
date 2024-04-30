@@ -9,10 +9,18 @@ Public MustInherit Class ModeBase
   End Function
 
   Public Event ModeChanged(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeChanged
+  Public Event HelpTextChanged(sender As Object, e As EventArgs) Implements IMode.HelpTextChanged
+  Public Event BlockSizeChanged(sender As Object, e As EventArgs) Implements IMode.BlockSizeChanged
 
   Public ReadOnly Property Name() As String Implements IMode.Name
     Get
       Return (_name)
+    End Get
+  End Property
+
+  Public ReadOnly Property HelpText() As String Implements IMode.HelpText
+    Get
+      Return (_helpText)
     End Get
   End Property
 
@@ -23,11 +31,19 @@ Public MustInherit Class ModeBase
 
     Set(value As Single)
       _blockSize = value
+
+      OnBlockSizeChanged()
     End Set
   End Property
 
-  Protected Sub SetName(n As String)
-    _name = n
+  Protected Sub SetName(value As String)
+    _name = value
+  End Sub
+
+  Protected Sub SetHelpText(value As String)
+    _helpText = value
+
+    OnHelpTextChanged()
   End Sub
 
   Public Overridable Sub OnProcess() Implements IMode.OnProcess
@@ -49,6 +65,22 @@ Public MustInherit Class ModeBase
     RaiseEvent ModeChanged(sender, e)
   End Sub
 
+  Private Sub OnHelpTextChanged()
+    RaiseEvent HelpTextChanged(Me, EventArgs.Empty)
+  End Sub
+
+  Private Sub OnBlockSizeChanged()
+    RaiseEvent BlockSizeChanged(Me, EventArgs.Empty)
+  End Sub
+
+  Protected Function SnapToGrid(v As Vec2) As Vec2
+    Dim hbsx As Single = IIf(v.x >= 0, BlockSize * 0.5, -BlockSize * 0.5)
+    Dim hbsy As Single = IIf(v.y >= 0, BlockSize * 0.5, -BlockSize * 0.5)
+
+    Return (New Vec2((v.x + hbsx) \ BlockSize, (v.y + hbsy) \ BlockSize) * BlockSize)
+  End Function
+
   Private _name As String
+  Private _helpText As String
   Private _blockSize As Single
 End Class

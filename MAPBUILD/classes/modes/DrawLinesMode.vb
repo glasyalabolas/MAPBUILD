@@ -23,7 +23,7 @@
       _startVertex = New Vec2(_sp)
 
       _map.SelectedLayer.AddVertex(_sp)
-      _startVertexIndex = _map.SelectedLayer.Vertices - 1
+      '_startVertexIndex = _map.SelectedLayer.Vertices - 1
 
       _drawing = True
     End If
@@ -37,7 +37,8 @@
         '' Ignore zero length segments
         If (ls.LengthSq > 0) Then
           '' Close poly if end point = start point
-          If (_ep.IsEqual(_startVertex)) Then
+          If (_map.IsClosestVertex(_ep, _startVertex)) Then
+            'If (_ep.IsEqual(_startVertex)) Then
             Dim s = New Sector()
 
             For i As Integer = 0 To _lineDefs.Count - 1
@@ -105,6 +106,6 @@
   Private _cam As Camera2D
   Private _lineDefs As New List(Of LineDef)
   Private _sp As Vec2, _ep As Vec2, _startVertex As Vec2
-  Private _startVertexIndex As Integer
+  'Private _startVertexIndex As Integer
   Private _drawing As Boolean
 End Class

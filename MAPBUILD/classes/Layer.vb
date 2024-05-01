@@ -13,14 +13,27 @@
     End Get
   End Property
 
+  Public ReadOnly Property Sectors() As Integer
+    Get
+      Return (_sector.Count)
+    End Get
+  End Property
+
   Public ReadOnly Property Vertex(index As Integer) As Vec2
     Get
       Return (_vertex(index))
     End Get
   End Property
+
   Public ReadOnly Property LineDef(index As Integer) As LineDef
     Get
       Return (_lineDef(index))
+    End Get
+  End Property
+
+  Public ReadOnly Property Sector(index As Integer) As Sector
+    Get
+      Return (_sector(index))
     End Get
   End Property
 
@@ -30,6 +43,10 @@
 
   Public Sub AddLineDef(ld As LineDef)
     _lineDef.Add(ld)
+  End Sub
+
+  Public Sub AddSector(s As Sector)
+    _sector.Add(s)
   End Sub
 
   Public Function FindClosestVertex(p As Vec2) As Integer
@@ -50,4 +67,5 @@
 
   Private _vertex As New List(Of Vec2)
   Private _lineDef As New List(Of LineDef)
+  Private _sector As New List(Of Sector)
 End Class

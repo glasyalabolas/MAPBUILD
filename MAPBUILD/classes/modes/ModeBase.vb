@@ -11,6 +11,7 @@ Public MustInherit Class ModeBase
   Public Event ModeChanged(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeChanged
   Public Event HelpTextChanged(sender As Object, e As EventArgs) Implements IMode.HelpTextChanged
   Public Event BlockSizeChanged(sender As Object, e As EventArgs) Implements IMode.BlockSizeChanged
+  Public Event Refresh(sender As Object, e As EventArgs) Implements IMode.Refresh
 
   Public ReadOnly Property Name() As String Implements IMode.Name
     Get
@@ -63,6 +64,10 @@ Public MustInherit Class ModeBase
 
   Protected Sub OnModeChanged(sender As Object, e As ModeChangedEventArgs)
     RaiseEvent ModeChanged(sender, e)
+  End Sub
+
+  Protected Sub OnRefresh()
+    RaiseEvent Refresh(Me, EventArgs.Empty)
   End Sub
 
   Private Sub OnHelpTextChanged()

@@ -17,12 +17,13 @@
         _mode.BlockSize = _blockSize
       End If
 
-      tsslBlockSize.Text = _blockSize.ToString()
+      lblBlockSize.Text = _blockSize.ToString()
     End Set
   End Property
 
   Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     BlockSize = 64
+
     _map.SelectLayer(0)
 
     _mode = New DrawLinesMode(_map, mvView.Camera) With {
@@ -33,8 +34,8 @@
 
     pnlSide.Hide()
 
-    ssStatus.BackColor = VGAColors.Blue
-    ssStatus.ForeColor = VGAColors.Cyan
+    pnlStatus.BackColor = VGAColors.Blue
+    pnlStatus.ForeColor = VGAColors.Cyan
 
     frmTools.AddHandlers(mvView)
 
@@ -55,8 +56,8 @@
   End Sub
 
   Private Sub mvView_ModeChanged(sender As Object, e As EventArgs) Handles mvView.ModeChanged
-    tsslMode.Text = _mode?.Name
-    tsslHelp.Text = _mode?.HelpText
+    lblMode.Text = _mode?.Name
+    lblHelp.Text = _mode?.HelpText
   End Sub
 
   Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
@@ -65,11 +66,11 @@
   End Sub
 
   Private Sub _mode_HelpTextChanged(sender As Object, e As EventArgs) Handles _mode.HelpTextChanged
-    tsslHelp.Text = _mode.HelpText
+    lblHelp.Text = _mode.HelpText
   End Sub
 
   Private Sub _map_SelectedLayerChanged(sender As Object, e As SelectedLayerChangedEventArgs) Handles _map.SelectedLayerChanged
-    tsslLayer.Text = e.Layer.Name
+    lblLayer.Text = e.Layer.Name
   End Sub
 
   Private Sub _mode_BlockSizeChanged(sender As Object, e As EventArgs) Handles _mode.BlockSizeChanged

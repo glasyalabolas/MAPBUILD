@@ -135,6 +135,10 @@ Public Class MapView
     Mode = e.Mode
   End Sub
 
+  Private Sub _mode_Refresh(sender As Object, e As EventArgs) Handles _mode.Refresh
+    Refresh()
+  End Sub
+
   Private Sub RenderBlocksizeGrid(g As Graphics, c As Color)
     Dim tl = _cam.TopLeft()
     Dim br = _cam.BottomRight()
@@ -171,18 +175,20 @@ Public Class MapView
     For l As Integer = 0 To _map.Layers - 1
       _map.SelectLayer(l)
 
-      For i As Integer = 0 To _map.LineDefs - 1
-        With _map.LineDef(i)
-          Dim p0 = _map.Vertex(.p0)
-          Dim p1 = _map.Vertex(.p1)
+      With Map.SelectedLayer
+        For i As Integer = 0 To .LineDefs - 1
+          With .LineDef(i)
+            Dim p0 = .p0
+            Dim p1 = .p1
 
-          If (Maths.LiangBarsky(
-            tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
+            If (Maths.LiangBarsky(
+              tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
 
-            _visibleLines.Add(_map.LineDef(i))
-          End If
-        End With
-      Next
+              _visibleLines.Add(_map.SelectedLayer.LineDef(i))
+            End If
+          End With
+        Next
+      End With
     Next
 
     _map.EnableEvents()
@@ -195,13 +201,18 @@ Public Class MapView
       Dim inv = _cam.Transform().Inversed()
 
       For i As Integer = 0 To _visibleLines.Count - 1
-        Dim p0 = _map.Vertex(_visibleLines(i).p0)
-        Dim p1 = _map.Vertex(_visibleLines(i).p1)
+        Dim p0 = _visibleLines(i).p0
+        Dim p1 = _visibleLines(i).p1
 
         Dim pp0 = _cam.Projection * inv * p0
         Dim pp1 = _cam.Projection * inv * p1
 
         g.DrawLine(Pens.White, pp0, pp1)
+
+        If (_mode.BlockSize / Camera.Zoom >= 10.0) Then
+          RenderVertex(g, pp0, VGAColors.LightRed)
+          RenderVertex(g, pp1, VGAColors.LightRed)
+        End If
       Next
     End If
   End Sub

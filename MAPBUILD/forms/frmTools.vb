@@ -14,7 +14,7 @@
   End Sub
 
   Public Sub AddHandlers(o As MapView)
-    AddHandler o.MapMouseMove, AddressOf MapMouseMove_handler
+    AddHandler o.MapMouseMove, AddressOf MapView_MouseMove
   End Sub
 
   Private Sub lblPos_MouseMove(sender As Object, e As MouseEventArgs) Handles lblPos.MouseMove
@@ -33,7 +33,7 @@
     _dragging = False
   End Sub
 
-  Private Sub MapMouseMove_handler(sender As Object, p As Vec2)
+  Private Sub MapView_MouseMove(sender As Object, p As Vec2)
     lblPos.Text = p
   End Sub
 

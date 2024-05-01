@@ -41,15 +41,15 @@ Partial Class frmMain
     TestToolStripMenuItem = New ToolStripMenuItem()
     LinesAndVectorsToolStripMenuItem = New ToolStripMenuItem()
     PolygonsToolStripMenuItem = New ToolStripMenuItem()
-    ssStatus = New StatusStrip()
-    tsslHelp = New ToolStripStatusLabel()
-    tsslLayer = New ToolStripStatusLabel()
-    tsslBlockSize = New ToolStripStatusLabel()
-    tsslMode = New ToolStripStatusLabel()
     pnlSide = New Panel()
     mvView = New MapView()
+    pnlStatus = New Panel()
+    lblMode = New Label()
+    lblBlockSize = New Label()
+    lblLayer = New Label()
+    lblHelp = New Label()
     MenuStrip1.SuspendLayout()
-    ssStatus.SuspendLayout()
+    pnlStatus.SuspendLayout()
     SuspendLayout()
     ' 
     ' MenuStrip1
@@ -171,48 +171,6 @@ Partial Class frmMain
     PolygonsToolStripMenuItem.Size = New Size(250, 34)
     PolygonsToolStripMenuItem.Text = "Polygons"
     ' 
-    ' ssStatus
-    ' 
-    ssStatus.Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
-    ssStatus.ImageScalingSize = New Size(24, 24)
-    ssStatus.Items.AddRange(New ToolStripItem() {tsslHelp, tsslLayer, tsslBlockSize, tsslMode})
-    ssStatus.Location = New Point(0, 659)
-    ssStatus.Name = "ssStatus"
-    ssStatus.RenderMode = ToolStripRenderMode.ManagerRenderMode
-    ssStatus.Size = New Size(1134, 33)
-    ssStatus.SizingGrip = False
-    ssStatus.TabIndex = 3
-    ssStatus.Text = "StatusStrip1"
-    ' 
-    ' tsslHelp
-    ' 
-    tsslHelp.Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
-    tsslHelp.Name = "tsslHelp"
-    tsslHelp.Size = New Size(613, 26)
-    tsslHelp.Spring = True
-    tsslHelp.Text = "Help"
-    tsslHelp.TextAlign = ContentAlignment.MiddleLeft
-    ' 
-    ' tsslLayer
-    ' 
-    tsslLayer.AutoSize = False
-    tsslLayer.Name = "tsslLayer"
-    tsslLayer.Size = New Size(220, 26)
-    tsslLayer.Text = "Layer"
-    ' 
-    ' tsslBlockSize
-    ' 
-    tsslBlockSize.Name = "tsslBlockSize"
-    tsslBlockSize.Size = New Size(120, 26)
-    tsslBlockSize.Text = "BlockSize"
-    ' 
-    ' tsslMode
-    ' 
-    tsslMode.AutoSize = False
-    tsslMode.Name = "tsslMode"
-    tsslMode.Size = New Size(120, 26)
-    tsslMode.Text = "Mode"
-    ' 
     ' pnlSide
     ' 
     pnlSide.Dock = DockStyle.Right
@@ -232,6 +190,59 @@ Partial Class frmMain
     mvView.Size = New Size(834, 626)
     mvView.TabIndex = 5
     ' 
+    ' pnlStatus
+    ' 
+    pnlStatus.Controls.Add(lblHelp)
+    pnlStatus.Controls.Add(lblLayer)
+    pnlStatus.Controls.Add(lblBlockSize)
+    pnlStatus.Controls.Add(lblMode)
+    pnlStatus.Dock = DockStyle.Bottom
+    pnlStatus.Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
+    pnlStatus.Location = New Point(0, 659)
+    pnlStatus.Name = "pnlStatus"
+    pnlStatus.Size = New Size(1134, 33)
+    pnlStatus.TabIndex = 6
+    ' 
+    ' lblMode
+    ' 
+    lblMode.Dock = DockStyle.Right
+    lblMode.Location = New Point(864, 0)
+    lblMode.Name = "lblMode"
+    lblMode.Size = New Size(270, 33)
+    lblMode.TabIndex = 1
+    lblMode.Text = "Mode"
+    lblMode.TextAlign = ContentAlignment.MiddleCenter
+    ' 
+    ' lblBlockSize
+    ' 
+    lblBlockSize.Dock = DockStyle.Right
+    lblBlockSize.Location = New Point(790, 0)
+    lblBlockSize.Name = "lblBlockSize"
+    lblBlockSize.Size = New Size(74, 33)
+    lblBlockSize.TabIndex = 2
+    lblBlockSize.Text = "BS"
+    lblBlockSize.TextAlign = ContentAlignment.MiddleCenter
+    ' 
+    ' lblLayer
+    ' 
+    lblLayer.Dock = DockStyle.Right
+    lblLayer.Location = New Point(554, 0)
+    lblLayer.Name = "lblLayer"
+    lblLayer.Size = New Size(236, 33)
+    lblLayer.TabIndex = 3
+    lblLayer.Text = "Layer"
+    lblLayer.TextAlign = ContentAlignment.MiddleCenter
+    ' 
+    ' lblHelp
+    ' 
+    lblHelp.Dock = DockStyle.Fill
+    lblHelp.Location = New Point(0, 0)
+    lblHelp.Name = "lblHelp"
+    lblHelp.Size = New Size(554, 33)
+    lblHelp.TabIndex = 4
+    lblHelp.Text = "Label1"
+    lblHelp.TextAlign = ContentAlignment.MiddleLeft
+    ' 
     ' frmMain
     ' 
     AutoScaleDimensions = New SizeF(10F, 25F)
@@ -239,7 +250,7 @@ Partial Class frmMain
     ClientSize = New Size(1134, 692)
     Controls.Add(mvView)
     Controls.Add(pnlSide)
-    Controls.Add(ssStatus)
+    Controls.Add(pnlStatus)
     Controls.Add(MenuStrip1)
     KeyPreview = True
     MainMenuStrip = MenuStrip1
@@ -248,8 +259,7 @@ Partial Class frmMain
     WindowState = FormWindowState.Maximized
     MenuStrip1.ResumeLayout(False)
     MenuStrip1.PerformLayout()
-    ssStatus.ResumeLayout(False)
-    ssStatus.PerformLayout()
+    pnlStatus.ResumeLayout(False)
     ResumeLayout(False)
     PerformLayout()
   End Sub
@@ -272,11 +282,12 @@ Partial Class frmMain
   Friend WithEvents UndoToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents RedoToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
-  Friend WithEvents ssStatus As StatusStrip
-  Friend WithEvents tsslHelp As ToolStripStatusLabel
   Friend WithEvents pnlSide As Panel
   Friend WithEvents mvView As MapView
-  Friend WithEvents tsslBlockSize As ToolStripStatusLabel
-  Friend WithEvents tsslMode As ToolStripStatusLabel
-  Friend WithEvents tsslLayer As ToolStripStatusLabel
+  Friend WithEvents pnlStatus As Panel
+  Friend WithEvents Label1 As Label
+  Friend WithEvents lblMode As Label
+  Friend WithEvents lblHelp As Label
+  Friend WithEvents lblLayer As Label
+  Friend WithEvents lblBlockSize As Label
 End Class

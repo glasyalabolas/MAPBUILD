@@ -18,33 +18,15 @@ Public Class Map
     End Get
   End Property
 
-  Public ReadOnly Property SelectedLayer() As Integer
+  Public ReadOnly Property SelectedLayerIndex() As Integer
     Get
       Return (_selectedLayer)
     End Get
   End Property
 
-  Public ReadOnly Property Vertices() As Integer
+  Public ReadOnly Property SelectedLayer() As Layer
     Get
-      Return (_layer(_selectedLayer).Vertices)
-    End Get
-  End Property
-
-  Public ReadOnly Property LineDefs() As Integer
-    Get
-      Return (_layer(_selectedLayer).LineDefs)
-    End Get
-  End Property
-
-  Public ReadOnly Property Vertex(index As Integer) As Vec2
-    Get
-      Return (_layer(_selectedLayer).Vertex(index))
-    End Get
-  End Property
-
-  Public ReadOnly Property LineDef(index As Integer) As LineDef
-    Get
-      Return (_layer(_selectedLayer).LineDef(index))
+      Return (_layer(_selectedLayer))
     End Get
   End Property
 
@@ -74,18 +56,6 @@ Public Class Map
   Public Sub DisableEvents()
     _raiseEvents = False
   End Sub
-
-  Public Sub AddVertex(v As Vec2)
-    _layer(_selectedLayer).AddVertex(v)
-  End Sub
-
-  Public Sub AddLineDef(ld As LineDef)
-    _layer(_selectedLayer).AddLineDef(ld)
-  End Sub
-
-  Public Function FindClosestVertex(p As Vec2) As Integer
-    Return (_layer(_selectedLayer).FindClosestVertex(p))
-  End Function
 
   Private _layer As New List(Of Layer)
   Private _selectedLayer As Integer

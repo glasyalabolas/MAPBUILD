@@ -31,7 +31,6 @@ Public Module Rendering
   Public Sub RenderVertex(g As Graphics, v As Vec2, c As Color)
     Dim br = New SolidBrush(c)
 
-    g.FillRectangle(br, New Rectangle(v.x - 2, v.y - 2, 5, 5))
-    'g.DrawLine(p, New Vec2(v.x + 3, v.y - 3), New Vec2(v.x - 3, v.y + 3))
+    g.FillRectangle(br, New Rectangle(v.x - 3, v.y - 3, 7, 7))
   End Sub
 End Module

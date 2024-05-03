@@ -41,6 +41,11 @@ Public Class MapView
     Set(value As IMode)
       _mode = value
 
+      If (_mode IsNot Nothing) Then
+        _mode.ViewRect = New Rectangle(0, 0, Width, Height)
+        _mode.Camera = _cam
+      End If
+
       Refresh()
 
       RaiseEvent ModeChanged(Me, EventArgs.Empty)
@@ -65,7 +70,7 @@ Public Class MapView
 
       RenderView(e.Graphics)
 
-      _mode?.OnRender(e.Graphics, _cam)
+      _mode?.OnRender(e.Graphics)
     End If
   End Sub
 
@@ -73,6 +78,10 @@ Public Class MapView
     MyBase.OnSizeChanged(e)
 
     _cam.ViewPort = New Vec2(Width, Height)
+
+    If (_mode IsNot Nothing) Then
+      _mode.ViewRect = New Rectangle(0, 0, Width, Height)
+    End If
 
     Refresh()
   End Sub
@@ -101,6 +110,8 @@ Public Class MapView
 
   Protected Overrides Sub OnMouseUp(e As MouseEventArgs)
     MyBase.OnMouseUp(e)
+
+    _mode?.OnMouseUp(e)
 
     If (e.Button And MouseButtons.Right) Then
       _rdragging = False
@@ -178,8 +189,8 @@ Public Class MapView
       With Map.SelectedLayer
         For i As Integer = 0 To .LineDefs - 1
           With .LineDef(i)
-            Dim p0 = .p0
-            Dim p1 = .p1
+            Dim p0 = Map.SelectedLayer.Vertex(.p0)
+            Dim p1 = Map.SelectedLayer.Vertex(.p1)
 
             If (Maths.LiangBarsky(
               tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
@@ -199,20 +210,16 @@ Public Class MapView
       PreProcess()
 
       Dim inv = _cam.Transform().Inversed()
+      Dim proj = _cam.Projection()
 
       For i As Integer = 0 To _visibleLines.Count - 1
-        Dim p0 = _visibleLines(i).p0
-        Dim p1 = _visibleLines(i).p1
+        Dim p0 = Map.SelectedLayer.Vertex(_visibleLines(i).p0)
+        Dim p1 = Map.SelectedLayer.Vertex(_visibleLines(i).p1)
 
-        Dim pp0 = _cam.Projection * inv * p0
-        Dim pp1 = _cam.Projection * inv * p1
+        Dim pp0 = proj * inv * p0
+        Dim pp1 = proj * inv * p1
 
         g.DrawLine(Pens.White, pp0, pp1)
-
-        If (_mode.BlockSize / Camera.Zoom >= 10.0) Then
-          RenderVertex(g, pp0, VGAColors.LightRed)
-          RenderVertex(g, pp1, VGAColors.LightRed)
-        End If
       Next
     End If
   End Sub

@@ -26,8 +26,12 @@
 
     _map.SelectLayer(0)
 
-    _mode = New DrawLinesMode(_map, mvView.Camera) With {
-      .BlockSize = _blockSize}
+    '_mode = New PolyDrawMode() With {
+    '  .BlockSize = _blockSize,
+    '  .Map = _map}
+    _mode = New VertexMode() With {
+      .BlockSize = _blockSize,
+      .Map = _map}
 
     mvView.Mode = _mode
     mvView.Map = _map

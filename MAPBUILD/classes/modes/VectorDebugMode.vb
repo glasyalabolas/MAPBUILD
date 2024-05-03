@@ -26,7 +26,7 @@
     _angle = Wrap(_angle + 0.1!, 0.0!, 359.0!)
   End Sub
 
-  Public Overrides Sub OnRender(g As Graphics, cam As Camera2D)
+  Public Overrides Sub OnRender(g As Graphics)
     RenderLineSeg(g, _lineSeg, Color.Red)
     RenderParamLine(g, _paramLine, Color.Yellow)
     RenderPoint(g, _center, 5, Color.Red)

@@ -8,7 +8,14 @@ Public MustInherit Class ModeBase
   Protected Shared Function GetAsyncKeyState(aKey As Keys) As Short
   End Function
 
-  Protected Const NOT_FOUND = -1
+  '' To indicate an entity was not found
+  Protected Const NOT_FOUND As Integer = -1
+
+  '' Nearest vertex minimum distance, in map units
+  Protected Const VERTEX_NEAR_DISTANCE As Single = 75.0
+
+  '' Nearest linedef minimum distance, in map units
+  Protected Const LINEDEF_NEAR_DISTANCE As Single = 100.0
 
   Public Event ModeChanged(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeChanged
   Public Event HelpTextChanged(sender As Object, e As EventArgs) Implements IMode.HelpTextChanged
@@ -144,7 +151,7 @@ Public MustInherit Class ModeBase
   Public Function FindClosestVertexIndex(v As Vec2) As Integer
     Dim closest As Single = Single.MaxValue
     Dim result As Integer = NOT_FOUND
-    Dim minDist As Single = 75.0 * Camera.Zoom
+    Dim minDist As Single = VERTEX_NEAR_DISTANCE * Camera.Zoom
 
     For i As Integer = 0 To Map.SelectedLayer.Vertices - 1
       Dim dist As Single = v.DistanceToSq(Map.SelectedLayer.Vertex(i))
@@ -154,6 +161,25 @@ Public MustInherit Class ModeBase
         result = i
       End If
     Next
+
+    Return (result)
+  End Function
+
+  Protected Function FindClosestLineDefIndex(v As Vec2) As Integer
+    Dim result As Integer = NOT_FOUND
+    Dim closest As Single = Single.MaxValue
+    Dim minDist As Single = LINEDEF_NEAR_DISTANCE * Camera.Zoom
+
+    With Map.SelectedLayer
+      For i As Integer = 0 To .LineDefs - 1
+        Dim dist = .LineDef(i).GetClosestPoint(v).DistanceToSq(v)
+
+        If (dist < closest AndAlso dist <= minDist) Then
+          closest = dist
+          result = i
+        End If
+      Next
+    End With
 
     Return (result)
   End Function

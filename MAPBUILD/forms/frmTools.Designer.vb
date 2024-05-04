@@ -24,8 +24,9 @@ Partial Class frmTools
   Private Sub InitializeComponent()
     lblPos = New Label()
     pnlButtons = New Panel()
-    Label1 = New Label()
     TextBox1 = New TextBox()
+    Label1 = New Label()
+    Button1 = New Button()
     pnlButtons.SuspendLayout()
     SuspendLayout()
     ' 
@@ -41,6 +42,7 @@ Partial Class frmTools
     ' 
     ' pnlButtons
     ' 
+    pnlButtons.Controls.Add(Button1)
     pnlButtons.Controls.Add(TextBox1)
     pnlButtons.Controls.Add(Label1)
     pnlButtons.Dock = DockStyle.Top
@@ -48,6 +50,14 @@ Partial Class frmTools
     pnlButtons.Name = "pnlButtons"
     pnlButtons.Size = New Size(395, 201)
     pnlButtons.TabIndex = 2
+    ' 
+    ' TextBox1
+    ' 
+    TextBox1.BorderStyle = BorderStyle.None
+    TextBox1.Location = New Point(126, 12)
+    TextBox1.Name = "TextBox1"
+    TextBox1.Size = New Size(101, 26)
+    TextBox1.TabIndex = 4
     ' 
     ' Label1
     ' 
@@ -58,13 +68,14 @@ Partial Class frmTools
     Label1.TabIndex = 3
     Label1.Text = "Sector #"
     ' 
-    ' TextBox1
+    ' Button1
     ' 
-    TextBox1.BorderStyle = BorderStyle.None
-    TextBox1.Location = New Point(126, 12)
-    TextBox1.Name = "TextBox1"
-    TextBox1.Size = New Size(101, 26)
-    TextBox1.TabIndex = 4
+    Button1.Location = New Point(12, 141)
+    Button1.Name = "Button1"
+    Button1.Size = New Size(148, 48)
+    Button1.TabIndex = 5
+    Button1.Text = "Line mode"
+    Button1.UseVisualStyleBackColor = True
     ' 
     ' frmTools
     ' 
@@ -88,4 +99,5 @@ Partial Class frmTools
   Friend WithEvents pnlButtons As Panel
   Friend WithEvents TextBox1 As TextBox
   Friend WithEvents Label1 As Label
+  Friend WithEvents Button1 As Button
 End Class

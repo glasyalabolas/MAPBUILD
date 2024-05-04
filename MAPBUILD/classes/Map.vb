@@ -18,6 +18,12 @@ Public Class Map
     End Get
   End Property
 
+  Public ReadOnly Property Layer(index As Integer) As Layer
+    Get
+      Return (_layer(index))
+    End Get
+  End Property
+
   Public ReadOnly Property SelectedLayerIndex() As Integer
     Get
       Return (_selectedLayer)
@@ -56,22 +62,6 @@ Public Class Map
   Public Sub DisableEvents()
     _raiseEvents = False
   End Sub
-
-  'Public Function IsClosestVertex(v1 As Vec2, v2 As Vec2) As Boolean
-  '  Dim closest = Integer.MaxValue
-  '  Dim closestV As New Vec2
-
-  '  For i As Integer = 0 To SelectedLayer.Vertices - 1
-  '    Dim dist = v2.DistanceToSq(SelectedLayer.Vertex(i))
-
-  '    If (dist < closest) Then
-  '      closest = dist
-  '      closestV = SelectedLayer.Vertex(i)
-  '    End If
-  '  Next
-
-  '  Return (closestV.x = v1.x AndAlso closestV.y = v1.y)
-  'End Function
 
   Private _layer As New List(Of Layer)
   Private _selectedLayer As Integer

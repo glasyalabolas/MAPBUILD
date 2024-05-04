@@ -178,28 +178,8 @@ Public Class MapView
   Private Sub PreProcess()
     _visibleLines.Clear()
 
-    Dim tl = _cam.TopLeft()
-    Dim br = _cam.BottomRight()
-
-    _map.DisableEvents()
-
-    For l As Integer = 0 To _map.Layers - 1
-      _map.SelectLayer(l)
-
-      With Map.SelectedLayer
-        For i As Integer = 0 To .LineDefs - 1
-          With .LineDef(i)
-            Dim p0 = Map.SelectedLayer.Vertex(.p0)
-            Dim p1 = Map.SelectedLayer.Vertex(.p1)
-
-            If (Maths.LiangBarsky(
-              tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
-
-              _visibleLines.Add(_map.SelectedLayer.LineDef(i))
-            End If
-          End With
-        Next
-      End With
+    For i As Integer = 0 To _map.Layers - 1
+      _visibleLines.Add(_map.Layer(i).GetVisibleLines(Camera))
     Next
 
     _map.EnableEvents()
@@ -213,13 +193,15 @@ Public Class MapView
       Dim proj = _cam.Projection()
 
       For i As Integer = 0 To _visibleLines.Count - 1
-        Dim p0 = Map.SelectedLayer.Vertex(_visibleLines(i).p0)
-        Dim p1 = Map.SelectedLayer.Vertex(_visibleLines(i).p1)
+        For j As Integer = 0 To _visibleLines(i).Count - 1
+          Dim p0 = Map.SelectedLayer.Vertex(_visibleLines(i)(j).p0)
+          Dim p1 = Map.SelectedLayer.Vertex(_visibleLines(i)(j).p1)
 
-        Dim pp0 = proj * inv * p0
-        Dim pp1 = proj * inv * p1
+          Dim pp0 = proj * inv * p0
+          Dim pp1 = proj * inv * p1
 
-        g.DrawLine(Pens.White, pp0, pp1)
+          g.DrawLine(Pens.White, pp0, pp1)
+        Next
       Next
     End If
   End Sub
@@ -233,5 +215,5 @@ Public Class MapView
   Private _rdelta As Vec2
   Private _rstart As Vec2
   Private _mp As New Vec2()
-  Private _visibleLines As New List(Of LineDef)
+  Private _visibleLines As New List(Of List(Of LineDef))
 End Class

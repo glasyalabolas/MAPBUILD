@@ -44,10 +44,10 @@ Partial Class frmMain
     pnlSide = New Panel()
     mvView = New MapView()
     pnlStatus = New Panel()
-    lblMode = New Label()
-    lblBlockSize = New Label()
-    lblLayer = New Label()
     lblHelp = New Label()
+    lblLayer = New Label()
+    lblBlockSize = New Label()
+    lblMode = New Label()
     MenuStrip1.SuspendLayout()
     pnlStatus.SuspendLayout()
     SuspendLayout()
@@ -174,9 +174,9 @@ Partial Class frmMain
     ' pnlSide
     ' 
     pnlSide.Dock = DockStyle.Right
-    pnlSide.Location = New Point(834, 33)
+    pnlSide.Location = New Point(855, 33)
     pnlSide.Name = "pnlSide"
-    pnlSide.Size = New Size(300, 626)
+    pnlSide.Size = New Size(279, 626)
     pnlSide.TabIndex = 4
     ' 
     ' mvView
@@ -187,7 +187,7 @@ Partial Class frmMain
     mvView.Map = Nothing
     mvView.Mode = Nothing
     mvView.Name = "mvView"
-    mvView.Size = New Size(834, 626)
+    mvView.Size = New Size(855, 626)
     mvView.TabIndex = 5
     ' 
     ' pnlStatus
@@ -203,25 +203,15 @@ Partial Class frmMain
     pnlStatus.Size = New Size(1134, 33)
     pnlStatus.TabIndex = 6
     ' 
-    ' lblMode
+    ' lblHelp
     ' 
-    lblMode.Dock = DockStyle.Right
-    lblMode.Location = New Point(864, 0)
-    lblMode.Name = "lblMode"
-    lblMode.Size = New Size(270, 33)
-    lblMode.TabIndex = 1
-    lblMode.Text = "Mode"
-    lblMode.TextAlign = ContentAlignment.MiddleCenter
-    ' 
-    ' lblBlockSize
-    ' 
-    lblBlockSize.Dock = DockStyle.Right
-    lblBlockSize.Location = New Point(790, 0)
-    lblBlockSize.Name = "lblBlockSize"
-    lblBlockSize.Size = New Size(74, 33)
-    lblBlockSize.TabIndex = 2
-    lblBlockSize.Text = "BS"
-    lblBlockSize.TextAlign = ContentAlignment.MiddleCenter
+    lblHelp.Dock = DockStyle.Fill
+    lblHelp.Location = New Point(0, 0)
+    lblHelp.Name = "lblHelp"
+    lblHelp.Size = New Size(554, 33)
+    lblHelp.TabIndex = 4
+    lblHelp.Text = "Label1"
+    lblHelp.TextAlign = ContentAlignment.MiddleLeft
     ' 
     ' lblLayer
     ' 
@@ -233,15 +223,25 @@ Partial Class frmMain
     lblLayer.Text = "Layer"
     lblLayer.TextAlign = ContentAlignment.MiddleCenter
     ' 
-    ' lblHelp
+    ' lblBlockSize
     ' 
-    lblHelp.Dock = DockStyle.Fill
-    lblHelp.Location = New Point(0, 0)
-    lblHelp.Name = "lblHelp"
-    lblHelp.Size = New Size(554, 33)
-    lblHelp.TabIndex = 4
-    lblHelp.Text = "Label1"
-    lblHelp.TextAlign = ContentAlignment.MiddleLeft
+    lblBlockSize.Dock = DockStyle.Right
+    lblBlockSize.Location = New Point(790, 0)
+    lblBlockSize.Name = "lblBlockSize"
+    lblBlockSize.Size = New Size(74, 33)
+    lblBlockSize.TabIndex = 2
+    lblBlockSize.Text = "BS"
+    lblBlockSize.TextAlign = ContentAlignment.MiddleCenter
+    ' 
+    ' lblMode
+    ' 
+    lblMode.Dock = DockStyle.Right
+    lblMode.Location = New Point(864, 0)
+    lblMode.Name = "lblMode"
+    lblMode.Size = New Size(270, 33)
+    lblMode.TabIndex = 1
+    lblMode.Text = "Mode"
+    lblMode.TextAlign = ContentAlignment.MiddleCenter
     ' 
     ' frmMain
     ' 

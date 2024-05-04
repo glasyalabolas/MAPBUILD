@@ -42,7 +42,8 @@
             Next
 
             Dim ld = New LineDef(
-              _startVertexIndex, Map.SelectedLayer.Vertices - 1)
+              _startVertexIndex, Map.SelectedLayer.Vertices - 1) With {
+                .Map = Map}
 
             '' Close poly
             Map.SelectedLayer.AddLineDef(ld)
@@ -61,7 +62,8 @@
 
             Dim ld = New LineDef(
               Map.SelectedLayer.Vertices - 2,
-              Map.SelectedLayer.Vertices - 1)
+              Map.SelectedLayer.Vertices - 1) With {
+                .Map = Map}
 
             Map.SelectedLayer.AddLineDef(ld)
 

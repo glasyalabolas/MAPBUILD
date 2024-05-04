@@ -8,6 +8,10 @@ Public Class Camera2D
     ViewPort = New Vec2(viewWidth, viewHeight)
   End Sub
 
+  ''' <summary>
+  ''' Gets or sets the viewport, in view coordinates.
+  ''' </summary>
+  ''' <returns></returns>
   Public Property ViewPort() As Vec2
     Get
       Return (_viewPort)
@@ -20,6 +24,10 @@ Public Class Camera2D
     End Set
   End Property
 
+  ''' <summary>
+  ''' Returns the transform for this camera.
+  ''' </summary>
+  ''' <returns></returns>
   Public Function Transform() As Mat3
     Dim T = Mat3.Translation(Position)
     Dim S = Mat3.Scaling(New Vec2(Zoom, Zoom))
@@ -27,18 +35,34 @@ Public Class Camera2D
     Return (T * S)
   End Function
 
+  ''' <summary>
+  ''' Returns the scaling matrix for this camera.
+  ''' </summary>
+  ''' <returns></returns>
   Public Function Scaling() As Mat3
     Return (Mat3.Scaling(New Vec2(Zoom, Zoom)))
   End Function
 
+  ''' <summary>
+  ''' Returns the projection matrix for this camera.
+  ''' </summary>
+  ''' <returns></returns>
   Public Function Projection() As Mat3
     Return (_proj)
   End Function
 
+  ''' <summary>
+  ''' Returns the top left extent of the camera, in map coordinates.
+  ''' </summary>
+  ''' <returns></returns>
   Public Function TopLeft() As Vec2
     Return (Position - (Scaling() * ViewPort) * 0.5)
   End Function
 
+  ''' <summary>
+  ''' Returns the bottom right extent of the camera, in map coordinates.
+  ''' </summary>
+  ''' <returns></returns>
   Public Function BottomRight() As Vec2
     Return (Position + (Scaling() * ViewPort) * 0.5)
   End Function

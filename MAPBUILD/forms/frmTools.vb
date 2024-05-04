@@ -11,10 +11,10 @@
         c.BackColor = VGAColors.Black
       End If
     Next
-  End Sub
 
-  Public Sub AddHandlers(o As MapView)
-    AddHandler o.MapMouseMove, AddressOf MapView_MouseMove
+    _owner = Owner
+
+    AddHandler _owner.mvView.MapMouseMove, AddressOf MapView_MouseMove
   End Sub
 
   Private Sub lblPos_MouseMove(sender As Object, e As MouseEventArgs) Handles lblPos.MouseMove
@@ -37,6 +37,13 @@
     lblPos.Text = p
   End Sub
 
+  Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Dim f = DirectCast(Owner, frmMain)
+
+    f.Mode = New LineMode()
+  End Sub
+
+  Private _owner As frmMain
   Private _dragging As Boolean
   Private _sx As Integer, _sy As Integer
 End Class

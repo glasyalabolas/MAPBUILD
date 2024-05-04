@@ -1,6 +1,8 @@
 ﻿Public Class Layer
   Public Name As String
 
+  Public Property Visible() As Boolean
+
   Public ReadOnly Property Vertices() As Integer
     Get
       Return (_vertex.Count)
@@ -47,13 +49,51 @@
     Return (_vertex.Count - 1)
   End Function
 
-  Public Sub AddLineDef(ld As LineDef)
+  Public Function AddLineDef(ld As LineDef) As Integer
     _lineDef.Add(ld)
-  End Sub
 
-  Public Sub AddSector(s As Sector)
+    Return (_lineDef.Count - 1)
+  End Function
+
+  Public Function AddSector(s As Sector) As Integer
     _sector.Add(s)
-  End Sub
+
+    Return (_sector.Count - 1)
+  End Function
+
+  Public Function IndexOf(v As Vec2) As Integer
+    Return (_vertex.IndexOf(v))
+  End Function
+
+  Public Function IndexOf(ld As LineDef) As Integer
+    Return (_lineDef.IndexOf(ld))
+  End Function
+
+  Public Function IndexOf(s As Sector) As Integer
+    Return (_sector.IndexOf(s))
+  End Function
+
+  Public Function GetVisibleLines(cam As Camera2D) As List(Of LineDef)
+    Dim l = New List(Of LineDef)
+
+    Dim tl = cam.TopLeft()
+    Dim br = cam.BottomRight()
+
+    For i As Integer = 0 To _lineDef.Count - 1
+      With _lineDef(i)
+        Dim p0 = _vertex(.p0)
+        Dim p1 = _vertex(.p1)
+
+        If (Maths.LiangBarsky(
+          tl.x, tl.y, br.x, br.y, p0.x, p0.y, p1.x, p1.y)) Then
+
+          l.Add(_lineDef(i))
+        End If
+      End With
+    Next
+
+    Return (l)
+  End Function
 
   Private _vertex As New List(Of Vec2)
   Private _lineDef As New List(Of LineDef)

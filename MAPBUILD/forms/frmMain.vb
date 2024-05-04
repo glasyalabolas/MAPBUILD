@@ -21,14 +21,26 @@
     End Set
   End Property
 
+  Public Property Mode() As IMode
+    Get
+      Return (_mode)
+    End Get
+
+    Set(value As IMode)
+      _mode = value
+      _mode.BlockSize = _blockSize
+      _mode.Map = _map
+
+      mvView.Mode = _mode
+      mvView.Map = _map
+    End Set
+  End Property
+
   Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     BlockSize = 64
 
     _map.SelectLayer(0)
 
-    '_mode = New PolyDrawMode() With {
-    '  .BlockSize = _blockSize,
-    '  .Map = _map}
     _mode = New VertexMode() With {
       .BlockSize = _blockSize,
       .Map = _map}
@@ -40,8 +52,6 @@
 
     pnlStatus.BackColor = VGAColors.Blue
     pnlStatus.ForeColor = VGAColors.Cyan
-
-    frmTools.AddHandlers(mvView)
 
     frmTools.Location = New Point(Location.X + Size.Width - frmTools.Width - 50, Location.Y + 100)
     frmTools.Show(Me)

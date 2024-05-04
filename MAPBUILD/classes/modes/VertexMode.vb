@@ -1,6 +1,4 @@
-﻿Option Infer On
-
-Public Class VertexMode
+﻿Public Class VertexMode
   Inherits ModeBase
 
   Public Sub New()
@@ -20,21 +18,21 @@ Public Class VertexMode
     _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
 
     If (Not _ldragging) Then
-      _hlv = FindClosestVertexIndex(_mp)
+      _closestVertexIdx = FindClosestVertexIndex(_mp)
     End If
 
     If (e.Button And MouseButtons.Left) Then
       If (_ldragging) Then
         _ldelta = SnapToGrid(_mp) - _lstart
 
-        If (_hlv <> NOT_FOUND) Then
-          Map.SelectedLayer.Vertex(_hlv) = SnapToGrid(_lstart + _ldelta)
+        If (_closestVertexIdx <> NOT_FOUND) Then
+          Map.SelectedLayer.Vertex(_closestVertexIdx) = SnapToGrid(_lstart + _ldelta)
           SetHelpText("Drag vertex to move, delta: " & _ldelta.ToString())
         End If
       Else
-        If (_hlv <> NOT_FOUND) Then
+        If (_closestVertexIdx <> NOT_FOUND) Then
           _ldragging = True
-          _lstart = Map.SelectedLayer.Vertex(_hlv)
+          _lstart = Map.SelectedLayer.Vertex(_closestVertexIdx)
         End If
       End If
     End If
@@ -44,7 +42,7 @@ Public Class VertexMode
     If (e.Button And MouseButtons.Left) Then
       If (_ldragging) Then
         _ldragging = False
-        _hlv = NOT_FOUND
+        _closestVertexIdx = NOT_FOUND
         SetHelpText("")
       End If
     End If
@@ -59,7 +57,7 @@ Public Class VertexMode
 
       If (InsideView(p)) Then
         If (BlockSize / Camera.Zoom >= 10.0) Then
-          If (_hlv = i) Then
+          If (_closestVertexIdx = i) Then
             RenderVertex(g, p, VGAColors.Yellow)
           Else
             RenderVertex(g, p, VGAColors.LightRed)
@@ -73,5 +71,5 @@ Public Class VertexMode
   Private _lstart As Vec2
   Private _mp As New Vec2()
   Private _ldragging As Boolean
-  Private _hlv As Integer
+  Private _closestVertexIdx As Integer = NOT_FOUND
 End Class

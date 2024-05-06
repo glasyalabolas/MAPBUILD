@@ -7,18 +7,18 @@
   End Sub
 
   Public Overrides Sub OnProcess()
-    If (GetAsyncKeyState(Keys.Up)) Then
-      _ymin -= 1
-    End If
-    If (GetAsyncKeyState(Keys.Down)) Then
-      _ymin += 1
-    End If
-    If (GetAsyncKeyState(Keys.Left)) Then
-      _xmin -= 1
-    End If
-    If (GetAsyncKeyState(Keys.Right)) Then
-      _xmin += 1
-    End If
+    'If (GetKeyState(Keys.Up)) Then
+    '  _ymin -= 1
+    'End If
+    'If (GetKeyState(Keys.Down)) Then
+    '  _ymin += 1
+    'End If
+    'If (GetKeyState(Keys.Left)) Then
+    '  _xmin -= 1
+    'End If
+    'If (GetKeyState(Keys.Right)) Then
+    '  _xmin += 1
+    'End If
 
     _xmax = _xmin + 300
     _ymax = _ymin + 200
@@ -80,7 +80,7 @@
     g.DrawRectangle(New Pen(rc), _xmin, _ymin, 300, 200)
   End Sub
 
-  Public Overrides Sub OnMouseMove(e As MouseEventArgs)
+  Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
     _mp = New Vec2(e.X, e.Y)
 
     _lineSeg = New LineSeg(_center, _mp)

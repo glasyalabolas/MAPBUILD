@@ -8,16 +8,16 @@
   ReadOnly Property HelpText() As String
   Property BlockSize() As Single
   Property ViewRect() As Rectangle
-  Property Map() As Map
+  Property Layer() As Layer
   Property Camera() As Camera2D
 
   Sub OnProcess()
   Sub OnRender(g As Graphics)
-  Sub OnMouseMove(e As MouseEventArgs)
-  Sub OnMouseClick(e As MouseEventArgs)
-  Sub OnMouseDoubleClick(e As MouseEventArgs)
+  Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
+  Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys)
+  Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
   Sub OnMouseUp(e As MouseEventArgs)
   Sub OnMouseDown(e As MouseEventArgs)
-  Sub OnMouseWheel(e As MouseEventArgs)
+  Sub OnMouseWheel(e As MouseEventArgs, modifierKeys As Keys)
   Sub OnKeyPressed(e As KeyEventArgs)
 End Interface

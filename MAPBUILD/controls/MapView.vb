@@ -89,7 +89,7 @@ Public Class MapView
   Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
     MyBase.OnMouseMove(e)
 
-    _mode?.OnMouseMove(e)
+    _mode?.OnMouseMove(e, Control.ModifierKeys)
 
     _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
 
@@ -133,13 +133,13 @@ Public Class MapView
   Protected Overrides Sub OnMouseClick(e As MouseEventArgs)
     MyBase.OnMouseClick(e)
 
-    _mode?.OnMouseClick(e)
+    _mode?.OnMouseClick(e, Control.ModifierKeys)
   End Sub
 
   Protected Overrides Sub OnMouseDoubleClick(e As MouseEventArgs)
     MyBase.OnMouseDoubleClick(e)
 
-    _mode?.OnMouseDoubleClick(e)
+    _mode?.OnMouseDoubleClick(e, Control.ModifierKeys)
   End Sub
 
   Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
@@ -194,13 +194,15 @@ Public Class MapView
 
       For i As Integer = 0 To _visibleLines.Count - 1
         For j As Integer = 0 To _visibleLines(i).Count - 1
-          Dim p0 = Map.SelectedLayer.Vertex(_visibleLines(i)(j).p0)
-          Dim p1 = Map.SelectedLayer.Vertex(_visibleLines(i)(j).p1)
+          With Map.SelectedLayer.LineDef(_visibleLines(i)(j))
+            Dim p0 = Map.SelectedLayer.VertexById(.p0)
+            Dim p1 = Map.SelectedLayer.VertexById(.p1)
 
-          Dim pp0 = proj * inv * p0
-          Dim pp1 = proj * inv * p1
+            Dim pp0 = proj * inv * p0
+            Dim pp1 = proj * inv * p1
 
-          g.DrawLine(Pens.White, pp0, pp1)
+            g.DrawLine(Pens.White, pp0, pp1)
+          End With
         Next
       Next
     End If
@@ -215,5 +217,5 @@ Public Class MapView
   Private _rdelta As Vec2
   Private _rstart As Vec2
   Private _mp As New Vec2()
-  Private _visibleLines As New List(Of List(Of LineDef))
+  Private _visibleLines As New List(Of List(Of Integer))
 End Class

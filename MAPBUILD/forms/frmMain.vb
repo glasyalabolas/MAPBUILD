@@ -29,7 +29,7 @@
     Set(value As IMode)
       _mode = value
       _mode.BlockSize = _blockSize
-      _mode.Map = _map
+      _mode.Layer = _map.SelectedLayer
 
       mvView.Mode = _mode
       mvView.Map = _map
@@ -43,7 +43,7 @@
 
     _mode = New VertexMode() With {
       .BlockSize = _blockSize,
-      .Map = _map}
+      .Layer = _map.SelectedLayer}
 
     mvView.Mode = _mode
     mvView.Map = _map
@@ -91,7 +91,20 @@
     mvView.Refresh()
   End Sub
 
+  Public Sub ExecuteCommand(c As ICommand)
+    c.Execute()
+
+    _undoStack.Push(c)
+  End Sub
+
+  Public Sub Undo()
+    Dim c = _undoStack.Pop()
+
+    c.Undo()
+  End Sub
+
   Private WithEvents _mode As IMode
   Private WithEvents _map As New Map()
   Private _blockSize As Single
+  Private _undoStack As New Stack(Of ICommand)
 End Class

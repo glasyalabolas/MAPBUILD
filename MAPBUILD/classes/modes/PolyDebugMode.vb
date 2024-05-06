@@ -1,11 +1,11 @@
 ﻿Public Class PolyDebugMode
   Inherits ModeBase
 
-  Public Overrides Sub OnMouseMove(e As MouseEventArgs)
+  Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
     _mp = New Vec2(e.X, e.Y)
   End Sub
 
-  Public Overrides Sub OnMouseClick(e As MouseEventArgs)
+  Public Overrides Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys)
     _poly.Add(New Vec2(e.X, e.Y))
   End Sub
 

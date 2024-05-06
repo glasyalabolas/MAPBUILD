@@ -6,68 +6,52 @@
     SetHelpText("Double click to start a line")
   End Sub
 
-  Public Overrides Sub OnMouseMove(e As MouseEventArgs)
+  Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
     If (_drawing) Then
       _ep = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
     End If
   End Sub
 
-  Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs)
+  Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
     If (Not _drawing) Then
-      _lineDefs.Clear()
-
       _sp = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
 
-      _startVertexIndex = Map.SelectedLayer.AddVertex(_sp)
+      _startVertexId = Layer.AddVertex(_sp)
 
       _drawing = True
     End If
   End Sub
 
-  Public Overrides Sub OnMouseClick(e As MouseEventArgs)
+  Public Overrides Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys)
     If (_drawing) Then
       If (e.Button And MouseButtons.Left) Then
-        Dim ls = New LineSeg(_sp, _ep)
-
         '' Ignore zero length segments
-        If (ls.LengthSq > 0) Then
+        If ((_ep - _sp).LengthSq > 0) Then
           '' Close poly if end point = start point
           If (IsClosestVertex(
-            _ep, Map.SelectedLayer.Vertex(_startVertexIndex))) Then
+            _ep, Layer.VertexById(_startVertexId).Pos)) Then
 
-            Dim s = New Sector()
-
-            For i As Integer = 0 To _lineDefs.Count - 1
-              s.AddLineDef(_lineDefs(i))
-            Next
-
-            Dim ld = New LineDef(
-              _startVertexIndex, Map.SelectedLayer.Vertices - 1) With {
-                .Map = Map}
+            Dim ld = New LineDef(_lastVertexId, _startVertexId)
 
             '' Close poly
-            Map.SelectedLayer.AddLineDef(ld)
-
-            s.AddLineDef(ld)
-
-            Map.SelectedLayer.AddSector(s)
+            Layer.AddLineDef(ld)
 
             _drawing = False
+            _lastVertexId = NOT_FOUND
+            _startVertexId = NOT_FOUND
 
             OnModeChanged(Me, New ModeChangedEventArgs() With {
               .Mode = New VertexMode()})
           Else
             '' New segment
-            Map.SelectedLayer.AddVertex(_ep.Clone())
+            Dim prevVertexID As Integer = IIf(
+              _lastVertexId = NOT_FOUND, _startVertexId, _lastVertexId)
 
-            Dim ld = New LineDef(
-              Map.SelectedLayer.Vertices - 2,
-              Map.SelectedLayer.Vertices - 1) With {
-                .Map = Map}
+            _lastVertexId = Layer.AddVertex(_ep.Clone())
 
-            Map.SelectedLayer.AddLineDef(ld)
+            Dim ld = New LineDef(prevVertexID, _lastVertexId)
 
-            _lineDefs.Add(ld)
+            Layer.AddLineDef(ld)
 
             _ep = _sp
             _sp = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
@@ -81,6 +65,8 @@
     If (e.KeyCode = Keys.Escape) Then
       If (_drawing) Then
         _drawing = False
+        _startVertexId = NOT_FOUND
+        _lastVertexId = NOT_FOUND
 
         OnRefresh()
       End If
@@ -99,8 +85,8 @@
     End If
   End Sub
 
-  Private _lineDefs As New List(Of LineDef)
   Private _sp As Vec2, _ep As Vec2
-  Private _startVertexIndex As Integer
+  Private _startVertexId As Integer = NOT_FOUND
+  Private _lastVertexId As Integer = NOT_FOUND
   Private _drawing As Boolean
 End Class

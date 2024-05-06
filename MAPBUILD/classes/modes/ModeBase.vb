@@ -4,9 +4,9 @@
 Public MustInherit Class ModeBase
   Implements IMode
 
-  <Runtime.InteropServices.DllImport("user32.dll")>
-  Protected Shared Function GetAsyncKeyState(aKey As Keys) As Short
-  End Function
+  '<Runtime.InteropServices.DllImport("user32.dll")>
+  'Protected Shared Function GetKeyState(aKey As Keys) As Short
+  'End Function
 
   '' To indicate an entity was not found
   Protected Const NOT_FOUND As Integer = -1
@@ -47,7 +47,7 @@ Public MustInherit Class ModeBase
   End Property
 
   Public Property ViewRect() As Rectangle Implements IMode.ViewRect
-  Public Property Map() As Map Implements IMode.Map
+  Public Property Layer() As Layer Implements IMode.Layer
   Public Property Camera() As Camera2D Implements IMode.Camera
 
   Protected Sub SetName(value As String)
@@ -64,25 +64,26 @@ Public MustInherit Class ModeBase
   End Sub
   Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
   End Sub
-  Public Overridable Sub OnMouseMove(e As MouseEventArgs) Implements IMode.OnMouseMove
+  Public Overridable Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseMove
   End Sub
   Public Overridable Sub OnMouseUp(e As MouseEventArgs) Implements IMode.OnMouseUp
   End Sub
   Public Overridable Sub OnMouseDown(e As MouseEventArgs) Implements IMode.OnMouseDown
   End Sub
-  Public Overridable Sub OnMouseClick(e As MouseEventArgs) Implements IMode.OnMouseClick
+  Public Overridable Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseClick
   End Sub
-  Public Overridable Sub OnMouseDoubleClick(e As MouseEventArgs) Implements IMode.OnMouseDoubleClick
+  Public Overridable Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseDoubleClick
   End Sub
   Public Overridable Sub OnKeyPress(e As KeyEventArgs) Implements IMode.OnKeyPressed
   End Sub
-  Public Overridable Sub OnMouseWheel(e As MouseEventArgs) Implements IMode.OnMouseWheel
+  Public Overridable Sub OnMouseWheel(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseWheel
   End Sub
 
   Protected Sub OnModeChanged(sender As Object, e As ModeChangedEventArgs)
     e.Mode.BlockSize = BlockSize
     e.Mode.ViewRect = ViewRect
-    e.Mode.Map = Map
+    'e.Mode.Map = Map
+    e.Mode.Layer = Layer
 
     RaiseEvent ModeChanged(sender, e)
   End Sub
@@ -131,12 +132,12 @@ Public MustInherit Class ModeBase
     Dim closest = Integer.MaxValue
     Dim closestV As New Vec2
 
-    For i As Integer = 0 To Map.SelectedLayer.Vertices - 1
-      Dim dist = v2.DistanceToSq(Map.SelectedLayer.Vertex(i))
+    For i As Integer = 0 To Layer.Vertices - 1
+      Dim dist = v2.DistanceToSq(Layer.Vertex(i))
 
       If (dist < closest) Then
         closest = dist
-        closestV = Map.SelectedLayer.Vertex(i)
+        closestV = Layer.Vertex(i)
       End If
     Next
 
@@ -144,39 +145,68 @@ Public MustInherit Class ModeBase
   End Function
 
   ''' <summary>
-  ''' Finds the vertex index in the selected layer closest to the specified vertex.
+  ''' Finds the vertex id in the selected layer closest to the specified vertex.
   ''' </summary>
   ''' <param name="v">The vertex to check against.</param>
   ''' <returns></returns>
-  Public Function FindClosestVertexIndex(v As Vec2) As Integer
+  Public Function FindClosestVertexId(v As Vec2) As Integer
     Dim closest As Single = Single.MaxValue
     Dim result As Integer = NOT_FOUND
     Dim minDist As Single = VERTEX_NEAR_DISTANCE * Camera.Zoom
 
-    For i As Integer = 0 To Map.SelectedLayer.Vertices - 1
-      Dim dist As Single = v.DistanceToSq(Map.SelectedLayer.Vertex(i))
+    For i As Integer = 0 To Layer.Vertices - 1
+      Dim dist As Single = v.DistanceToSq(Layer.Vertex(i))
 
       If (dist < closest AndAlso dist <= minDist) Then
         closest = dist
-        result = i
+        result = Layer.Vertex(i).Id
       End If
     Next
 
     Return (result)
   End Function
 
+  ''' <summary>
+  ''' Finds the closest linedef index to the specified vertex.
+  ''' </summary>
+  ''' <param name="v">The vertex to check against.</param>
+  ''' <returns></returns>
   Protected Function FindClosestLineDefIndex(v As Vec2) As Integer
     Dim result As Integer = NOT_FOUND
     Dim closest As Single = Single.MaxValue
     Dim minDist As Single = LINEDEF_NEAR_DISTANCE * Camera.Zoom
 
-    With Map.SelectedLayer
+    With Layer
       For i As Integer = 0 To .LineDefs - 1
         Dim dist = .LineDef(i).GetClosestPoint(v).DistanceToSq(v)
 
         If (dist < closest AndAlso dist <= minDist) Then
           closest = dist
           result = i
+        End If
+      Next
+    End With
+
+    Return (result)
+  End Function
+
+  ''' <summary>
+  ''' Finds the closest linedef id to the specified vertex.
+  ''' </summary>
+  ''' <param name="v">The vertex to check against.</param>
+  ''' <returns></returns>
+  Protected Function FindClosestLineDefId(v As Vec2) As Integer
+    Dim result As Integer = NOT_FOUND
+    Dim closest As Single = Single.MaxValue
+    Dim minDist As Single = LINEDEF_NEAR_DISTANCE * Camera.Zoom
+
+    With Layer
+      For i As Integer = 0 To .LineDefs - 1
+        Dim dist = .LineDef(i).GetClosestPoint(v).DistanceToSq(v)
+
+        If (dist < closest AndAlso dist <= minDist) Then
+          closest = dist
+          result = .LineDef(i).Id
         End If
       Next
     End With

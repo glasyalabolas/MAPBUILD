@@ -38,9 +38,11 @@
   End Sub
 
   Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-    Dim f = DirectCast(Owner, frmMain)
+    _owner.Mode = New LineMode()
+  End Sub
 
-    f.Mode = New LineMode()
+  Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    _owner.Mode = New VertexMode()
   End Sub
 
   Private _owner As frmMain

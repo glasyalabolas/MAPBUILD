@@ -74,6 +74,18 @@
     Return (newVertex.Id)
   End Function
 
+  Public Sub AddVertex(v As Vec2, id As Integer)
+    Dim newVertex As New Vertex(v) With {.Id = id}
+
+    _vertex.Add(newVertex)
+
+    'If (_vertexIDs.Count = 0) Then
+    '  newVertex.Id = _vertex.Count - 1
+    'Else
+    '  newVertex.Id = _vertexIDs.Pop()
+    'End If
+  End Sub
+
   Public Function AddLineDef(ld As LineDef) As Integer
     _lineDef.Add(ld)
     ld.Layer = Me
@@ -87,17 +99,52 @@
     Return (ld.Id)
   End Function
 
+  Public Sub AddLineDef(ld As LineDef, id As Integer)
+    ld.Id = id
+    ld.Layer = Me
+
+    _lineDef.Add(ld)
+
+    'If (_lineDefIDs.Count = 0) Then
+    '  ld.Id = _lineDef.Count - 1
+    'Else
+    '  ld.Id = _lineDefIDs.Pop()
+    'End If
+  End Sub
+
   Public Function AddSector(s As Sector) As Integer
     _sector.Add(s)
+    s.Layer = Me
 
-    Return (_sector.Count - 1)
+    If (_sectorIDs.Count = 0) Then
+      s.Id = _sector.Count - 1
+    Else
+      s.Id = _sectorIDs.Pop()
+    End If
+
+    Return (s.Id)
   End Function
+
+  Public Sub AddSector(s As Sector, id As Integer)
+    s.Id = id
+    s.Layer = Me
+
+    _sector.Add(s)
+
+    'If (_sectorIDs.Count = 0) Then
+    '  s.Id = _sector.Count - 1
+    'Else
+    '  s.Id = _sectorIDs.Pop()
+    'End If
+
+    'Return (s.Id)
+  End Sub
 
   Public Sub DeleteVertex(id As Integer)
     Dim index As Integer = FindVertexByID(id)
 
     _vertexIDs.Push(id)
-    _vertex.RemoveAt(Index)
+    _vertex.RemoveAt(index)
   End Sub
 
   Public Sub DeleteLineDef(id As Integer)
@@ -197,4 +244,5 @@
 
   Private _vertexIDs As New Stack(Of Integer)
   Private _lineDefIDs As New Stack(Of Integer)
+  Private _sectorIDs As New Stack(Of Integer)
 End Class

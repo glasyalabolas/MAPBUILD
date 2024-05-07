@@ -64,13 +64,15 @@ Public Class MapView
 
   Protected Overrides Sub OnPaint(e As PaintEventArgs)
     If (Not DesignMode) Then
-      If (_mode.BlockSize / Camera.Zoom >= 10.0) Then
-        RenderBlocksizeGrid(e.Graphics, Color.DarkSlateGray)
+      If (_mode IsNot Nothing) Then
+        If (_mode.BlockSize / Camera.Zoom >= 10.0) Then
+          RenderBlocksizeGrid(e.Graphics, Color.DarkSlateGray)
+        End If
+
+        RenderView(e.Graphics)
+
+        _mode.OnRender(e.Graphics)
       End If
-
-      RenderView(e.Graphics)
-
-      _mode?.OnRender(e.Graphics)
     End If
   End Sub
 
@@ -192,16 +194,18 @@ Public Class MapView
       Dim inv = _cam.Transform().Inversed()
       Dim proj = _cam.Projection()
 
-      For i As Integer = 0 To _visibleLines.Count - 1
-        For j As Integer = 0 To _visibleLines(i).Count - 1
-          With Map.SelectedLayer.LineDef(_visibleLines(i)(j))
-            Dim p0 = Map.SelectedLayer.VertexById(.p0)
-            Dim p1 = Map.SelectedLayer.VertexById(.p1)
+      For lay As Integer = 0 To _visibleLines.Count - 1
+        For ldef As Integer = 0 To _visibleLines(lay).Count - 1
+          Dim p As Pen = VGAColors.WhitePen
+
+          With Map.Layer(lay).LineDef(_visibleLines(lay)(ldef))
+            Dim p0 = Map.SelectedLayer.VertexById(.P0)
+            Dim p1 = Map.SelectedLayer.VertexById(.P1)
 
             Dim pp0 = proj * inv * p0
             Dim pp1 = proj * inv * p1
 
-            g.DrawLine(Pens.White, pp0, pp1)
+            g.DrawLine(p, pp0, pp1)
           End With
         Next
       Next

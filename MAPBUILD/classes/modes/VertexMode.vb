@@ -44,6 +44,7 @@
       If (_ldragging) Then
         _ldragging = False
         _closestVertexId = NOT_FOUND
+
         SetHelpText("")
       End If
     End If

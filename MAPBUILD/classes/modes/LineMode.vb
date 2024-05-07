@@ -9,8 +9,7 @@
     If (e.Button And MouseButtons.Left) Then
       If (modifierKeys And Keys.Control) Then
         If (_closestPoint IsNot Nothing) Then
-          Debug.Print("Split vertex")
-
+          '' Split linedef at the closest point
           Dim ld = Layer.LineDefById(_closestLineDefId)
           Dim nv = SnapToGrid(_closestPoint)
           Dim nvId = Layer.AddVertex(nv)
@@ -76,12 +75,36 @@
 
     If (_closestLineDefId <> NOT_FOUND) Then
       Dim ld = Layer.LineDefById(_closestLineDefId)
+      Dim c = VGAColors.Yellow
+      Dim pnt As New Vec2
+
+      For i As Integer = 0 To Layer.Sectors - 1
+        Dim result = ld.Inside(Layer.Sector(i))
+
+        Select Case result
+          Case LineDef.InsideSectorResult.Inside
+            c = VGAColors.Blue
+            Exit For
+
+          Case LineDef.InsideSectorResult.PartiallyInside
+            c = VGAColors.LightBlue
+            Exit For
+        End Select
+      Next
+
+      'For i As Integer = 0 To Layer.LineDefs - 1
+      '  If (Layer.LineDef(i).Id <> ld.Id) Then
+      '    If (ld.Intersects(Layer.LineDef(i), pnt)) Then
+      '      c = VGAColors.Red
+      '    End If
+      '  End If
+      'Next
 
       With Layer
-        Dim p0 = proj * inv * .VertexById(ld.p0)
-        Dim p1 = proj * inv * .VertexById(ld.p1)
+        Dim p0 = proj * inv * .VertexById(ld.P0)
+        Dim p1 = proj * inv * .VertexById(ld.P1)
 
-        RenderLineDef(g, p0, p1, Color.Yellow)
+        RenderLineDef(g, p0, p1, c)
       End With
 
       If (_closestPoint IsNot Nothing AndAlso Not _ldragging) Then

@@ -28,6 +28,7 @@ Partial Class frmTools
     Button1 = New Button()
     TextBox1 = New TextBox()
     Label1 = New Label()
+    Button3 = New Button()
     pnlButtons.SuspendLayout()
     SuspendLayout()
     ' 
@@ -43,6 +44,7 @@ Partial Class frmTools
     ' 
     ' pnlButtons
     ' 
+    pnlButtons.Controls.Add(Button3)
     pnlButtons.Controls.Add(Button2)
     pnlButtons.Controls.Add(Button1)
     pnlButtons.Controls.Add(TextBox1)
@@ -88,6 +90,15 @@ Partial Class frmTools
     Label1.TabIndex = 3
     Label1.Text = "Sector #"
     ' 
+    ' Button3
+    ' 
+    Button3.Location = New Point(181, 87)
+    Button3.Name = "Button3"
+    Button3.Size = New Size(163, 48)
+    Button3.TabIndex = 7
+    Button3.Text = "Sector mode"
+    Button3.UseVisualStyleBackColor = True
+    ' 
     ' frmTools
     ' 
     AutoScaleDimensions = New SizeF(12F, 26F)
@@ -112,4 +123,5 @@ Partial Class frmTools
   Friend WithEvents Label1 As Label
   Friend WithEvents Button1 As Button
   Friend WithEvents Button2 As Button
+  Friend WithEvents Button3 As Button
 End Class

@@ -17,6 +17,7 @@
       _sp = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
 
       _startVertexId = Layer.AddVertex(_sp)
+      _lineDefs.Clear()
 
       _drawing = True
     End If
@@ -34,11 +35,21 @@
             Dim ld = New LineDef(_lastVertexId, _startVertexId)
 
             '' Close poly
-            Layer.AddLineDef(ld)
+            _lineDefs.Add(Layer.AddLineDef(ld))
 
             _drawing = False
             _lastVertexId = NOT_FOUND
             _startVertexId = NOT_FOUND
+
+            Dim s = New Sector()
+
+            For i As Integer = 0 To _lineDefs.Count - 1
+              s.AddLineDef(_lineDefs(i))
+            Next
+
+            s.Layer = Layer
+
+            Layer.AddSector(s)
 
             OnModeChanged(Me, New ModeChangedEventArgs() With {
               .Mode = New VertexMode()})
@@ -51,7 +62,7 @@
 
             Dim ld = New LineDef(prevVertexID, _lastVertexId)
 
-            Layer.AddLineDef(ld)
+            _lineDefs.Add(Layer.AddLineDef(ld))
 
             _ep = _sp
             _sp = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
@@ -89,4 +100,5 @@
   Private _startVertexId As Integer = NOT_FOUND
   Private _lastVertexId As Integer = NOT_FOUND
   Private _drawing As Boolean
+  Private _lineDefs As New List(Of Integer)
 End Class

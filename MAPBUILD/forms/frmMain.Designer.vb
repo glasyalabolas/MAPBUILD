@@ -72,42 +72,42 @@ Partial Class frmMain
     ' OpenToolStripMenuItem
     ' 
     OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-    OpenToolStripMenuItem.Size = New Size(206, 34)
+    OpenToolStripMenuItem.Size = New Size(270, 34)
     OpenToolStripMenuItem.Text = "New"
     ' 
     ' OpenToolStripMenuItem1
     ' 
     OpenToolStripMenuItem1.Name = "OpenToolStripMenuItem1"
-    OpenToolStripMenuItem1.Size = New Size(206, 34)
+    OpenToolStripMenuItem1.Size = New Size(270, 34)
     OpenToolStripMenuItem1.Text = "Open..."
     ' 
     ' SaveToolStripMenuItem
     ' 
     SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-    SaveToolStripMenuItem.Size = New Size(206, 34)
+    SaveToolStripMenuItem.Size = New Size(270, 34)
     SaveToolStripMenuItem.Text = "Save"
     ' 
     ' SaveAsToolStripMenuItem
     ' 
     SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem"
-    SaveAsToolStripMenuItem.Size = New Size(206, 34)
+    SaveAsToolStripMenuItem.Size = New Size(270, 34)
     SaveAsToolStripMenuItem.Text = "Save as..."
     ' 
     ' PropertiesToolStripMenuItem
     ' 
     PropertiesToolStripMenuItem.Name = "PropertiesToolStripMenuItem"
-    PropertiesToolStripMenuItem.Size = New Size(206, 34)
+    PropertiesToolStripMenuItem.Size = New Size(270, 34)
     PropertiesToolStripMenuItem.Text = "Properties..."
     ' 
     ' ToolStripSeparator2
     ' 
     ToolStripSeparator2.Name = "ToolStripSeparator2"
-    ToolStripSeparator2.Size = New Size(203, 6)
+    ToolStripSeparator2.Size = New Size(267, 6)
     ' 
     ' ExitToolStripMenuItem
     ' 
     ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-    ExitToolStripMenuItem.Size = New Size(206, 34)
+    ExitToolStripMenuItem.Size = New Size(270, 34)
     ExitToolStripMenuItem.Text = "Exit"
     ' 
     ' EditToolStripMenuItem

@@ -45,6 +45,10 @@
     _owner.Mode = New VertexMode()
   End Sub
 
+  Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    _owner.Mode = New SectorMode()
+  End Sub
+
   Private _owner As frmMain
   Private _dragging As Boolean
   Private _sx As Integer, _sy As Integer

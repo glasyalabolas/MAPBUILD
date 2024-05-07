@@ -68,16 +68,16 @@ Public Class LineSeg
       p0.y + u * (p1.y - p0.y)))
   End Function
 
-  Public Function Intersect(ls As LineSeg, ByRef outP As Vec2) As Boolean
+  Public Function Intersect(ls As LineSeg, ByRef outP As Vec2,
+    Optional ByRef ua As Single = 0.0, Optional ByRef ub As Single = 0.0) As Boolean
+
     Dim den As Single =
       (ls.p1.y - ls.p0.y) * (p1.x - p0.x) - (ls.p1.x - ls.p0.x) * (p1.y - p0.y)
 
     If (den = 0) Then Return (False)
 
-    Dim ua As Single =
-      ((ls.p1.x - ls.p0.x) * (p0.y - ls.p0.y) - (ls.p1.y - ls.p0.y) * (p0.x - ls.p0.x)) / den
-    Dim ub As Single =
-      ((p1.x - p0.x) * (p0.y - ls.p0.y) - (p1.y - p0.y) * (p0.x - ls.p0.x)) / den
+    ua = ((ls.p1.x - ls.p0.x) * (p0.y - ls.p0.y) - (ls.p1.y - ls.p0.y) * (p0.x - ls.p0.x)) / den
+    ub = ((p1.x - p0.x) * (p0.y - ls.p0.y) - (p1.y - p0.y) * (p0.x - ls.p0.x)) / den
 
     If (ua >= 0 AndAlso ua <= 1 AndAlso ub >= 0 AndAlso ub <= 1) Then
       outP = New Vec2(p0.x + ua * (p1.x - p0.x), p0.y + ua * (p1.y - p0.y))

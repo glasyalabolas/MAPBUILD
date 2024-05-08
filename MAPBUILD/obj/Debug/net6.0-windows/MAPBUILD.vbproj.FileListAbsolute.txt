@@ -32,4 +32,3 @@ C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\ref
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.MapView.resources
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.frmTools.resources
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.frmMain.resources
-C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.sourcelink.json

@@ -58,7 +58,7 @@
       Dim p = proj * inv * Layer.Vertex(i)
 
       If (InsideView(p)) Then
-        If (BlockSize / Camera.Zoom >= 10.0) Then
+        If (GridSize / Camera.Zoom >= 10.0) Then
           If (_closestVertexId = Layer.Vertex(i).Id) Then
             RenderVertex(g, p, VGAColors.Yellow)
           Else

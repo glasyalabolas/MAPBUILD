@@ -19,7 +19,7 @@ Public MustInherit Class ModeBase
 
   Public Event ModeChanged(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeChanged
   Public Event HelpTextChanged(sender As Object, e As EventArgs) Implements IMode.HelpTextChanged
-  Public Event BlockSizeChanged(sender As Object, e As EventArgs) Implements IMode.BlockSizeChanged
+  Public Event GridSizeChanged(sender As Object, e As EventArgs) Implements IMode.GridSizeChanged
   Public Event Refresh(sender As Object, e As EventArgs) Implements IMode.Refresh
 
   Public ReadOnly Property Name() As String Implements IMode.Name
@@ -34,15 +34,15 @@ Public MustInherit Class ModeBase
     End Get
   End Property
 
-  Public Property BlockSize() As Single Implements IMode.BlockSize
+  Public Property GridSize() As Single Implements IMode.GridSize
     Get
-      Return (_blockSize)
+      Return (_gridSize)
     End Get
 
     Set(value As Single)
-      _blockSize = value
+      _gridSize = value
 
-      OnBlockSizeChanged()
+      OnGridSizeChanged()
     End Set
   End Property
 
@@ -80,7 +80,7 @@ Public MustInherit Class ModeBase
   End Sub
 
   Protected Sub OnModeChanged(sender As Object, e As ModeChangedEventArgs)
-    e.Mode.BlockSize = BlockSize
+    e.Mode.GridSize = GridSize
     e.Mode.ViewRect = ViewRect
     'e.Mode.Map = Map
     e.Mode.Layer = Layer
@@ -96,8 +96,8 @@ Public MustInherit Class ModeBase
     RaiseEvent HelpTextChanged(Me, EventArgs.Empty)
   End Sub
 
-  Private Sub OnBlockSizeChanged()
-    RaiseEvent BlockSizeChanged(Me, EventArgs.Empty)
+  Private Sub OnGridSizeChanged()
+    RaiseEvent GridSizeChanged(Me, EventArgs.Empty)
   End Sub
 
   ''' <summary>
@@ -106,10 +106,10 @@ Public MustInherit Class ModeBase
   ''' <param name="v">The vertex to snap to grid, expressed in world coordinates.</param>
   ''' <returns></returns>
   Protected Function SnapToGrid(v As Vec2) As Vec2
-    Dim hbsx As Single = IIf(v.x >= 0, BlockSize * 0.5, -BlockSize * 0.5)
-    Dim hbsy As Single = IIf(v.y >= 0, BlockSize * 0.5, -BlockSize * 0.5)
+    Dim hbsx As Single = IIf(v.x >= 0, GridSize * 0.5, -GridSize * 0.5)
+    Dim hbsy As Single = IIf(v.y >= 0, GridSize * 0.5, -GridSize * 0.5)
 
-    Return (New Vec2((v.x + hbsx) \ BlockSize, (v.y + hbsy) \ BlockSize) * BlockSize)
+    Return (New Vec2((v.x + hbsx) \ GridSize, (v.y + hbsy) \ GridSize) * GridSize)
   End Function
 
   ''' <summary>
@@ -216,5 +216,5 @@ Public MustInherit Class ModeBase
 
   Private _name As String
   Private _helpText As String
-  Private _blockSize As Single
+  Private _gridSize As Single
 End Class

@@ -28,6 +28,16 @@
         Dim p0 = proj * inv * Layer.VertexById(ld.p0)
         Dim p1 = proj * inv * Layer.VertexById(ld.p1)
 
+        Dim cells = ld.Traverse(GridSize)
+
+        For cell As Integer = 0 To cells.Count - 1
+          Dim cP0 = proj * inv * New Vec2(cells(cell).X * GridSize, cells(cell).Y * GridSize)
+          Dim sz As Single = GridSize / Camera.Zoom
+
+          g.DrawRectangle(VGAColors.CyanPen,
+            New Rectangle(cP0.x, cP0.y, sz, sz))
+        Next
+
         If (Layer.Sector(i).Id = _highlightedSectorId) Then
           RenderLineDef(g, p0, p1, Color.Yellow)
         Else

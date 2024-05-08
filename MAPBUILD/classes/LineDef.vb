@@ -113,6 +113,56 @@ Public Class LineDef
       r1 OrElse r2, InsideSectorResult.PartiallyInside, InsideSectorResult.Outside)))
   End Function
 
+  Public Function Traverse(s As Single) As List(Of Point)
+    Dim mP0 = Layer.VertexById(P0)
+    Dim mP1 = Layer.VertexById(P1)
+
+    Dim x0 As Single = mP0.Pos.x
+    Dim y0 As Single = mP0.Pos.y
+    Dim x1 As Single = mP1.Pos.x
+    Dim y1 As Single = mP1.Pos.y
+
+    Dim cs As Single = 1.0F / s
+    Dim posX As Single = x0 * cs
+    Dim posY As Single = y0 * cs
+    Dim rayDirX As Single = (x1 - x0)
+    Dim rayDirY As Single = (y1 - y0)
+    Dim deltaDistX As Single = IIf(rayDirY = 0,
+      0, IIf(rayDirX = 0, 100000000.0, Math.Abs(1.0F / rayDirX)))
+    Dim deltaDistY As Single = IIf(rayDirX = 0,
+      0, IIf(rayDirY = 0, 100000000.0, Math.Abs(1.0F / rayDirY)))
+
+    Dim mapX As Integer = Int(x0 * cs)
+    Dim mapY As Integer = Int(y0 * cs)
+    Dim endX As Integer = Int(x1 * cs)
+    Dim endY As Integer = Int(y1 * cs)
+    Dim n As Integer = 1 + (Math.Abs(endX - mapX)) + (Math.Abs(endY - mapY))
+
+    Dim stepX As Integer = IIf(rayDirX < 0, -1, 1)
+    Dim stepY As Integer = IIf(rayDirY < 0, -1, 1)
+
+    Dim sideDistX As Single = IIf(rayDirX < 0,
+      (posX - mapX) * deltaDistX, ((mapX + 1) - posX) * deltaDistX)
+    Dim sideDistY As Single = IIf(rayDirY < 0,
+      (posY - mapY) * deltaDistY, ((mapY + 1) - posY) * deltaDistY)
+
+    Dim result As New List(Of Point)
+
+    For i As Integer = 0 To n - 1
+      result.Add(New Point(mapX, mapY))
+
+      If (sideDistX < sideDistY) Then
+        sideDistX += deltaDistX
+        mapX += stepX
+      Else
+        sideDistY += deltaDistY
+        mapY += stepY
+      End If
+    Next
+
+    Return (result)
+  End Function
+
   Public P0 As Integer
   Public P1 As Integer
   Public Id As Integer

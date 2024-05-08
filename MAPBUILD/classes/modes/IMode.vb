@@ -1,12 +1,12 @@
 ﻿Public Interface IMode
   Event ModeChanged(sender As Object, e As ModeChangedEventArgs)
   Event HelpTextChanged(sender As Object, e As EventArgs)
-  Event BlockSizeChanged(sender As Object, e As EventArgs)
+  Event GridSizeChanged(sender As Object, e As EventArgs)
   Event Refresh(sender As Object, e As EventArgs)
 
   ReadOnly Property Name() As String
   ReadOnly Property HelpText() As String
-  Property BlockSize() As Single
+  Property GridSize() As Single
   Property ViewRect() As Rectangle
   Property Layer() As Layer
   Property Camera() As Camera2D

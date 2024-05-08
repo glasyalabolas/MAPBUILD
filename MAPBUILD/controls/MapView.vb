@@ -65,7 +65,7 @@ Public Class MapView
   Protected Overrides Sub OnPaint(e As PaintEventArgs)
     If (Not DesignMode) Then
       If (_mode IsNot Nothing) Then
-        If (_mode.BlockSize / Camera.Zoom >= 10.0) Then
+        If (_mode.GridSize / Camera.Zoom >= 10.0) Then
           RenderBlocksizeGrid(e.Graphics, Color.DarkSlateGray)
         End If
 
@@ -158,7 +158,7 @@ Public Class MapView
     Dim inv = Camera.Transform.Inversed()
     Dim prj = Camera.Projection()
 
-    Dim startP = New Vec2(tl.x \ _mode.BlockSize, tl.y \ _mode.BlockSize) * _mode.BlockSize
+    Dim startP = New Vec2(tl.x \ _mode.GridSize, tl.y \ _mode.GridSize) * _mode.GridSize
     Dim p = New Vec2(startP.x, startP.y)
     Dim pn = VGAColors.DarkGrayPen
 
@@ -169,10 +169,10 @@ Public Class MapView
         g.DrawLine(pn, p1.x - 2, p1.y, p1.x + 2, p1.y)
         g.DrawLine(pn, p1.x, p1.y - 2, p1.x, p1.y + 2)
 
-        p.x += _mode.BlockSize
+        p.x += _mode.GridSize
       Loop
 
-      p.y += _mode.BlockSize
+      p.y += _mode.GridSize
       p.x = startP.x
     Loop
   End Sub

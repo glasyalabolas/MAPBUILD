@@ -46,7 +46,7 @@ Partial Class frmMain
     pnlStatus = New Panel()
     lblHelp = New Label()
     lblLayer = New Label()
-    lblBlockSize = New Label()
+    lblGridSize = New Label()
     lblMode = New Label()
     MenuStrip1.SuspendLayout()
     pnlStatus.SuspendLayout()
@@ -72,42 +72,42 @@ Partial Class frmMain
     ' OpenToolStripMenuItem
     ' 
     OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-    OpenToolStripMenuItem.Size = New Size(270, 34)
+    OpenToolStripMenuItem.Size = New Size(206, 34)
     OpenToolStripMenuItem.Text = "New"
     ' 
     ' OpenToolStripMenuItem1
     ' 
     OpenToolStripMenuItem1.Name = "OpenToolStripMenuItem1"
-    OpenToolStripMenuItem1.Size = New Size(270, 34)
+    OpenToolStripMenuItem1.Size = New Size(206, 34)
     OpenToolStripMenuItem1.Text = "Open..."
     ' 
     ' SaveToolStripMenuItem
     ' 
     SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-    SaveToolStripMenuItem.Size = New Size(270, 34)
+    SaveToolStripMenuItem.Size = New Size(206, 34)
     SaveToolStripMenuItem.Text = "Save"
     ' 
     ' SaveAsToolStripMenuItem
     ' 
     SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem"
-    SaveAsToolStripMenuItem.Size = New Size(270, 34)
+    SaveAsToolStripMenuItem.Size = New Size(206, 34)
     SaveAsToolStripMenuItem.Text = "Save as..."
     ' 
     ' PropertiesToolStripMenuItem
     ' 
     PropertiesToolStripMenuItem.Name = "PropertiesToolStripMenuItem"
-    PropertiesToolStripMenuItem.Size = New Size(270, 34)
+    PropertiesToolStripMenuItem.Size = New Size(206, 34)
     PropertiesToolStripMenuItem.Text = "Properties..."
     ' 
     ' ToolStripSeparator2
     ' 
     ToolStripSeparator2.Name = "ToolStripSeparator2"
-    ToolStripSeparator2.Size = New Size(267, 6)
+    ToolStripSeparator2.Size = New Size(203, 6)
     ' 
     ' ExitToolStripMenuItem
     ' 
     ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-    ExitToolStripMenuItem.Size = New Size(270, 34)
+    ExitToolStripMenuItem.Size = New Size(206, 34)
     ExitToolStripMenuItem.Text = "Exit"
     ' 
     ' EditToolStripMenuItem
@@ -194,7 +194,7 @@ Partial Class frmMain
     ' 
     pnlStatus.Controls.Add(lblHelp)
     pnlStatus.Controls.Add(lblLayer)
-    pnlStatus.Controls.Add(lblBlockSize)
+    pnlStatus.Controls.Add(lblGridSize)
     pnlStatus.Controls.Add(lblMode)
     pnlStatus.Dock = DockStyle.Bottom
     pnlStatus.Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
@@ -223,15 +223,15 @@ Partial Class frmMain
     lblLayer.Text = "Layer"
     lblLayer.TextAlign = ContentAlignment.MiddleCenter
     ' 
-    ' lblBlockSize
+    ' lblGridSize
     ' 
-    lblBlockSize.Dock = DockStyle.Right
-    lblBlockSize.Location = New Point(790, 0)
-    lblBlockSize.Name = "lblBlockSize"
-    lblBlockSize.Size = New Size(74, 33)
-    lblBlockSize.TabIndex = 2
-    lblBlockSize.Text = "BS"
-    lblBlockSize.TextAlign = ContentAlignment.MiddleCenter
+    lblGridSize.Dock = DockStyle.Right
+    lblGridSize.Location = New Point(790, 0)
+    lblGridSize.Name = "lblGridSize"
+    lblGridSize.Size = New Size(74, 33)
+    lblGridSize.TabIndex = 2
+    lblGridSize.Text = "BS"
+    lblGridSize.TextAlign = ContentAlignment.MiddleCenter
     ' 
     ' lblMode
     ' 
@@ -289,5 +289,5 @@ Partial Class frmMain
   Friend WithEvents lblMode As Label
   Friend WithEvents lblHelp As Label
   Friend WithEvents lblLayer As Label
-  Friend WithEvents lblBlockSize As Label
+  Friend WithEvents lblGridSize As Label
 End Class

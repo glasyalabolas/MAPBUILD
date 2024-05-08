@@ -110,6 +110,18 @@ Public Class frmMain
     mvView.Refresh()
   End Sub
 
+  Private Sub SaveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveToolStripMenuItem.Click
+    SaveMap(_map)
+  End Sub
+
+  Private Sub OpenToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem1.Click
+    Dim m = LoadMap()
+
+    If (m IsNot Nothing) Then
+      Map = m
+    End If
+  End Sub
+
   Public Sub ExecuteCommand(c As ICommand)
     c.Execute()
 
@@ -120,15 +132,6 @@ Public Class frmMain
     Dim c = _undoStack.Pop()
 
     c.Undo()
-  End Sub
-
-  Private WithEvents _mode As IMode
-  Private WithEvents _map As New Map()
-  Private _blockSize As Single
-  Private _undoStack As New Stack(Of ICommand)
-
-  Private Sub SaveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveToolStripMenuItem.Click
-    SaveMap(_map)
   End Sub
 
   Private Sub SaveMap(m As Map)
@@ -240,11 +243,8 @@ Public Class frmMain
     Return (m)
   End Function
 
-  Private Sub OpenToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem1.Click
-    Dim m = LoadMap()
-
-    If (m IsNot Nothing) Then
-      Map = m
-    End If
-  End Sub
+  Private WithEvents _mode As IMode
+  Private WithEvents _map As Map
+  Private _blockSize As Single
+  Private _undoStack As New Stack(Of ICommand)
 End Class

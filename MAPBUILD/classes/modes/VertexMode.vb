@@ -7,7 +7,7 @@
 
   Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
     Dim newModeArgs = New ModeChangedEventArgs() With {
-      .Mode = New PolyDrawMode()}
+      .Mode = New PolyDrawMode2()}
 
     OnModeChanged(Me, newModeArgs)
 

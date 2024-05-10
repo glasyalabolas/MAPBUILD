@@ -167,30 +167,6 @@ Public MustInherit Class ModeBase
   End Function
 
   ''' <summary>
-  ''' Finds the closest linedef index to the specified vertex.
-  ''' </summary>
-  ''' <param name="v">The vertex to check against.</param>
-  ''' <returns></returns>
-  'Protected Function FindClosestLineDefIndex(v As Vec2) As Integer
-  '  Dim result As Integer = NOT_FOUND
-  '  Dim closest As Single = Single.MaxValue
-  '  Dim minDist As Single = LINEDEF_NEAR_DISTANCE * Camera.Zoom
-
-  '  With Layer
-  '    For i As Integer = 0 To .LineDefs - 1
-  '      Dim dist = .LineDef(i).GetClosestPoint(v).DistanceToSq(v)
-
-  '      If (dist < closest AndAlso dist <= minDist) Then
-  '        closest = dist
-  '        result = i
-  '      End If
-  '    Next
-  '  End With
-
-  '  Return (result)
-  'End Function
-
-  ''' <summary>
   ''' Finds the closest linedef id to the specified vertex.
   ''' </summary>
   ''' <param name="v">The vertex to check against.</param>

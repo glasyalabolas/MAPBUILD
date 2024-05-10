@@ -60,6 +60,12 @@
     End Get
   End Property
 
+  Public ReadOnly Property SectorById(id As Integer) As Sector
+    Get
+      Return (_sector(FindSectorById(id)))
+    End Get
+  End Property
+
   Public Function AddVertex(v As Vec2) As Integer
     Dim newVertex As New Vertex(v)
 

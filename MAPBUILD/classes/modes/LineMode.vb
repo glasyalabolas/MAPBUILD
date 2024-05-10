@@ -15,7 +15,9 @@
           Dim nvId = Layer.AddVertex(nv)
 
           Dim nldId = Layer.AddLineDef(New LineDef(nvId, ld.p1))
-          ld.p1 = nvId
+
+          ld.P1 = nvId
+          ld.OnLineDefSplit(nldId)
         End If
       End If
     End If
@@ -30,6 +32,26 @@
 
       If (_closestLineDefId <> NOT_FOUND) Then
         _closestPoint = Layer.LineDefById(_closestLineDefId).GetClosestPoint(_mp)
+
+        '' Check which sector is in front/back
+        Dim ld = Layer.LineDefById(_closestLineDefId)
+        Dim p0 = Layer.VertexById(ld.P0)
+        Dim p1 = Layer.VertexById(ld.P1)
+
+        Dim N = ld.Normal()
+        Dim center = (p0.Pos + (p1.Pos - p0.Pos) * 0.5)
+
+        For i As Integer = 0 To Layer.Sectors - 1
+          If (Layer.Sector(i).Inside(center + N)) Then
+            ld.FrontSector = i
+          End If
+
+          If (Layer.Sector(i).Inside(center - N)) Then
+            ld.BackSector = i
+          End If
+
+          SetHelpText("FSId: " & ld.FrontSector & ", BSId:" & ld.BackSector)
+        Next
       End If
     End If
 
@@ -78,33 +100,14 @@
       Dim c = VGAColors.Yellow
       Dim pnt As New Vec2
 
-      For i As Integer = 0 To Layer.Sectors - 1
-        Dim result = ld.Inside(Layer.Sector(i))
-
-        Select Case result
-          Case LineDef.InsideSectorResult.Inside
-            c = VGAColors.Blue
-            Exit For
-
-          Case LineDef.InsideSectorResult.PartiallyInside
-            c = VGAColors.LightBlue
-            Exit For
-        End Select
-      Next
-
-      'For i As Integer = 0 To Layer.LineDefs - 1
-      '  If (Layer.LineDef(i).Id <> ld.Id) Then
-      '    If (ld.Intersects(Layer.LineDef(i), pnt)) Then
-      '      c = VGAColors.Red
-      '    End If
-      '  End If
-      'Next
-
       With Layer
-        Dim p0 = proj * inv * .VertexById(ld.P0)
-        Dim p1 = proj * inv * .VertexById(ld.P1)
+        Dim p0 = .VertexById(ld.P0)
+        Dim p1 = .VertexById(ld.P1)
 
-        RenderLineDef(g, p0, p1, c)
+        Dim pp0 = proj * inv * p0
+        Dim pp1 = proj * inv * p1
+
+        RenderLineDef(g, pp0, pp1, c)
       End With
 
       If (_closestPoint IsNot Nothing AndAlso Not _ldragging) Then
@@ -115,9 +118,13 @@
     End If
   End Sub
 
-  Public Overrides Sub OnKeyPress(e As KeyEventArgs)
+  Public Overrides Sub OnKeyPress(e As KeyEventArgs, modifierKeys As Keys)
     If (e.KeyCode = Keys.Delete) Then
       If (_closestLineDefId <> NOT_FOUND) Then
+        Dim ld = Layer.LineDefById(_closestLineDefId)
+
+        ld.OnLineDefDeleted()
+
         Layer.DeleteLineDef(_closestLineDefId)
 
         _closestLineDefId = NOT_FOUND

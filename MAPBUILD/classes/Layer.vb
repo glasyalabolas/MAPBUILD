@@ -78,12 +78,6 @@
     Dim newVertex As New Vertex(v) With {.Id = id}
 
     _vertex.Add(newVertex)
-
-    'If (_vertexIDs.Count = 0) Then
-    '  newVertex.Id = _vertex.Count - 1
-    'Else
-    '  newVertex.Id = _vertexIDs.Pop()
-    'End If
   End Sub
 
   Public Function AddLineDef(ld As LineDef) As Integer
@@ -104,12 +98,6 @@
     ld.Layer = Me
 
     _lineDef.Add(ld)
-
-    'If (_lineDefIDs.Count = 0) Then
-    '  ld.Id = _lineDef.Count - 1
-    'Else
-    '  ld.Id = _lineDefIDs.Pop()
-    'End If
   End Sub
 
   Public Function AddSector(s As Sector) As Integer
@@ -130,14 +118,6 @@
     s.Layer = Me
 
     _sector.Add(s)
-
-    'If (_sectorIDs.Count = 0) Then
-    '  s.Id = _sector.Count - 1
-    'Else
-    '  s.Id = _sectorIDs.Pop()
-    'End If
-
-    'Return (s.Id)
   End Sub
 
   Public Sub DeleteVertex(id As Integer)
@@ -169,6 +149,12 @@
     End If
   End Sub
 
+  Public Sub DeleteSector(id As Integer)
+    Dim index As Integer = FindSectorById(id)
+
+    _sector.RemoveAt(index)
+  End Sub
+
   ''' <summary>
   ''' Returns the vertex index, given its id.
   ''' </summary>
@@ -192,6 +178,16 @@
   Private Function FindLineDefByID(id As Integer) As Integer
     For i As Integer = 0 To _lineDef.Count - 1
       If (_lineDef(i).Id = id) Then
+        Return (i)
+      End If
+    Next
+
+    Return (NOT_FOUND)
+  End Function
+
+  Private Function FindSectorById(id As Integer) As Integer
+    For i As Integer = 0 To _sector.Count - 1
+      If (_sector(i).Id = id) Then
         Return (i)
       End If
     Next

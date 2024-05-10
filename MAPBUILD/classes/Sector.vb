@@ -1,6 +1,8 @@
 ﻿Option Infer On
 
 Public Class Sector
+  Private Const NOT_FOUND As Integer = -1
+
   Public ReadOnly Property LineDefs() As Integer
     Get
       Return (_lineDefs.Count)
@@ -15,6 +17,26 @@ Public Class Sector
 
   Public Sub AddLineDef(id As Integer)
     _lineDefs.Add(id)
+
+    Dim ld = Layer.LineDefById(id)
+
+    AddHandler ld.LineDefSplit, AddressOf OnLineDefSplit
+    AddHandler ld.LineDefDeleted, AddressOf OnLineDefDeleted
+  End Sub
+
+  Public Sub RemoveLineDef(id As Integer)
+    For i As Integer = 0 To _lineDefs.Count - 1
+      If (_lineDefs(i) = id) Then
+        _lineDefs.RemoveAt(i)
+
+        Dim ld = Layer.LineDefById(id)
+
+        RemoveHandler ld.LineDefSplit, AddressOf OnLineDefSplit
+        RemoveHandler ld.LineDefDeleted, AddressOf OnLineDefDeleted
+
+        Exit For
+      End If
+    Next
   End Sub
 
   Public Function Inside(p As Vec2) As Boolean
@@ -42,6 +64,40 @@ Public Class Sector
 
     Return (count And 1)
   End Function
+
+  Public Function FindLineDefByVertex(vId As Integer) As Integer
+    For i As Integer = 0 To _lineDefs.Count - 1
+      Dim ld = Layer.LineDefById(_lineDefs(i))
+
+      If (ld.P0 = vId OrElse ld.P1 = vId) Then
+        Return (i)
+      End If
+    Next
+
+    Return (NOT_FOUND)
+  End Function
+
+  Private Sub OnLineDefSplit(sender As LineDef, newId As Integer)
+    For i As Integer = 0 To _lineDefs.Count - 1
+      If (sender.Id = _lineDefs(i)) Then
+        _lineDefs.Insert(i + 1, newId)
+        Exit For
+      End If
+    Next
+  End Sub
+
+  Private Sub OnLineDefDeleted(sender As LineDef)
+    For i As Integer = 0 To _lineDefs.Count - 1
+      If (sender.Id = _lineDefs(i)) Then
+        _lineDefs.RemoveAt(i)
+        Exit For
+      End If
+    Next
+
+    If (_lineDefs.Count = 0) Then
+      Layer.DeleteSector(Id)
+    End If
+  End Sub
 
   Public Id As Integer
   Public Layer As Layer

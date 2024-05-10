@@ -206,6 +206,11 @@ Public Class MapView
             Dim pp1 = proj * inv * p1
 
             g.DrawLine(p, pp0, pp1)
+
+            Dim N = .Normal
+            Dim Np = pp0 + (pp1 - pp0) * 0.5
+
+            g.DrawLine(p, Np, Np + N * (10 / Camera.Zoom))
           End With
         Next
       Next

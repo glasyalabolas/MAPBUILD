@@ -70,7 +70,7 @@ Public Class frmMain
   End Sub
 
   Private Sub frmMain_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
-    _mode?.OnKeyPressed(e)
+    _mode?.OnKeyPressed(e, Control.ModifierKeys)
 
     If (e.KeyData = Keys.A) Then
       GridSize = Math.Min(512, Int(GridSize * 2))

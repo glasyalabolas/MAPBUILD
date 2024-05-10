@@ -25,7 +25,7 @@ Public Class LineSeg
   End Function
 
   Public Function Normal() As Vec2
-    Return ((p1 - p0).Normalize().TurnLeft())
+    Return ((p0 - p1).Normalize().TurnLeft())
   End Function
 
   Public Function PointTo(p As Vec2) As LineSeg

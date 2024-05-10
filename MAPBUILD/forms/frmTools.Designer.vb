@@ -24,11 +24,12 @@ Partial Class frmTools
   Private Sub InitializeComponent()
     lblPos = New Label()
     pnlButtons = New Panel()
+    Button3 = New Button()
     Button2 = New Button()
     Button1 = New Button()
     TextBox1 = New TextBox()
     Label1 = New Label()
-    Button3 = New Button()
+    Button4 = New Button()
     pnlButtons.SuspendLayout()
     SuspendLayout()
     ' 
@@ -44,6 +45,7 @@ Partial Class frmTools
     ' 
     ' pnlButtons
     ' 
+    pnlButtons.Controls.Add(Button4)
     pnlButtons.Controls.Add(Button3)
     pnlButtons.Controls.Add(Button2)
     pnlButtons.Controls.Add(Button1)
@@ -54,6 +56,15 @@ Partial Class frmTools
     pnlButtons.Name = "pnlButtons"
     pnlButtons.Size = New Size(395, 201)
     pnlButtons.TabIndex = 2
+    ' 
+    ' Button3
+    ' 
+    Button3.Location = New Point(181, 87)
+    Button3.Name = "Button3"
+    Button3.Size = New Size(163, 48)
+    Button3.TabIndex = 7
+    Button3.Text = "Sector mode"
+    Button3.UseVisualStyleBackColor = True
     ' 
     ' Button2
     ' 
@@ -90,14 +101,14 @@ Partial Class frmTools
     Label1.TabIndex = 3
     Label1.Text = "Sector #"
     ' 
-    ' Button3
+    ' Button4
     ' 
-    Button3.Location = New Point(181, 87)
-    Button3.Name = "Button3"
-    Button3.Size = New Size(163, 48)
-    Button3.TabIndex = 7
-    Button3.Text = "Sector mode"
-    Button3.UseVisualStyleBackColor = True
+    Button4.Location = New Point(181, 141)
+    Button4.Name = "Button4"
+    Button4.Size = New Size(163, 48)
+    Button4.TabIndex = 8
+    Button4.Text = "Debug mode"
+    Button4.UseVisualStyleBackColor = True
     ' 
     ' frmTools
     ' 
@@ -124,4 +135,5 @@ Partial Class frmTools
   Friend WithEvents Button1 As Button
   Friend WithEvents Button2 As Button
   Friend WithEvents Button3 As Button
+  Friend WithEvents Button4 As Button
 End Class

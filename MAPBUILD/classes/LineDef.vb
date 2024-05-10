@@ -1,6 +1,9 @@
 ﻿Option Infer On
 
 Public Class LineDef
+  Public Event LineDefSplit(sender As LineDef, newId As Integer)
+  Public Event LineDefDeleted(sender As LineDef)
+
   Public Enum InsideSectorResult
     Outside
     PartiallyInside
@@ -32,7 +35,7 @@ Public Class LineDef
   End Function
 
   Public Function Normal() As Vec2
-    Return ((Layer.VertexById(P1).Pos - Layer.VertexById(P0).Pos).Normalize().TurnLeft())
+    Return ((Layer.VertexById(P0).Pos - Layer.VertexById(P1).Pos).Normalize().TurnLeft())
   End Function
 
   Public Function PointTo(p As Vec2) As LineDef
@@ -163,8 +166,18 @@ Public Class LineDef
     Return (result)
   End Function
 
+  Public Sub OnLineDefSplit(newId As Integer)
+    RaiseEvent LineDefSplit(Me, newId)
+  End Sub
+
+  Public Sub OnLineDefDeleted()
+    RaiseEvent LineDefDeleted(Me)
+  End Sub
+
   Public P0 As Integer
   Public P1 As Integer
   Public Id As Integer
+  Public FrontSector As Integer = -1
+  Public BackSector As Integer = -1
   Public Layer As Layer
 End Class

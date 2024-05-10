@@ -87,7 +87,7 @@
     _paramLine = New ParamLine(_center).PointTo(_mp)
   End Sub
 
-  Public Overrides Sub OnKeyPress(e As KeyEventArgs)
+  Public Overrides Sub OnKeyPress(e As KeyEventArgs, modifierKeys As Keys)
     If (e.KeyCode = Keys.Space) Then
       OnModeChanged(Me, New ModeChangedEventArgs() With {
         .Mode = New PolyDebugMode()})

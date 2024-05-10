@@ -74,7 +74,7 @@ Public MustInherit Class ModeBase
   End Sub
   Public Overridable Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseDoubleClick
   End Sub
-  Public Overridable Sub OnKeyPress(e As KeyEventArgs) Implements IMode.OnKeyPressed
+  Public Overridable Sub OnKeyPress(e As KeyEventArgs, modifierKeys As Keys) Implements IMode.OnKeyPressed
   End Sub
   Public Overridable Sub OnMouseWheel(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseWheel
   End Sub

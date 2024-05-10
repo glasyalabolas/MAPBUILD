@@ -19,5 +19,5 @@
   Sub OnMouseUp(e As MouseEventArgs)
   Sub OnMouseDown(e As MouseEventArgs)
   Sub OnMouseWheel(e As MouseEventArgs, modifierKeys As Keys)
-  Sub OnKeyPressed(e As KeyEventArgs)
+  Sub OnKeyPressed(e As KeyEventArgs, modifierKeys As Keys)
 End Interface

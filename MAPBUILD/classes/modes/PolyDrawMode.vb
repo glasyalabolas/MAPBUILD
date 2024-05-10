@@ -16,6 +16,12 @@
     If (Not _drawing) Then
       _sp = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
 
+      Dim cv As Integer = FindClosestVertexId(_sp)
+
+      If (cv <> NOT_FOUND) Then
+        Debug.Print("Vertex already present")
+      End If
+
       _startVertexId = Layer.AddVertex(_sp)
       _lineDefs.Clear()
 
@@ -42,14 +48,11 @@
             _startVertexId = NOT_FOUND
 
             Dim s = New Sector()
+            Layer.AddSector(s)
 
             For i As Integer = 0 To _lineDefs.Count - 1
               s.AddLineDef(_lineDefs(i))
             Next
-
-            s.Layer = Layer
-
-            Layer.AddSector(s)
 
             OnModeChanged(Me, New ModeChangedEventArgs() With {
               .Mode = New VertexMode()})
@@ -72,7 +75,7 @@
     End If
   End Sub
 
-  Public Overrides Sub OnKeyPress(e As KeyEventArgs)
+  Public Overrides Sub OnKeyPress(e As KeyEventArgs, modifierKeys As Keys)
     If (e.KeyCode = Keys.Escape) Then
       If (_drawing) Then
         _drawing = False

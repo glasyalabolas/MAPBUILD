@@ -92,28 +92,27 @@
   End Sub
 
   Public Overrides Sub OnRender(g As Graphics)
-    Dim inv = Camera.Transform().Inversed()
-    Dim proj = Camera.Projection()
+    MyBase.OnRender(g)
+
+    Dim T = Camera.Projection() * Camera.Transform().Inversed()
 
     If (_closestLineDefId <> NOT_FOUND) Then
       Dim ld = Layer.LineDefById(_closestLineDefId)
+      Dim p0 = ld.GetP0
+      Dim p1 = ld.GetP1
+
       Dim c = VGAColors.Yellow
       Dim pnt As New Vec2
 
-      With Layer
-        Dim p0 = .VertexById(ld.P0)
-        Dim p1 = .VertexById(ld.P1)
+      Dim pp0 = T * p0
+      Dim pp1 = T * p1
 
-        Dim pp0 = proj * inv * p0
-        Dim pp1 = proj * inv * p1
-
-        RenderLineDef(g, pp0, pp1, c)
-      End With
+      RenderLineDef(g, pp0, pp1, c)
 
       If (_closestPoint IsNot Nothing AndAlso Not _ldragging) Then
-        Dim p = proj * inv * _closestPoint
+        Dim p = T * _closestPoint
 
-        RenderVertex(g, p, VGAColors.LightRed)
+        RenderVertex(g, p, 7.0 / Camera.Zoom, VGAColors.LightRed)
       End If
     End If
   End Sub

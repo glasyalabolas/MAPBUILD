@@ -1,4 +1,6 @@
-﻿Public Class Vertex
+﻿Imports MAP_ID = System.Int32
+
+Public Class Vertex
   Public Sub New()
   End Sub
 
@@ -6,7 +8,7 @@
     Pos = p
   End Sub
 
-  Public Sub New(nId As Integer, p As Vec2)
+  Public Sub New(nId As MAP_ID, p As Vec2)
     Id = nId : Pos = p
   End Sub
 
@@ -15,5 +17,5 @@
   End Operator
 
   Public Pos As New Vec2
-  Public Id As Integer
+  Public Id As MAP_ID
 End Class

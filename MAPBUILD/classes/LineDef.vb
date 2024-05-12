@@ -1,7 +1,9 @@
 ﻿Option Infer On
 
+Imports MAP_ID = System.Int32
+
 Public Class LineDef
-  Public Event LineDefSplit(sender As LineDef, newId As Integer)
+  Public Event LineDefSplit(sender As LineDef, newId As MAP_ID)
   Public Event LineDefDeleted(sender As LineDef)
 
   Public Enum InsideSectorResult
@@ -10,17 +12,37 @@ Public Class LineDef
     Inside
   End Enum
 
+  Public Sub OnLineDefSplit(newId As MAP_ID)
+    RaiseEvent LineDefSplit(Me, newId)
+  End Sub
+
+  Public Sub OnLineDefDeleted()
+    RaiseEvent LineDefDeleted(Me)
+  End Sub
+
   Public Sub New()
     P0 = -1 : P1 = -1
   End Sub
 
-  Public Sub New(nP0 As Integer, nP1 As Integer)
+  Public Sub New(nP0 As MAP_ID, nP1 As MAP_ID)
     P0 = nP0 : P1 = nP1
   End Sub
 
-  Public Sub New(nId As Integer, nP0 As Integer, nP1 As Integer)
+  Public Sub New(nId As MAP_ID, nP0 As MAP_ID, nP1 As MAP_ID)
     Id = nId : P0 = nP0 : P1 = nP1
   End Sub
+
+  Public ReadOnly Property GetP0() As Vertex
+    Get
+      Return (Layer.VertexById(P0))
+    End Get
+  End Property
+
+  Public ReadOnly Property GetP1() As Vertex
+    Get
+      Return (Layer.VertexById(P1))
+    End Get
+  End Property
 
   Public Function Length() As Single
     Return ((Layer.VertexById(P1).Pos - Layer.VertexById(P0).Pos).Length)
@@ -166,18 +188,10 @@ Public Class LineDef
     Return (result)
   End Function
 
-  Public Sub OnLineDefSplit(newId As Integer)
-    RaiseEvent LineDefSplit(Me, newId)
-  End Sub
-
-  Public Sub OnLineDefDeleted()
-    RaiseEvent LineDefDeleted(Me)
-  End Sub
-
-  Public P0 As Integer
-  Public P1 As Integer
-  Public Id As Integer
-  Public FrontSector As Integer = -1
-  Public BackSector As Integer = -1
+  Public P0 As MAP_ID
+  Public P1 As MAP_ID
+  Public Id As MAP_ID
+  Public FrontSector As MAP_ID = -1
+  Public BackSector As MAP_ID = -1
   Public Layer As Layer
 End Class

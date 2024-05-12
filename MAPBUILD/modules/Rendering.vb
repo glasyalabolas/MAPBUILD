@@ -28,16 +28,16 @@ Public Module Rendering
     End Using
   End Sub
 
-  Public Sub RenderVertex(g As Graphics, v As Vec2, c As Color)
+  Public Sub RenderVertex(g As Graphics, v As Vec2, s As Single, c As Color)
     Dim br = New SolidBrush(c)
 
-    g.FillRectangle(br, New Rectangle(v.x - 3, v.y - 3, 7, 7))
+    g.FillRectangle(br, New Rectangle(v.x - s * 0.5, v.y - s * 0.5, s, s))
   End Sub
 
   Public Sub RenderLineDef(g As Graphics, p0 As Vec2, p1 As Vec2, c As Color)
     g.DrawLine(New Pen(c), p0, p1)
 
-    RenderVertex(g, p0, VGAColors.Green)
-    RenderVertex(g, p1, VGAColors.LightRed)
+    RenderVertex(g, p0, 7, VGAColors.Green)
+    RenderVertex(g, p1, 7, VGAColors.LightRed)
   End Sub
 End Module

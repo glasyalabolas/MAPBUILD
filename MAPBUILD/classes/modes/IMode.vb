@@ -8,6 +8,7 @@
   ReadOnly Property HelpText() As String
   Property GridSize() As Single
   Property ViewRect() As Rectangle
+  Property Map() As Map
   Property Layer() As Layer
   Property Camera() As Camera2D
 

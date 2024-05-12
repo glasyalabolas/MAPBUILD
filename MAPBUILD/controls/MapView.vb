@@ -43,6 +43,7 @@ Public Class MapView
 
       If (_mode IsNot Nothing) Then
         _mode.ViewRect = New Rectangle(0, 0, Width, Height)
+        _mode.Map = Map
         _mode.Camera = _cam
       End If
 
@@ -65,12 +66,6 @@ Public Class MapView
   Protected Overrides Sub OnPaint(e As PaintEventArgs)
     If (Not DesignMode) Then
       If (_mode IsNot Nothing) Then
-        If (_mode.GridSize / Camera.Zoom >= 10.0) Then
-          RenderBlocksizeGrid(e.Graphics, Color.DarkSlateGray)
-        End If
-
-        RenderView(e.Graphics)
-
         _mode.OnRender(e.Graphics)
       End If
     End If
@@ -150,71 +145,6 @@ Public Class MapView
 
   Private Sub _mode_Refresh(sender As Object, e As EventArgs) Handles _mode.Refresh
     Refresh()
-  End Sub
-
-  Private Sub RenderBlocksizeGrid(g As Graphics, c As Color)
-    Dim tl = _cam.TopLeft()
-    Dim br = _cam.BottomRight()
-    Dim inv = Camera.Transform.Inversed()
-    Dim prj = Camera.Projection()
-
-    Dim startP = New Vec2(tl.x \ _mode.GridSize, tl.y \ _mode.GridSize) * _mode.GridSize
-    Dim p = New Vec2(startP.x, startP.y)
-    Dim pn = VGAColors.DarkGrayPen
-
-    Do While (p.y <= br.y)
-      Do While (p.x <= br.x)
-        Dim p1 = prj * inv * p
-
-        g.DrawLine(pn, p1.x - 2, p1.y, p1.x + 2, p1.y)
-        g.DrawLine(pn, p1.x, p1.y - 2, p1.x, p1.y + 2)
-
-        p.x += _mode.GridSize
-      Loop
-
-      p.y += _mode.GridSize
-      p.x = startP.x
-    Loop
-  End Sub
-
-  Private Sub PreProcess()
-    _visibleLines.Clear()
-
-    For i As Integer = 0 To _map.Layers - 1
-      _visibleLines.Add(_map.Layer(i).GetVisibleLines(Camera))
-    Next
-
-    _map.EnableEvents()
-  End Sub
-
-  Private Sub RenderView(g As Graphics)
-    If (_map IsNot Nothing) Then
-      PreProcess()
-
-      Dim inv = _cam.Transform().Inversed()
-      Dim proj = _cam.Projection()
-
-      For lay As Integer = 0 To _visibleLines.Count - 1
-        For ldef As Integer = 0 To _visibleLines(lay).Count - 1
-          Dim p As Pen = VGAColors.WhitePen
-
-          With Map.Layer(lay).LineDef(_visibleLines(lay)(ldef))
-            Dim p0 = Map.SelectedLayer.VertexById(.P0)
-            Dim p1 = Map.SelectedLayer.VertexById(.P1)
-
-            Dim pp0 = proj * inv * p0
-            Dim pp1 = proj * inv * p1
-
-            g.DrawLine(p, pp0, pp1)
-
-            Dim N = .Normal
-            Dim Np = pp0 + (pp1 - pp0) * 0.5
-
-            g.DrawLine(p, Np, Np + N * (10 / Camera.Zoom))
-          End With
-        Next
-      Next
-    End If
   End Sub
 
   Private WithEvents _mode As IMode

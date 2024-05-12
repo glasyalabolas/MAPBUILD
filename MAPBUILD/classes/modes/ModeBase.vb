@@ -1,18 +1,16 @@
-﻿''' <summary>
+﻿Imports MAP_ID = System.Int32
+
+''' <summary>
 ''' Base class for editing modes.
 ''' </summary>
 Public MustInherit Class ModeBase
   Implements IMode
 
-  '<Runtime.InteropServices.DllImport("user32.dll")>
-  'Protected Shared Function GetKeyState(aKey As Keys) As Short
-  'End Function
-
   '' To indicate an entity was not found
-  Protected Const NOT_FOUND As Integer = -1
+  Protected Const NOT_FOUND As MAP_ID = -1
 
   '' Nearest vertex minimum distance, in map units
-  Protected Const VERTEX_NEAR_DISTANCE As Single = 75.0
+  Protected Const VERTEX_NEAR_DISTANCE As Single = 50.0
 
   '' Nearest linedef minimum distance, in map units
   Protected Const LINEDEF_NEAR_DISTANCE As Single = 100.0
@@ -47,6 +45,7 @@ Public MustInherit Class ModeBase
   End Property
 
   Public Property ViewRect() As Rectangle Implements IMode.ViewRect
+  Public Property Map() As Map Implements IMode.Map
   Public Property Layer() As Layer Implements IMode.Layer
   Public Property Camera() As Camera2D Implements IMode.Camera
 
@@ -63,7 +62,13 @@ Public MustInherit Class ModeBase
   Public Overridable Sub OnProcess() Implements IMode.OnProcess
   End Sub
   Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
+    If (GridSize / Camera.Zoom >= 20.0) Then
+      RenderGrid(g, VGAColors.DarkGray)
+    End If
+
+    RenderView(g)
   End Sub
+
   Public Overridable Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseMove
   End Sub
   Public Overridable Sub OnMouseUp(e As MouseEventArgs) Implements IMode.OnMouseUp
@@ -82,7 +87,7 @@ Public MustInherit Class ModeBase
   Protected Sub OnModeChanged(sender As Object, e As ModeChangedEventArgs)
     e.Mode.GridSize = GridSize
     e.Mode.ViewRect = ViewRect
-    'e.Mode.Map = Map
+    e.Mode.Map = Map
     e.Mode.Layer = Layer
 
     RaiseEvent ModeChanged(sender, e)
@@ -98,6 +103,79 @@ Public MustInherit Class ModeBase
 
   Private Sub OnGridSizeChanged()
     RaiseEvent GridSizeChanged(Me, EventArgs.Empty)
+  End Sub
+
+  ''' <summary>
+  ''' Gets all visible lines on the view for all layers.
+  ''' </summary>
+  Private Sub PreProcess()
+    _visibleLines.Clear()
+
+    For i As Integer = 0 To Map.Layers - 1
+      _visibleLines.Add(Map.Layer(i).GetVisibleLines(Camera))
+    Next
+  End Sub
+
+  ''' <summary>
+  ''' Renders the base view for the mode.
+  ''' </summary>
+  ''' <param name="g">The Graphics context.</param>
+  Private Sub RenderView(g As Graphics)
+    If (Map IsNot Nothing) Then
+      PreProcess()
+
+      Dim T = Camera.Projection() * Camera.Transform().Inversed()
+      Dim Ns As Single = 10.0 / Camera.Zoom '' Normal size
+
+      For lay As Integer = 0 To _visibleLines.Count - 1
+        For ldef As Integer = 0 To _visibleLines(lay).Count - 1
+          Dim p As Pen = VGAColors.WhitePen
+
+          With Map.Layer(lay).LineDef(_visibleLines(lay)(ldef))
+            Dim p0 = Map.SelectedLayer.VertexById(.P0)
+            Dim p1 = Map.SelectedLayer.VertexById(.P1)
+
+            Dim pp0 = T * p0
+            Dim pp1 = T * p1
+
+            g.DrawLine(p, pp0, pp1)
+
+            Dim N = .Normal
+            Dim Np = pp0 + (pp1 - pp0) * 0.5
+
+            g.DrawLine(p, Np, Np + N * Ns)
+          End With
+        Next
+      Next
+    End If
+  End Sub
+
+  ''' <summary>
+  ''' Renders the grid.
+  ''' </summary>
+  ''' <param name="g">The Graphics context.</param>
+  ''' <param name="c">The color of the grid.</param>
+  Private Sub RenderGrid(g As Graphics, c As Color)
+    Dim tl = Camera.TopLeft()
+    Dim br = Camera.BottomRight()
+    Dim T = Camera.Projection() * Camera.Transform.Inversed()
+    Dim startP = New Vec2(tl.x \ GridSize, tl.y \ GridSize) * GridSize
+    Dim p = New Vec2(startP.x, startP.y)
+    Dim pn = VGAColors.DarkGrayPen
+
+    Do While (p.y <= br.y)
+      Do While (p.x <= br.x)
+        Dim p1 = T * p
+
+        g.DrawLine(pn, p1.x - 2, p1.y, p1.x + 2, p1.y)
+        g.DrawLine(pn, p1.x, p1.y - 2, p1.x, p1.y + 2)
+
+        p.x += GridSize
+      Loop
+
+      p.y += GridSize
+      p.x = startP.x
+    Loop
   End Sub
 
   ''' <summary>
@@ -149,7 +227,7 @@ Public MustInherit Class ModeBase
   ''' </summary>
   ''' <param name="v">The vertex to check against.</param>
   ''' <returns></returns>
-  Public Function FindClosestVertexId(v As Vec2) As Integer
+  Public Function FindClosestVertexId(v As Vec2) As MAP_ID
     Dim closest As Single = Single.MaxValue
     Dim result As Integer = NOT_FOUND
     Dim minDist As Single = VERTEX_NEAR_DISTANCE * Camera.Zoom
@@ -171,7 +249,7 @@ Public MustInherit Class ModeBase
   ''' </summary>
   ''' <param name="v">The vertex to check against.</param>
   ''' <returns></returns>
-  Protected Function FindClosestLineDefId(v As Vec2) As Integer
+  Protected Function FindClosestLineDefId(v As Vec2) As MAP_ID
     Dim result As Integer = NOT_FOUND
     Dim closest As Single = Single.MaxValue
     Dim minDist As Single = LINEDEF_NEAR_DISTANCE * Camera.Zoom
@@ -193,4 +271,5 @@ Public MustInherit Class ModeBase
   Private _name As String
   Private _helpText As String
   Private _gridSize As Single
+  Private _visibleLines As New List(Of List(Of MAP_ID))
 End Class

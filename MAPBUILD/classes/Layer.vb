@@ -1,5 +1,9 @@
-﻿Public Class Layer
-  Private Const NOT_FOUND As Integer = -1
+﻿Option Infer On
+
+Imports MAP_ID = System.Int32
+
+Public Class Layer
+  Private Const NOT_FOUND As MAP_ID = -1
 
   Public Name As String
 
@@ -29,16 +33,21 @@
     End Get
   End Property
 
-  Public Property VertexById(id As Integer) As Vertex
+  Public Property VertexById(id As MAP_ID) As Vertex
     Get
-      Return (_vertex(FindVertexByID(id)))
+      Return (FindVertexByID(id))
     End Get
 
     Set(value As Vertex)
-      Dim index = FindVertexByID(id)
+      Dim v = FindVertexByID(id)
+
+      Dim index As Integer = _vertex.IndexOf(v)
 
       _vertex(index) = value
       _vertex(index).Id = id
+
+      _vertexById.Remove(v.Id)
+      _vertexById.Add(id, _vertex(index))
     End Set
   End Property
 
@@ -48,9 +57,9 @@
     End Get
   End Property
 
-  Public ReadOnly Property LineDefById(id As Integer) As LineDef
+  Public ReadOnly Property LineDefById(id As MAP_ID) As LineDef
     Get
-      Return (_lineDef(FindLineDefByID(id)))
+      Return (FindLineDefByID(id))
     End Get
   End Property
 
@@ -60,13 +69,13 @@
     End Get
   End Property
 
-  Public ReadOnly Property SectorById(id As Integer) As Sector
+  Public ReadOnly Property SectorById(id As MAP_ID) As Sector
     Get
-      Return (_sector(FindSectorById(id)))
+      Return (FindSectorById(id))
     End Get
   End Property
 
-  Public Function AddVertex(v As Vec2) As Integer
+  Public Function AddVertex(v As Vec2) As MAP_ID
     Dim newVertex As New Vertex(v)
 
     _vertex.Add(newVertex)
@@ -77,16 +86,19 @@
       newVertex.Id = _vertexIDs.Pop()
     End If
 
+    _vertexById.Add(newVertex.Id, newVertex)
+
     Return (newVertex.Id)
   End Function
 
-  Public Sub AddVertex(v As Vec2, id As Integer)
+  Public Sub AddVertex(v As Vec2, id As MAP_ID)
     Dim newVertex As New Vertex(v) With {.Id = id}
 
     _vertex.Add(newVertex)
+    _vertexById.Add(newVertex.Id, newVertex)
   End Sub
 
-  Public Function AddLineDef(ld As LineDef) As Integer
+  Public Function AddLineDef(ld As LineDef) As MAP_ID
     _lineDef.Add(ld)
     ld.Layer = Me
 
@@ -96,17 +108,20 @@
       ld.Id = _lineDefIDs.Pop()
     End If
 
+    _lineDefById.Add(ld.Id, ld)
+
     Return (ld.Id)
   End Function
 
-  Public Sub AddLineDef(ld As LineDef, id As Integer)
+  Public Sub AddLineDef(ld As LineDef, id As MAP_ID)
     ld.Id = id
     ld.Layer = Me
 
     _lineDef.Add(ld)
+    _lineDefById.Add(ld.Id, ld)
   End Sub
 
-  Public Function AddSector(s As Sector) As Integer
+  Public Function AddSector(s As Sector) As MAP_ID
     _sector.Add(s)
     s.Layer = Me
 
@@ -116,31 +131,36 @@
       s.Id = _sectorIDs.Pop()
     End If
 
+    _sectorById.Add(s.Id, s)
+
     Return (s.Id)
   End Function
 
-  Public Sub AddSector(s As Sector, id As Integer)
+  Public Sub AddSector(s As Sector, id As MAP_ID)
     s.Id = id
     s.Layer = Me
 
     _sector.Add(s)
+    _sectorById.Add(s.Id, s)
   End Sub
 
-  Public Sub DeleteVertex(id As Integer)
-    Dim index As Integer = FindVertexByID(id)
+  Public Sub DeleteVertex(id As MAP_ID)
+    Dim v = _vertexById(id)
 
     _vertexIDs.Push(id)
-    _vertex.RemoveAt(index)
+    _vertex.Remove(v)
+    _vertexById.Remove(id)
   End Sub
 
-  Public Sub DeleteLineDef(id As Integer)
-    Dim index As Integer = FindLineDefByID(id)
+  Public Sub DeleteLineDef(id As MAP_ID)
+    Dim ld = _lineDefById(id)
 
-    Dim P0 = _lineDef(index).p0
-    Dim P1 = _lineDef(index).p1
+    Dim P0 = ld.P0
+    Dim P1 = ld.P1
 
     _lineDefIDs.Push(id)
-    _lineDef.RemoveAt(index)
+    _lineDef.Remove(ld)
+    _lineDefById.Remove(id)
 
     Dim refsP0 = CountVertexReferences(P0)
     Dim refsP1 = CountVertexReferences(P1)
@@ -155,50 +175,36 @@
     End If
   End Sub
 
-  Public Sub DeleteSector(id As Integer)
-    Dim index As Integer = FindSectorById(id)
+  Public Sub DeleteSector(id As MAP_ID)
+    Debug.Print("Deleting sector: " & id)
 
-    _sector.RemoveAt(index)
+    _sectorIDs.Push(id)
+    _sector.Remove(_sectorById(id))
+    _sectorById.Remove(id)
+
+    Debug.Print("Layer sectors: " & _sector.Count)
   End Sub
 
   ''' <summary>
-  ''' Returns the vertex index, given its id.
+  ''' Returns a vertex given its id.
   ''' </summary>
   ''' <param name="id">The id of the vertex to find.</param>
   ''' <returns></returns>
-  Private Function FindVertexByID(id As Integer) As Integer
-    For i As Integer = 0 To _vertex.Count - 1
-      If (_vertex(i).Id = id) Then
-        Return (i)
-      End If
-    Next
-
-    Return (NOT_FOUND)
+  Private Function FindVertexByID(id As MAP_ID) As Vertex
+    Return (IIf(_vertexById.ContainsKey(id), _vertexById(id), Nothing))
   End Function
 
   ''' <summary>
-  ''' Returns the linedef index, given its id.
+  ''' Returns a linedef given its id.
   ''' </summary>
   ''' <param name="id">The id of the linedef to find.</param>
   ''' <returns></returns>
-  Private Function FindLineDefByID(id As Integer) As Integer
-    For i As Integer = 0 To _lineDef.Count - 1
-      If (_lineDef(i).Id = id) Then
-        Return (i)
-      End If
-    Next
-
-    Return (NOT_FOUND)
+  Private Function FindLineDefByID(id As MAP_ID) As LineDef
+    Return (IIf(_lineDefById.ContainsKey(id), _lineDefById(id), Nothing))
   End Function
 
-  Private Function FindSectorById(id As Integer) As Integer
-    For i As Integer = 0 To _sector.Count - 1
-      If (_sector(i).Id = id) Then
-        Return (i)
-      End If
-    Next
-
-    Return (NOT_FOUND)
+  Private Function FindSectorById(id As MAP_ID) As Sector
+    Return (IIf(_sectorById.ContainsKey(id), _sectorById(id), Nothing))
   End Function
 
   ''' <summary>
@@ -214,8 +220,8 @@
 
     For i As Integer = 0 To _lineDef.Count - 1
       With _lineDef(i)
-        Dim p0 = _vertex(FindVertexByID(.p0))
-        Dim p1 = _vertex(FindVertexByID(.p1))
+        Dim p0 = FindVertexByID(.P0)
+        Dim p1 = FindVertexByID(.P1)
 
         If (Maths.LiangBarsky(
           tl.x, tl.y, br.x, br.y, p0.Pos.x, p0.Pos.y, p1.Pos.x, p1.Pos.y)) Then
@@ -232,7 +238,7 @@
     Dim result As Integer
 
     For i As Integer = 0 To _lineDef.Count - 1
-      If (_lineDef(i).p0 = id OrElse _lineDef(i).p1 = id) Then
+      If (_lineDef(i).P0 = id OrElse _lineDef(i).P1 = id) Then
         result += 1
       End If
     Next
@@ -240,10 +246,17 @@
     Return (result)
   End Function
 
+  '' Lists for easy traversal
   Private _vertex As New List(Of Vertex)
   Private _lineDef As New List(Of LineDef)
   Private _sector As New List(Of Sector)
 
+  '' Dictionaries for quick lookups by Id
+  Private _vertexById As New Dictionary(Of Integer, Vertex)
+  Private _lineDefById As New Dictionary(Of Integer, LineDef)
+  Private _sectorById As New Dictionary(Of Integer, Sector)
+
+  '' Stacks used to recycle Ids
   Private _vertexIDs As New Stack(Of Integer)
   Private _lineDefIDs As New Stack(Of Integer)
   Private _sectorIDs As New Stack(Of Integer)

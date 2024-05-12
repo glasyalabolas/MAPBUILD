@@ -88,4 +88,14 @@
 
     Return (True)
   End Function
+
+  Public Function CoincidentLines(lP0 As Vec2, lP1 As Vec2, oP0 As Vec2, oP1 As Vec2) As Boolean
+    Dim den As Single =
+      (oP1.y - oP0.y) * (lP1.x - lP0.x) - (oP1.x - oP0.x) * (lP1.y - lP0.y)
+
+    Dim ua As Single = ((oP1.x - oP0.x) * (lP0.y - oP0.y) - (oP1.y - oP0.y) * (lP0.x - oP0.x)) ' / den
+    Dim ub As Single = ((lP1.x - lP0.x) * (lP0.y - oP0.y) - (lP1.y - lP0.y) * (lP0.x - oP0.x)) ' / den
+
+    Return (den = 0.0 AndAlso (ua = 0.0 AndAlso ub = 0.0))
+  End Function
 End Module

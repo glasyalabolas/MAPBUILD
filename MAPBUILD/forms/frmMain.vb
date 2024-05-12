@@ -70,7 +70,7 @@ Public Class frmMain
   End Sub
 
   Private Sub frmMain_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
-    _mode?.OnKeyPressed(e, Control.ModifierKeys)
+    Mode?.OnKeyPressed(e, Control.ModifierKeys)
 
     If (e.KeyData = Keys.A) Then
       GridSize = Math.Min(512, Int(GridSize * 2))
@@ -82,17 +82,17 @@ Public Class frmMain
   End Sub
 
   Private Sub mvView_ModeChanged(sender As Object, e As EventArgs) Handles mvView.ModeChanged
-    lblMode.Text = _mode?.Name
-    lblHelp.Text = _mode?.HelpText
+    lblMode.Text = Mode?.Name
+    lblHelp.Text = Mode?.HelpText
   End Sub
 
   Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
-    _mode = e.Mode
-    mvView.Mode = _mode
+    Mode = e.Mode
+    mvView.Mode = Mode
   End Sub
 
   Private Sub _mode_HelpTextChanged(sender As Object, e As EventArgs) Handles _mode.HelpTextChanged
-    lblHelp.Text = _mode.HelpText
+    lblHelp.Text = Mode.HelpText
   End Sub
 
   Private Sub _map_SelectedLayerChanged(sender As Object, e As SelectedLayerChangedEventArgs) Handles _map.SelectedLayerChanged
@@ -104,7 +104,7 @@ Public Class frmMain
   End Sub
 
   Private Sub SaveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveToolStripMenuItem.Click
-    SaveMap(_map)
+    SaveMap(Map)
   End Sub
 
   Private Sub OpenToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem1.Click
@@ -112,6 +112,12 @@ Public Class frmMain
 
     If (m IsNot Nothing) Then
       Map = m
+
+      Mode = New VertexMode() With {
+        .GridSize = GridSize,
+        .Layer = Map.SelectedLayer}
+    Else
+      Debug.Print("Error loading map")
     End If
   End Sub
 

@@ -1,4 +1,6 @@
-﻿Public Class VertexMode
+﻿Imports MAP_ID = System.Int32
+
+Public Class VertexMode
   Inherits ModeBase
 
   Public Sub New()
@@ -7,7 +9,7 @@
 
   Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
     Dim newModeArgs = New ModeChangedEventArgs() With {
-      .Mode = New PolyDrawMode2()}
+      .Mode = New PolyDrawMode()}
 
     OnModeChanged(Me, newModeArgs)
 
@@ -51,19 +53,19 @@
   End Sub
 
   Public Overrides Sub OnRender(g As Graphics)
-    Dim inv = Camera.Transform().Inversed()
-    Dim proj = Camera.Projection()
+    MyBase.OnRender(g)
+
+    Dim T = Camera.Projection() * Camera.Transform().Inversed()
+    Dim z As Single = 1.0 / Camera.Zoom
 
     For i As Integer = 0 To Layer.Vertices - 1
-      Dim p = proj * inv * Layer.Vertex(i)
+      Dim p = T * Layer.Vertex(i)
 
       If (InsideView(p)) Then
-        If (GridSize / Camera.Zoom >= 10.0) Then
-          If (_closestVertexId = Layer.Vertex(i).Id) Then
-            RenderVertex(g, p, VGAColors.Yellow)
-          Else
-            RenderVertex(g, p, VGAColors.LightRed)
-          End If
+        If (_closestVertexId = Layer.Vertex(i).Id) Then
+          RenderVertex(g, p, Math.Min(10.0, 10.0 * z), VGAColors.Yellow)
+        Else
+          RenderVertex(g, p, Math.Min(10.0, 10.0 * z), VGAColors.LightRed)
         End If
       End If
     Next
@@ -73,5 +75,5 @@
   Private _lstart As Vec2
   Private _mp As New Vec2()
   Private _ldragging As Boolean
-  Private _closestVertexId As Integer = NOT_FOUND
+  Private _closestVertexId As MAP_ID = NOT_FOUND
 End Class

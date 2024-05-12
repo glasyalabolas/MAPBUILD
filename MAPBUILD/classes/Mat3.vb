@@ -32,6 +32,16 @@ Public Class Mat3
       .d = 0.0, .e = 1.0, .f = v.y,
       .g = 0.0, .h = 0.0, .i = 1.0})
   End Function
+  Public Shared Function Rotation(a As Single) As Mat3
+    'Dim theta As Single = Rad(a)
+    Dim co As Single = Math.Cos(a)
+    Dim si As Single = Math.Sin(a)
+
+    Return (New Mat3() With {
+      .a = co, .b = -si, .c = 0.0,
+      .d = si, .e = co, .f = 0.0,
+      .g = 0.0, .h = 0.0, .i = 1.0})
+  End Function
 
   Public Shared Function Scaling(v As Vec2) As Mat3
     Return (New Mat3() With {

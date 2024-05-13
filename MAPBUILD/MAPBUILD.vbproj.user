@@ -10,5 +10,11 @@
     <Compile Update="forms\frmTools.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="forms\frmLineMode.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\mdiTools.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

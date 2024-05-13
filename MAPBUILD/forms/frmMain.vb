@@ -67,6 +67,9 @@ Public Class frmMain
 
     frmTools.Location = New Point(Location.X + Size.Width - frmTools.Width - 50, Location.Y + 100)
     frmTools.Show(Me)
+
+    mdiTools.MapView = mvView
+    mdiTools.Show(Me)
   End Sub
 
   Private Sub frmMain_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp

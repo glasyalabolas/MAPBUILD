@@ -1,4 +1,6 @@
-﻿Public Class mdiTools
+﻿Option Infer On
+
+Public Class mdiTools
   Private Declare Auto Function SetWindowLong Lib "User32.Dll" (hWnd As IntPtr, nIndex As Integer, dwNewLong As Integer) As Integer
   Private Declare Auto Function GetWindowLong Lib "User32.Dll" (hWnd As IntPtr, nIndex As Integer) As Integer
   Private Const GWL_EXSTYLE = (-20)
@@ -10,18 +12,11 @@
     BackColor = VGAColors.Blue
     ForeColor = VGAColors.Cyan
 
+    GetClientMDIControl().BackColor = VGAColors.Blue
+
     lblPos.Text = ""
 
-    'For Each c As Control In pnlButtons.Controls
-    '  If (TypeOf c Is TextBox) Then
-    '    c.ForeColor = VGAColors.Cyan
-    '    c.BackColor = VGAColors.Black
-    '  End If
-    'Next
-
     _owner = Owner
-
-    'AddHandler _owner.mvView.MapMouseMove, AddressOf MapView_MouseMove
   End Sub
 
   Private Sub lblPos_MouseMove(sender As Object, e As MouseEventArgs) Handles lblPos.MouseMove
@@ -39,10 +34,6 @@
   Private Sub lblPos_MouseUp(sender As Object, e As MouseEventArgs) Handles lblPos.MouseUp
     _dragging = False
   End Sub
-
-  'Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-  '  ShowChild(frmLineMode)
-  'End Sub
 
   Private Sub RemoveMDIClientBorder()
     SuspendLayout()
@@ -64,15 +55,42 @@
   Public Sub ShowChild(f As Form)
     f.MdiParent = Me
     f.Show()
-    f.WindowState = FormWindowState.Maximized
+    f.Location = New Point(0, 0)
+
+    Dim containerSize = GetClientMDIControl().Size
+
+    f.Size = New Size(containerSize.Width, containerSize.Height)
+
+    f.BringToFront()
   End Sub
+
+  Private Function GetClientMDIControl() As MdiClient
+    For Each c As Control In Controls
+      If (TypeOf (c) Is MdiClient) Then
+        Return (c)
+      End If
+    Next
+
+    Return (Nothing)
+  End Function
 
   Private Sub MapView_MapMouseMove(sender As Object, p As Vec2) Handles MapView.MapMouseMove
     lblPos.Text = p
   End Sub
 
   Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    _owner.Mode = New VertexMode()
+    ShowChild(frmVertexMode)
+  End Sub
+
+  Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    _owner.Mode = New LineMode()
     ShowChild(frmLineMode)
+  End Sub
+
+  Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    _owner.Mode = New SectorMode()
+    ShowChild(frmSectorMode)
   End Sub
 
   Public WithEvents MapView As MapView

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmLineMode
+Partial Class frmSectorMode
   Inherits BaseToolForm
 
   'Form reemplaza a Dispose para limpiar la lista de componentes.
@@ -22,49 +22,31 @@ Partial Class frmLineMode
   'No lo modifique con el editor de código.
   <System.Diagnostics.DebuggerStepThrough()> _
   Private Sub InitializeComponent()
-    Button1 = New Button()
     TextBox1 = New TextBox()
     SuspendLayout()
     ' 
-    ' Button1
-    ' 
-    Button1.Location = New Point(12, 12)
-    Button1.Name = "Button1"
-    Button1.Size = New Size(155, 42)
-    Button1.TabIndex = 0
-    Button1.Text = "Button1"
-    Button1.UseVisualStyleBackColor = True
-    ' 
     ' TextBox1
     ' 
-    TextBox1.BorderStyle = BorderStyle.None
-    TextBox1.Location = New Point(173, 12)
+    TextBox1.Location = New Point(12, 12)
     TextBox1.Name = "TextBox1"
-    TextBox1.Size = New Size(150, 26)
-    TextBox1.TabIndex = 1
+    TextBox1.Size = New Size(100, 25)
+    TextBox1.TabIndex = 0
+    TextBox1.Text = "Sector"
     ' 
-    ' frmLineMode
+    ' frmSectorMode
     ' 
-    AutoScaleDimensions = New SizeF(12F, 26F)
+    AutoScaleDimensions = New SizeF(8F, 18F)
     AutoScaleMode = AutoScaleMode.Font
-    BackColor = Color.Red
-    ClientSize = New Size(401, 468)
-    ControlBox = False
+    ClientSize = New Size(317, 475)
     Controls.Add(TextBox1)
-    Controls.Add(Button1)
-    Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
+    Font = New Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point)
     FormBorderStyle = FormBorderStyle.None
-    Margin = New Padding(4, 3, 4, 3)
-    MaximizeBox = False
-    MinimizeBox = False
-    Name = "frmLineMode"
-    ShowIcon = False
-    ShowInTaskbar = False
-    Text = "frmVectorMode"
+    Margin = New Padding(3, 4, 3, 4)
+    Name = "frmSectorMode"
+    Text = "frmSectorMode"
     ResumeLayout(False)
     PerformLayout()
   End Sub
 
-  Friend WithEvents Button1 As Button
   Friend WithEvents TextBox1 As TextBox
 End Class

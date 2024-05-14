@@ -4,13 +4,22 @@
     <Compile Update="controls\MapView.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="forms\BaseToolForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\frmLineMode.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="forms\frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="forms\frmSectorMode.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="forms\frmTools.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="forms\frmLineMode.vb">
+    <Compile Update="forms\frmVertexMode.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="forms\mdiTools.vb">

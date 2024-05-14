@@ -34,6 +34,7 @@ Public Class PolyDrawMode
           CreateSector(True)
 
           _drawing = False
+          OnModeFinished()
         Else
           If (nearest = NOT_FOUND) Then
             _vertices.Add(nv)
@@ -49,6 +50,7 @@ Public Class PolyDrawMode
         _drawing = False
 
         OnRefresh()
+        OnModeFinished()
       End If
     End If
 

@@ -22,6 +22,15 @@
     End If
   End Sub
 
+  Public Function Clone() As Rect
+    Return (New Rect(TopLeft.Clone(), BottomRight.Clone()))
+  End Function
+
+  Public Function Inside(p As Vec2) As Boolean
+    Return (p.x >= TopLeft.x AndAlso p.x <= BottomRight.x AndAlso
+      p.y >= TopLeft.y AndAlso p.y <= BottomRight.y)
+  End Function
+
   Public TopLeft As Vec2
   Public BottomRight As Vec2
 End Class

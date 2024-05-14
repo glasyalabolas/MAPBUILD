@@ -108,7 +108,7 @@ Public Class MapView
   Protected Overrides Sub OnMouseUp(e As MouseEventArgs)
     MyBase.OnMouseUp(e)
 
-    _mode?.OnMouseUp(e)
+    _mode?.OnMouseUp(e, Control.ModifierKeys)
 
     If (e.Button And MouseButtons.Right) Then
       _rdragging = False

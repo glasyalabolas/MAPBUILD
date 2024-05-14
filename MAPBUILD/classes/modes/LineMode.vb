@@ -81,7 +81,7 @@
     End If
   End Sub
 
-  Public Overrides Sub OnMouseUp(e As MouseEventArgs)
+  Public Overrides Sub OnMouseUp(e As MouseEventArgs, modifierKeys As Keys)
     If (e.Button And MouseButtons.Left) Then
       If (_ldragging) Then
         _ldragging = False

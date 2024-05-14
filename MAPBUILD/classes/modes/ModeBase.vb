@@ -18,6 +18,8 @@ Public MustInherit Class ModeBase
   Protected Const LINEDEF_NEAR_DISTANCE As Single = 100.0
 
   Public Event ModeChanged(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeChanged
+  Public Event ModeStarted(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeStarted
+  Public Event ModeFinished(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeFinished
   Public Event HelpTextChanged(sender As Object, e As EventArgs) Implements IMode.HelpTextChanged
   Public Event GridSizeChanged(sender As Object, e As EventArgs) Implements IMode.GridSizeChanged
   Public Event Refresh(sender As Object, e As EventArgs) Implements IMode.Refresh
@@ -68,7 +70,10 @@ Public MustInherit Class ModeBase
     OnHelpTextChanged()
   End Sub
 
-  Protected Overridable Sub OnSelectionChanged()
+  'Protected Overridable Sub OnSelectionChanged()
+  'End Sub
+
+  Public Overridable Sub OnClearSelection() Implements IMode.OnClearSelection
   End Sub
 
   Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
@@ -101,13 +106,21 @@ Public MustInherit Class ModeBase
     End If
   End Sub
 
-  Public Overridable Sub OnMouseUp(e As MouseEventArgs) Implements IMode.OnMouseUp
+  Public Overridable Sub OnMouseUp(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseUp
     If (e.Button And MouseButtons.Left) Then
       If (_selecting) Then
         _selecting = False
+
+        If (_selectRect IsNot Nothing) Then
+          OnSelect(_selectRect, modifierKeys)
+        End If
+
         _selectRect = Nothing
+        End If
       End If
-    End If
+  End Sub
+
+  Protected Overridable Sub OnSelect(e As Rect, modifierKeys As Keys)
   End Sub
 
   Public Overridable Sub OnMouseDown(e As MouseEventArgs) Implements IMode.OnMouseDown
@@ -128,6 +141,14 @@ Public MustInherit Class ModeBase
     e.Mode.Layer = Layer
 
     RaiseEvent ModeChanged(sender, e)
+  End Sub
+
+  Protected Sub OnModeStarted()
+    RaiseEvent ModeStarted(Me, New ModeChangedEventArgs())
+  End Sub
+
+  Protected Sub OnModeFinished()
+    RaiseEvent ModeFinished(Me, New ModeChangedEventArgs())
   End Sub
 
   Protected Sub OnRefresh()

@@ -139,8 +139,23 @@ Public Class frmMain
     c.Undo()
   End Sub
 
+  Private Sub _mode_ModeStarted(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeStarted
+    Debug.Print("_mode_ModeStarted")
+    _modeStack.Push(Mode)
+  End Sub
+
+  Private Sub _mode_ModeFinished(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeFinished
+    Debug.Print("_mode_ModeFinished")
+    Mode = _modeStack.Pop()
+    mvView.Mode = Mode
+    mdiTools.Mode = Mode
+
+    Debug.Print(Mode.Name)
+  End Sub
+
   Private WithEvents _mode As IMode
   Private WithEvents _map As Map
   Private _gridSize As Single
   Private _undoStack As New Stack(Of ICommand)
+  Private _modeStack As New Stack(Of IMode)
 End Class

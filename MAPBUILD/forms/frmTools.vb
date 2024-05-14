@@ -49,10 +49,6 @@
     _owner.Mode = New SectorMode()
   End Sub
 
-  Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-    _owner.Mode = New OperationsDebugMode()
-  End Sub
-
   Private _owner As frmMain
   Private _dragging As Boolean
   Private _sx As Integer, _sy As Integer

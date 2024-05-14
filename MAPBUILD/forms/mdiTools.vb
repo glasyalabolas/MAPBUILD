@@ -48,16 +48,12 @@ Public Class mdiTools
   Private Sub RemoveMDIClientBorder()
     SuspendLayout()
 
-    '' Set background color and remove border from MDIClient control
-    For Each c As Control In Controls()
-      If TypeOf (c) Is MdiClient Then
-        Dim windowLong As Integer = GetWindowLong(c.Handle, GWL_EXSTYLE)
-        windowLong = windowLong And (Not WS_EX_CLIENTEDGE)
-        SetWindowLong(c.Handle, GWL_EXSTYLE, windowLong)
-        c.Width += 1
-        Exit For
-      End If
-    Next
+    '' Remove border from MDIClient control
+    Dim mdiClient = GetClientMDIControl()
+
+    Dim windowLong As Integer = GetWindowLong(mdiClient.Handle, GWL_EXSTYLE) And (Not WS_EX_CLIENTEDGE)
+    SetWindowLong(mdiClient.Handle, GWL_EXSTYLE, windowLong)
+    mdiClient.Width += 1
 
     ResumeLayout()
   End Sub

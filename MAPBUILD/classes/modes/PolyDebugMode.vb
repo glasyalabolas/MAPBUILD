@@ -9,9 +9,6 @@
     _poly.Add(New Vec2(e.X, e.Y))
   End Sub
 
-  Public Overrides Sub OnProcess()
-  End Sub
-
   Public Overrides Sub OnRender(g As Graphics)
     Dim c = Color.Red
 

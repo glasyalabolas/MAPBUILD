@@ -6,6 +6,16 @@ Public Class mdiTools
   Private Const GWL_EXSTYLE = (-20)
   Private Const WS_EX_CLIENTEDGE = &H200
 
+  Public Property Mode() As IMode
+    Get
+      Return (_mode)
+    End Get
+
+    Set(value As IMode)
+      _mode = value
+    End Set
+  End Property
+
   Private Sub mdiTools_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     RemoveMDIClientBorder()
 
@@ -95,6 +105,7 @@ Public Class mdiTools
 
   Public WithEvents MapView As MapView
 
+  Private WithEvents _mode As IMode
   Private _owner As frmMain
   Private _dragging As Boolean
   Private _sx As Integer, _sy As Integer

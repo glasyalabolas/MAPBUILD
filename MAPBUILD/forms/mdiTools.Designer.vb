@@ -37,7 +37,7 @@ Partial Class mdiTools
     lblPos.Location = New Point(0, 0)
     lblPos.Margin = New Padding(2, 0, 2, 0)
     lblPos.Name = "lblPos"
-    lblPos.Size = New Size(341, 19)
+    lblPos.Size = New Size(401, 26)
     lblPos.TabIndex = 3
     lblPos.Text = "lblPos"
     lblPos.TextAlign = ContentAlignment.MiddleCenter
@@ -48,47 +48,47 @@ Partial Class mdiTools
     Panel1.Controls.Add(Button2)
     Panel1.Controls.Add(Button1)
     Panel1.Dock = DockStyle.Top
-    Panel1.Location = New Point(0, 19)
+    Panel1.Location = New Point(0, 26)
     Panel1.Margin = New Padding(2)
     Panel1.Name = "Panel1"
-    Panel1.Size = New Size(341, 59)
+    Panel1.Size = New Size(401, 59)
     Panel1.TabIndex = 5
     ' 
     ' Button3
     ' 
-    Button3.Location = New Point(188, 2)
+    Button3.Location = New Point(248, 13)
     Button3.Margin = New Padding(2)
     Button3.Name = "Button3"
-    Button3.Size = New Size(89, 32)
+    Button3.Size = New Size(128, 32)
     Button3.TabIndex = 2
     Button3.Text = "Sector"
     Button3.UseVisualStyleBackColor = True
     ' 
     ' Button2
     ' 
-    Button2.Location = New Point(95, 2)
+    Button2.Location = New Point(123, 13)
     Button2.Margin = New Padding(2)
     Button2.Name = "Button2"
-    Button2.Size = New Size(89, 32)
+    Button2.Size = New Size(121, 32)
     Button2.TabIndex = 1
     Button2.Text = "Line"
     Button2.UseVisualStyleBackColor = True
     ' 
     ' Button1
     ' 
-    Button1.Location = New Point(2, 2)
+    Button1.Location = New Point(11, 13)
     Button1.Margin = New Padding(2)
     Button1.Name = "Button1"
-    Button1.Size = New Size(89, 32)
+    Button1.Size = New Size(108, 32)
     Button1.TabIndex = 0
     Button1.Text = "Vertex"
     Button1.UseVisualStyleBackColor = True
     ' 
     ' mdiTools
     ' 
-    AutoScaleDimensions = New SizeF(8F, 18F)
+    AutoScaleDimensions = New SizeF(13F, 27F)
     AutoScaleMode = AutoScaleMode.Font
-    ClientSize = New Size(341, 324)
+    ClientSize = New Size(401, 601)
     Controls.Add(Panel1)
     Controls.Add(lblPos)
     DoubleBuffered = True

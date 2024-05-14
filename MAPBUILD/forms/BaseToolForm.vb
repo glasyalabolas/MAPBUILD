@@ -1,5 +1,4 @@
 ﻿Public Class BaseToolForm
-
   Private Sub BaseToolForm_Load(sender As Object, e As EventArgs) Handles Me.Load
     MinimizeBox = False
     MaximizeBox = False

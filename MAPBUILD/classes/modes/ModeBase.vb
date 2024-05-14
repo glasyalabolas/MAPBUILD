@@ -1,4 +1,6 @@
-﻿Imports MAP_ID = System.Int32
+﻿Option Infer On
+
+Imports MAP_ID = System.Int32
 
 ''' <summary>
 ''' Base class for editing modes.
@@ -49,6 +51,13 @@ Public MustInherit Class ModeBase
   Public Property Layer() As Layer Implements IMode.Layer
   Public Property Camera() As Camera2D Implements IMode.Camera
 
+  Protected ReadOnly Property Selecting() As Boolean
+    Get
+      Return (_selecting)
+    End Get
+  End Property
+
+
   Protected Sub SetName(value As String)
     _name = value
   End Sub
@@ -59,20 +68,48 @@ Public MustInherit Class ModeBase
     OnHelpTextChanged()
   End Sub
 
-  Public Overridable Sub OnProcess() Implements IMode.OnProcess
+  Protected Overridable Sub OnSelectionChanged()
   End Sub
+
   Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
     If (GridSize / Camera.Zoom >= 20.0) Then
       RenderGrid(g, VGAColors.DarkGray)
     End If
 
     RenderView(g)
+
+    If (_selectRect IsNot Nothing) Then
+      Dim p = New Pen(VGAColors.White, 1)
+      p.DashPattern = {3, 2, 3, 2}
+      Dim sz = (_selectRect.BottomRight - _selectRect.TopLeft) / Camera.Zoom
+      Dim T = Camera.Projection() * Camera.Transform().Inversed()
+      Dim p0 = T * _selectRect.TopLeft
+
+      g.DrawRectangle(p, New Rectangle(p0.x, p0.y, sz.x, sz.y))
+    End If
   End Sub
 
   Public Overridable Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseMove
+    If (e.Button And MouseButtons.Left) Then
+      If (_selecting) Then
+        _ep = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+        _selectRect = New Rect(_sp.Clone(), _ep.Clone())
+      Else
+        _selecting = True
+        _sp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+      End If
+    End If
   End Sub
+
   Public Overridable Sub OnMouseUp(e As MouseEventArgs) Implements IMode.OnMouseUp
+    If (e.Button And MouseButtons.Left) Then
+      If (_selecting) Then
+        _selecting = False
+        _selectRect = Nothing
+      End If
+    End If
   End Sub
+
   Public Overridable Sub OnMouseDown(e As MouseEventArgs) Implements IMode.OnMouseDown
   End Sub
   Public Overridable Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseClick
@@ -272,4 +309,7 @@ Public MustInherit Class ModeBase
   Private _helpText As String
   Private _gridSize As Single
   Private _visibleLines As New List(Of List(Of MAP_ID))
+  Private _selecting As Boolean
+  Private _sp As New Vec2, _ep As New Vec2
+  Private _selectRect As Rect
 End Class

@@ -12,7 +12,6 @@
   Property Layer() As Layer
   Property Camera() As Camera2D
 
-  Sub OnProcess()
   Sub OnRender(g As Graphics)
   Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
   Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys)

@@ -17,6 +17,8 @@ Public Class VertexMode
   End Sub
 
   Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
+    MyBase.OnMouseMove(e, modifierKeys)
+
     _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
 
     If (Not _ldragging) Then
@@ -26,22 +28,27 @@ Public Class VertexMode
     If (e.Button And MouseButtons.Left) Then
       If (_ldragging) Then
         _ldelta = SnapToGrid(_mp) - _lstart
+        _lstart = SnapToGrid(_mp)
 
         If (_closestVertexId <> NOT_FOUND) Then
+          'Layer.VertexById(_closestVertexId).Pos = SnapToGrid(_lstart + _ldelta)
+          Layer.VertexById(_closestVertexId).Pos += _ldelta
 
-          Layer.VertexById(_closestVertexId).Pos = SnapToGrid(_lstart + _ldelta)
           SetHelpText("Drag vertex to move, delta: " & _ldelta.ToString())
         End If
       Else
         If (_closestVertexId <> NOT_FOUND) Then
           _ldragging = True
-          _lstart = Layer.VertexById(_closestVertexId)
+          '_lstart = Layer.VertexById(_closestVertexId)
+          _lstart = SnapToGrid(_mp)
         End If
       End If
     End If
   End Sub
 
   Public Overrides Sub OnMouseUp(e As MouseEventArgs)
+    MyBase.OnMouseUp(e)
+
     If (e.Button And MouseButtons.Left) Then
       If (_ldragging) Then
         _ldragging = False

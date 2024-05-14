@@ -34,6 +34,7 @@ Public Class frmMain
       _mode.Layer = Map.SelectedLayer
 
       mvView.Mode = _mode
+      mdiTools.Mode = Mode
     End Set
   End Property
 
@@ -93,6 +94,7 @@ Public Class frmMain
   Private Sub _mode_ModeChanged(sender As Object, e As ModeChangedEventArgs) Handles _mode.ModeChanged
     Mode = e.Mode
     mvView.Mode = Mode
+    mdiTools.Mode = Mode
   End Sub
 
   Private Sub _mode_HelpTextChanged(sender As Object, e As EventArgs) Handles _mode.HelpTextChanged

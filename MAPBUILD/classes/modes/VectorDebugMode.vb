@@ -6,25 +6,25 @@
     _center = New Vec2(_w / 2, _h / 2)
   End Sub
 
-  Public Overrides Sub OnProcess()
-    'If (GetKeyState(Keys.Up)) Then
-    '  _ymin -= 1
-    'End If
-    'If (GetKeyState(Keys.Down)) Then
-    '  _ymin += 1
-    'End If
-    'If (GetKeyState(Keys.Left)) Then
-    '  _xmin -= 1
-    'End If
-    'If (GetKeyState(Keys.Right)) Then
-    '  _xmin += 1
-    'End If
+  'Public Overrides Sub OnProcess()
+  '  'If (GetKeyState(Keys.Up)) Then
+  '  '  _ymin -= 1
+  '  'End If
+  '  'If (GetKeyState(Keys.Down)) Then
+  '  '  _ymin += 1
+  '  'End If
+  '  'If (GetKeyState(Keys.Left)) Then
+  '  '  _xmin -= 1
+  '  'End If
+  '  'If (GetKeyState(Keys.Right)) Then
+  '  '  _xmin += 1
+  '  'End If
 
-    _xmax = _xmin + 300
-    _ymax = _ymin + 200
+  '  _xmax = _xmin + 300
+  '  _ymax = _ymin + 200
 
-    _angle = Wrap(_angle + 0.1!, 0.0!, 359.0!)
-  End Sub
+  '  _angle = Wrap(_angle + 0.1!, 0.0!, 359.0!)
+  'End Sub
 
   Public Overrides Sub OnRender(g As Graphics)
     RenderLineSeg(g, _lineSeg, Color.Red)

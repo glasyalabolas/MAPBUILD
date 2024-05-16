@@ -26,6 +26,7 @@ Public Class PolyDrawMode
   Public Overrides Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys)
     If (_drawing) Then
       If (e.Button And MouseButtons.Left) Then
+        '' TODO: ignore zero-length segments
         Dim nv = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
         Dim nearest As MAP_ID = FindClosestVertex(nv)
 
@@ -117,6 +118,10 @@ Public Class PolyDrawMode
     Dim lineDefIds As New List(Of MAP_ID)
 
     For i As Integer = 0 To _vertIds.Count - IIf(closed, 1, 2)
+      Dim p0 = Layer.VertexById(_vertIds(i)).Pos
+      Dim p1 = Layer.VertexById(_vertIds(Wrap(i + 1, 0, _vertIds.Count))).Pos
+
+
       lineDefIds.Add(Layer.AddLineDef(
         New LineDef(_vertIds(i), _vertIds(Wrap(i + 1, 0, _vertIds.Count)))))
     Next
@@ -125,6 +130,19 @@ Public Class PolyDrawMode
     Layer.AddSector(s)
 
     For i As Integer = 0 To lineDefIds.Count - 1
+      Dim ld = Layer.LineDefById(lineDefIds(i))
+
+      Dim p0 = Layer.VertexById(ld.P0).Pos
+      Dim p1 = Layer.VertexById(ld.P1).Pos
+
+      Dim N = (p0 - p1).Normalize().TurnLeft()
+      Dim W = (p1 - p0)
+      Dim sideP = (p0 + W * 0.5) + N
+
+      Dim sideN As Single = W.Cross(sideP - p0)
+
+      Debug.Print("Linedef #" & i & ": " & sideN)
+
       s.AddLineDef(lineDefIds(i))
     Next
   End Sub

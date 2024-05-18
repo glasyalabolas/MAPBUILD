@@ -23,25 +23,48 @@ Partial Class frmSectorMode
   <System.Diagnostics.DebuggerStepThrough()> _
   Private Sub InitializeComponent()
     TextBox1 = New TextBox()
+    Label1 = New Label()
+    lblSectorId = New Label()
     SuspendLayout()
     ' 
     ' TextBox1
     ' 
-    TextBox1.Location = New Point(12, 12)
+    TextBox1.Location = New Point(205, 63)
     TextBox1.Name = "TextBox1"
-    TextBox1.Size = New Size(100, 25)
+    TextBox1.Size = New Size(100, 34)
     TextBox1.TabIndex = 0
-    TextBox1.Text = "Sector"
+    ' 
+    ' Label1
+    ' 
+    Label1.AutoSize = True
+    Label1.Location = New Point(12, 15)
+    Label1.Name = "Label1"
+    Label1.Size = New Size(116, 27)
+    Label1.TabIndex = 1
+    Label1.Text = "Sector #"
+    ' 
+    ' lblSectorId
+    ' 
+    lblSectorId.AutoSize = True
+    lblSectorId.Location = New Point(125, 15)
+    lblSectorId.Name = "lblSectorId"
+    lblSectorId.Size = New Size(90, 27)
+    lblSectorId.TabIndex = 2
+    lblSectorId.Text = "Label2"
     ' 
     ' frmSectorMode
     ' 
-    AutoScaleDimensions = New SizeF(8F, 18F)
+    AutoScaleDimensions = New SizeF(13F, 27F)
     AutoScaleMode = AutoScaleMode.Font
-    ClientSize = New Size(317, 475)
+    ClientSize = New Size(374, 475)
+    Controls.Add(lblSectorId)
+    Controls.Add(Label1)
     Controls.Add(TextBox1)
     Font = New Font("Consolas", 11.25F, FontStyle.Regular, GraphicsUnit.Point)
-    FormBorderStyle = FormBorderStyle.None
+    ForeColor = Color.FromArgb(CByte(0), CByte(170), CByte(170))
     Margin = New Padding(3, 4, 3, 4)
+    MaximizeBox = False
+    MinimizeBox = False
     Name = "frmSectorMode"
     Text = "frmSectorMode"
     ResumeLayout(False)
@@ -49,4 +72,6 @@ Partial Class frmSectorMode
   End Sub
 
   Friend WithEvents TextBox1 As TextBox
+  Friend WithEvents Label1 As Label
+  Friend WithEvents lblSectorId As Label
 End Class

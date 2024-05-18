@@ -127,24 +127,16 @@ Public Class PolyDrawMode
     Next
 
     Dim s = New Sector()
+
     Layer.AddSector(s)
 
     For i As Integer = 0 To lineDefIds.Count - 1
-      Dim ld = Layer.LineDefById(lineDefIds(i))
-
-      Dim p0 = Layer.VertexById(ld.P0).Pos
-      Dim p1 = Layer.VertexById(ld.P1).Pos
-
-      Dim N = (p0 - p1).Normalize().TurnLeft()
-      Dim W = (p1 - p0)
-      Dim sideP = (p0 + W * 0.5) + N
-
-      Dim sideN As Single = W.Cross(sideP - p0)
-
-      Debug.Print("Linedef #" & i & ": " & sideN)
-
       s.AddLineDef(lineDefIds(i))
     Next
+
+    If (s.WallsPointingInwards()) Then
+      s.InvertWalls()
+    End If
   End Sub
 
   Private Function FindClosestVertex(v As Vec2) As Integer

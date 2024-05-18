@@ -47,7 +47,7 @@ Public Class Sector
   End Sub
 
   Public Sub RemoveLineDef(id As MAP_ID)
-    For i As Integer = 0 To _lineDefs.Count - 1
+    For i As Integer = 0 To LineDefs - 1
       If (_lineDefs(i) = id) Then
         _lineDefs.RemoveAt(i)
 
@@ -64,8 +64,8 @@ Public Class Sector
   Public Function Inside(p As Vec2) As Boolean
     Dim count As Integer = 0
 
-    If (_lineDefs.Count > 2) Then
-      For i As Integer = 0 To _lineDefs.Count - 1
+    If (LineDefs > 2) Then
+      For i As Integer = 0 To LineDefs - 1
         Dim ld = Layer.LineDefById(_lineDefs(i))
         Dim p1 = ld.GetP0.Pos
         Dim p2 = ld.GetP1.Pos
@@ -88,7 +88,7 @@ Public Class Sector
   End Function
 
   Public Function FindLineDefByVertex(vId As MAP_ID) As Integer
-    For i As Integer = 0 To _lineDefs.Count - 1
+    For i As Integer = 0 To LineDefs - 1
       Dim ld = Layer.LineDefById(_lineDefs(i))
 
       If (ld.P0 = vId OrElse ld.P1 = vId) Then
@@ -100,7 +100,7 @@ Public Class Sector
   End Function
 
   Private Sub OnLineDefSplit(sender As LineDef, newId As MAP_ID)
-    For i As Integer = 0 To _lineDefs.Count - 1
+    For i As Integer = 0 To LineDefs - 1
       If (sender.Id = _lineDefs(i)) Then
         _lineDefs.Insert(i + 1, newId)
 
@@ -119,19 +119,19 @@ Public Class Sector
       End If
     Next
 
-    If (_lineDefs.Count = 0) Then
+    If (LineDefs = 0) Then
       Layer.DeleteSector(Id)
     End If
   End Sub
 
   Public Function IsClosed() As Boolean
-    Return (_vertices.Count - _lineDefs.Count = 0)
+    Return (Vertices - LineDefs = 0)
   End Function
 
   Public Function GetCentroid() As Vec2
     Dim centroid As New Vec2()
 
-    For i As Integer = 0 To _vertices.Count - 1
+    For i As Integer = 0 To Vertices - 1
       Dim v = Layer.VertexById(_vertices(i))
 
       centroid += v.Pos
@@ -146,10 +146,40 @@ Public Class Sector
     Dim T = Mat3.Translation(New Vec2(c.x, c.y)) *
       Mat3.Rotation(a) * Mat3.Translation(New Vec2(-c.x, -c.y))
 
-    For i As Integer = 0 To _vertices.Count - 1
+    For i As Integer = 0 To Vertices - 1
       Dim v = Layer.VertexById(_vertices(i))
 
       v.Pos = T * New Vec2(v.Pos.x, v.Pos.y)
+    Next
+  End Sub
+
+  Public Function WallsPointingInwards() As Boolean
+    Dim result As Boolean = True
+
+    For i As Integer = 0 To LineDefs - 1
+      Dim ld = Layer.LineDefById(_lineDefs(i))
+      Dim p0 = Layer.VertexById(ld.P0).Pos
+      Dim p1 = Layer.VertexById(ld.P1).Pos
+
+      Dim N = ld.Normal()
+      Dim mp = p0 + (p1 - p0) * 0.5
+      Dim p = mp + N
+
+      If (Not Inside(p)) Then
+        Return (False)
+      End If
+    Next
+
+    Return (result)
+  End Function
+
+  Public Sub InvertWalls()
+    For i As Integer = 0 To LineDefs - 1
+      Dim ld = Layer.LineDefById(_lineDefs(i))
+
+      Dim tmp = ld.P0
+      ld.P0 = ld.P1
+      ld.P1 = tmp
     Next
   End Sub
 

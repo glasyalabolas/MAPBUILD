@@ -1,4 +1,6 @@
-﻿Public Class SectorMode
+﻿Option Infer On
+
+Public Class SectorMode
   Inherits ModeBase
 
   Public Sub New()
@@ -30,8 +32,8 @@
       For j As Integer = 0 To Layer.Sector(i).LineDefs - 1
         Dim ld = Layer.LineDefById(Layer.Sector(i).LineDef(j))
 
-        Dim p0 = T * Layer.VertexById(ld.P0)
-        Dim p1 = T * Layer.VertexById(ld.P1)
+        Dim p0 = T * Layer.VertexById(ld.P0).Pos
+        Dim p1 = T * Layer.VertexById(ld.P1).Pos
 
         If (Layer.Sector(i).Id = _highlightedSectorId) Then
           RenderLineDef(g, p0, p1, Color.Yellow)

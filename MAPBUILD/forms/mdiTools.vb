@@ -67,6 +67,16 @@ Public Class mdiTools
 
     f.Size = New Size(containerSize.Width, containerSize.Height)
 
+    For Each c As Control In f.Controls
+      If (TypeOf c Is TextBox) Then
+        With DirectCast(c, TextBox)
+          .ForeColor = VGAColors.Cyan
+          .BackColor = VGAColors.Black
+          .BorderStyle = BorderStyle.None
+        End With
+      End If
+    Next
+
     f.BringToFront()
   End Sub
 

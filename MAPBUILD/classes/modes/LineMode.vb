@@ -35,19 +35,19 @@
 
         '' Check which sector is in front/back
         Dim ld = Layer.LineDefById(_closestLineDefId)
-        Dim p0 = Layer.VertexById(ld.P0)
-        Dim p1 = Layer.VertexById(ld.P1)
+        Dim p0 = ld.GetP0()
+        Dim p1 = ld.GetP1()
 
         Dim N = ld.Normal()
         Dim center = (p0.Pos + (p1.Pos - p0.Pos) * 0.5)
 
         For i As Integer = 0 To Layer.Sectors - 1
           If (Layer.Sector(i).Inside(center + N)) Then
-            ld.FrontSector = i
+            ld.FrontSector = Layer.Sector(i).Id
           End If
 
           If (Layer.Sector(i).Inside(center - N)) Then
-            ld.BackSector = i
+            ld.BackSector = Layer.Sector(i).Id
           End If
 
           SetHelpText("FSId: " & ld.FrontSector & ", BSId:" & ld.BackSector)
@@ -108,6 +108,12 @@
       Dim pp1 = T * p1
 
       RenderLineDef(g, pp0, pp1, c)
+
+      Dim N = ld.Normal()
+
+      Dim crossP As Single = N.Cross((p1.Pos - p0.Pos).Normalize())
+
+      Debug.Print("CrossP: " & crossP)
 
       If (_closestPoint IsNot Nothing AndAlso Not _ldragging) Then
         Dim p = T * _closestPoint

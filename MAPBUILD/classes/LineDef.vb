@@ -6,12 +6,6 @@ Public Class LineDef
   Public Event LineDefSplit(sender As LineDef, newId As MAP_ID)
   Public Event LineDefDeleted(sender As LineDef)
 
-  Public Enum InsideSectorResult
-    Outside
-    PartiallyInside
-    Inside
-  End Enum
-
   Public Sub OnLineDefSplit(newId As MAP_ID)
     RaiseEvent LineDefSplit(Me, newId)
   End Sub
@@ -127,17 +121,6 @@ Public Class LineDef
     Return (False)
   End Function
 
-  Public Function Inside(s As Sector) As InsideSectorResult
-    Dim v1 = Layer.VertexById(P0)
-    Dim v2 = Layer.VertexById(P1)
-
-    Dim r1 As Boolean = s.Inside(v1)
-    Dim r2 As Boolean = s.Inside(v2)
-
-    Return (IIf(r1 AndAlso r2, InsideSectorResult.Inside, IIf(
-      r1 OrElse r2, InsideSectorResult.PartiallyInside, InsideSectorResult.Outside)))
-  End Function
-
   Public Function Traverse(s As Single) As List(Of Point)
     Dim mP0 = Layer.VertexById(P0)
     Dim mP1 = Layer.VertexById(P1)
@@ -182,6 +165,34 @@ Public Class LineDef
       Else
         sideDistY += deltaDistY
         mapY += stepY
+      End If
+    Next
+
+    Return (result)
+  End Function
+
+  Public Sub Swap()
+    Dim tmp = P0
+    P0 = P1
+    P1 = tmp
+  End Sub
+
+  Public Function FacesInside(s As Sector) As Boolean
+    Dim result As Boolean = False
+
+    For i As Integer = 0 To s.LineDefs - 1
+      Dim ld = s.GetLineDef(i)
+
+      If (ld.Id = Id) Then
+        Dim p0 = GetP0()
+        Dim p1 = GetP1()
+
+        Dim N = Normal()
+        Dim center = (p0.Pos + (p1.Pos - p0.Pos) * 0.5)
+
+        If (s.Inside(center + N)) Then
+          Return (True)
+        End If
       End If
     Next
 

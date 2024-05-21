@@ -7,6 +7,9 @@
     <Compile Update="forms\BaseToolForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="forms\ClipperTest.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="forms\frmLineMode.vb">
       <SubType>Form</SubType>
     </Compile>

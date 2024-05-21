@@ -72,6 +72,8 @@ Public Class frmMain
     mdiTools.Location = New Point(Location.X + Size.Width - mdiTools.Width - 50, Location.Y + 100)
     mdiTools.MapView = mvView
     mdiTools.Show(Me)
+
+    'ClipperTest.Show()
   End Sub
 
   Private Sub frmMain_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp

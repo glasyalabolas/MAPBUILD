@@ -1,7 +1,6 @@
 ﻿Imports System.IO
 
 Public Module MapUtils
-
   Public Sub SaveMap(m As Map)
     Dim saveDialog As New SaveFileDialog() With {
       .Filter = "MAP files (*.map)|*.map"}

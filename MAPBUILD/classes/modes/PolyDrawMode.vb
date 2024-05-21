@@ -1,4 +1,5 @@
-﻿Imports MAP_ID = System.Int32
+﻿Imports System.ComponentModel.DataAnnotations
+Imports MAP_ID = System.Int32
 
 Public Class PolyDrawMode
   Inherits ModeBase
@@ -26,19 +27,18 @@ Public Class PolyDrawMode
   Public Overrides Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys)
     If (_drawing) Then
       If (e.Button And MouseButtons.Left) Then
-        '' TODO: ignore zero-length segments
-        Dim nv = SnapToGrid(Camera.ViewToWorld(New Vec2(e.X, e.Y)))
-        Dim nearest As MAP_ID = FindClosestVertex(nv)
+        Dim nearest As MAP_ID = FindClosestVertex(_cp)
 
-        If (nearest = 0) Then
+        If (nearest = 0 AndAlso _vertices.Count > 2) Then
           '' Close polygon
           CreateSector(True)
 
           _drawing = False
+
           OnModeFinished()
         Else
           If (nearest = NOT_FOUND) Then
-            _vertices.Add(nv)
+            _vertices.Add(_cp)
           End If
         End If
       End If

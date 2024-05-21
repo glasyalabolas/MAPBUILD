@@ -34,24 +34,24 @@
         _closestPoint = Layer.LineDefById(_closestLineDefId).GetClosestPoint(_mp)
 
         '' Check which sector is in front/back
-        Dim ld = Layer.LineDefById(_closestLineDefId)
-        Dim p0 = ld.GetP0()
-        Dim p1 = ld.GetP1()
+        'Dim ld = Layer.LineDefById(_closestLineDefId)
+        'Dim p0 = ld.GetP0()
+        'Dim p1 = ld.GetP1()
 
-        Dim N = ld.Normal()
-        Dim center = (p0.Pos + (p1.Pos - p0.Pos) * 0.5)
+        'Dim N = ld.Normal()
+        'Dim center = (p0.Pos + (p1.Pos - p0.Pos) * 0.5)
 
-        For i As Integer = 0 To Layer.Sectors - 1
-          If (Layer.Sector(i).Inside(center + N)) Then
-            ld.FrontSector = Layer.Sector(i).Id
-          End If
+        'For i As Integer = 0 To Layer.Sectors - 1
+        '  If (Layer.Sector(i).Inside(center + N)) Then
+        '    ld.FrontSector = Layer.Sector(i).Id
+        '  End If
 
-          If (Layer.Sector(i).Inside(center - N)) Then
-            ld.BackSector = Layer.Sector(i).Id
-          End If
+        '  If (Layer.Sector(i).Inside(center - N)) Then
+        '    ld.BackSector = Layer.Sector(i).Id
+        '  End If
 
-          SetHelpText("FSId: " & ld.FrontSector & ", BSId:" & ld.BackSector)
-        Next
+        '  SetHelpText("FSId: " & ld.FrontSector & ", BSId:" & ld.BackSector)
+        'Next
       End If
     End If
 

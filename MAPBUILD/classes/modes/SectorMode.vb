@@ -23,29 +23,29 @@ Public Class SectorMode
     Next
   End Sub
 
+  Private Sub RenderSector(g As Graphics, s As Sector, T As Mat3, c As Color)
+    For j As Integer = 0 To s.LineDefs - 1
+      Dim ld = Layer.LineDefById(s.LineDef(j))
+
+      Dim p0 = T * ld.GetP0().Pos
+      Dim p1 = T * ld.GetP1().Pos
+
+      RenderLineDef(g, p0, p1, c)
+    Next
+  End Sub
+
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
 
     Dim T = Camera.Projection() * Camera.Transform().Inversed()
 
     For i As Integer = 0 To Layer.Sectors - 1
-      For j As Integer = 0 To Layer.Sector(i).LineDefs - 1
-        Dim ld = Layer.LineDefById(Layer.Sector(i).LineDef(j))
-
-        Dim p0 = T * Layer.VertexById(ld.P0).Pos
-        Dim p1 = T * Layer.VertexById(ld.P1).Pos
-
-        If (Layer.Sector(i).Id = _highlightedSectorId) Then
-          RenderLineDef(g, p0, p1, Color.Yellow)
-        Else
-          RenderLineDef(g, p0, p1, Color.Red)
-        End If
-      Next
-
-      Dim centroid = Layer.Sector(i).GetCentroid()
-
-      RenderVertex(g, T * centroid, 7.0 / Camera.Zoom, VGAColors.Magenta)
+      RenderSector(g, Layer.Sector(i), T, VGAColors.Red)
     Next
+
+    If (_highlightedSectorId <> NOT_FOUND) Then
+      RenderSector(g, Layer.SectorById(_highlightedSectorId), T, VGAColors.Yellow)
+    End If
   End Sub
 
   Public Overrides Sub OnKeyPress(e As KeyEventArgs, modifierKeys As Keys)

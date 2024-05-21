@@ -29,6 +29,12 @@ Public Class Sector
     End Get
   End Property
 
+  Public ReadOnly Property GetLineDef(index As Integer) As LineDef
+    Get
+      Return (Layer.LineDefById(_lineDefs(index)))
+    End Get
+  End Property
+
   Public Sub AddLineDef(id As MAP_ID)
     _lineDefs.Add(id)
 
@@ -158,16 +164,20 @@ Public Class Sector
 
     For i As Integer = 0 To LineDefs - 1
       Dim ld = Layer.LineDefById(_lineDefs(i))
-      Dim p0 = Layer.VertexById(ld.P0).Pos
-      Dim p1 = Layer.VertexById(ld.P1).Pos
 
-      Dim N = ld.Normal()
-      Dim mp = p0 + (p1 - p0) * 0.5
-      Dim p = mp + N
-
-      If (Not Inside(p)) Then
+      If (Not ld.FacesInside(Me)) Then
         Return (False)
       End If
+      'Dim p0 = Layer.VertexById(ld.P0).Pos
+      'Dim p1 = Layer.VertexById(ld.P1).Pos
+
+      'Dim N = ld.Normal()
+      'Dim mp = p0 + (p1 - p0) * 0.5
+      'Dim p = mp + N
+
+      'If (Not Inside(p)) Then
+      '  Return (False)
+      'End If
     Next
 
     Return (result)

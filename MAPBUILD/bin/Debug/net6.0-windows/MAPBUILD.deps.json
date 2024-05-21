@@ -7,8 +7,19 @@
   "targets": {
     ".NETCoreApp,Version=v6.0": {
       "MAPBUILD/1.0.0": {
+        "dependencies": {
+          "clipper_library": "1.0.0.0"
+        },
         "runtime": {
           "MAPBUILD.dll": {}
+        }
+      },
+      "clipper_library/1.0.0.0": {
+        "runtime": {
+          "clipper_library.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
@@ -16,6 +27,11 @@
   "libraries": {
     "MAPBUILD/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "clipper_library/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

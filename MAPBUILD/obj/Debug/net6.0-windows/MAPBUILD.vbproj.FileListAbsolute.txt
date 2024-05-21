@@ -37,3 +37,8 @@ C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAP
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.frmSectorMode.resources
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.frmVertexMode.resources
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.BaseToolForm.resources
+C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\clipper_library.dll
+C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\clipper_library.pdb
+C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.vbproj.AssemblyReference.cache
+C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.ClipperTest.resources
+C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.vbproj.CopyComplete

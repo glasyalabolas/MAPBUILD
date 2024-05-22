@@ -1,5 +1,7 @@
 ﻿Option Infer On
 
+Imports MAP_ID = System.Int32
+
 Public Class SectorMode
   Inherits ModeBase
 
@@ -10,17 +12,35 @@ Public Class SectorMode
   Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
     Dim p = Camera.ViewToWorld(New Vec2(e.X, e.Y))
 
-    _highlightedSectorId = NOT_FOUND
+    Dim sID As MAP_ID = NOT_FOUND
+
+    '_highlightedSectorId = NOT_FOUND
 
     For i As Integer = 0 To Layer.Sectors - 1
       If (Layer.Sector(i).IsClosed()) Then
         If (Layer.Sector(i).Inside(p)) Then
-          _highlightedSectorId = Layer.Sector(i).Id
+          sID = Layer.Sector(i).Id
+          Exit For
+          '_highlightedSectorId = Layer.Sector(i).Id
 
-          SetHelpText("Sector #: " & Layer.Sector(i).Id)
+          'OnModeEvent(Layer.SectorById(_highlightedSectorId),
+          '  ModeEventType.EVENT_SECTOR_HIGHLIGHTED)
+
+          'SetHelpText("Sector #: " & Layer.Sector(i).Id)
         End If
       End If
     Next
+
+    If (sID <> _highlightedSectorId) Then
+      _highlightedSectorId = sID
+
+      If (_highlightedSectorId <> NOT_FOUND) Then
+        OnModeEvent(Layer.SectorById(_highlightedSectorId),
+          ModeEventType.EVENT_SECTOR_HIGHLIGHTED)
+
+        SetHelpText("Sector #: " & Layer.SectorById(_highlightedSectorId).Id)
+      End If
+    End If
   End Sub
 
   Private Sub RenderSector(g As Graphics, s As Sector, T As Mat3, c As Color)

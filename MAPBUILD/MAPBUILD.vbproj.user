@@ -16,6 +16,9 @@
     <Compile Update="forms\frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="forms\frmPanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="forms\frmSectorMode.vb">
       <SubType>Form</SubType>
     </Compile>

@@ -20,6 +20,7 @@ Public MustInherit Class ModeBase
   Public Event ModeChanged(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeChanged
   Public Event ModeStarted(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeStarted
   Public Event ModeFinished(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeFinished
+  Public Event ModeEvent(sender As Object, info As Object, eventType As ModeEventType) Implements IMode.ModeEvent
   Public Event HelpTextChanged(sender As Object, e As EventArgs) Implements IMode.HelpTextChanged
   Public Event GridSizeChanged(sender As Object, e As EventArgs) Implements IMode.GridSizeChanged
   Public Event Refresh(sender As Object, e As EventArgs) Implements IMode.Refresh
@@ -151,6 +152,9 @@ Public MustInherit Class ModeBase
     RaiseEvent ModeFinished(Me, New ModeChangedEventArgs())
   End Sub
 
+  Protected Sub OnModeEvent(info As Object, eventType As ModeEventType)
+    RaiseEvent ModeEvent(Me, info, eventType)
+  End Sub
   Protected Sub OnRefresh()
     RaiseEvent Refresh(Me, EventArgs.Empty)
   End Sub

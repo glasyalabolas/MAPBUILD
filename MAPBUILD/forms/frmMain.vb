@@ -61,19 +61,25 @@ Public Class frmMain
       .GridSize = GridSize,
       .Layer = Map.SelectedLayer}
 
-    pnlSide.Hide()
-
     pnlStatus.BackColor = VGAColors.Blue
     pnlStatus.ForeColor = VGAColors.Cyan
 
     'frmTools.Location = New Point(Location.X + Size.Width - frmTools.Width - 50, Location.Y + 100)
     'frmTools.Show(Me)
 
-    mdiTools.Location = New Point(Location.X + Size.Width - mdiTools.Width - 50, Location.Y + 100)
-    mdiTools.MapView = mvView
-    mdiTools.Show(Me)
+    'mdiTools.Location = New Point(Location.X + Size.Width - mdiTools.Width - 50, Location.Y + 100)
+    'mdiTools.MapView = mvView
+    'mdiTools.Show(Me)
 
     'ClipperTest.Show()
+    frmPanel.BackColor = VGAColors.Blue
+    frmPanel.ForeColor = VGAColors.Cyan
+    frmPanel.Location = New Point(0, 0)
+    frmPanel.ShowInTaskbar = False
+    frmPanel.TopLevel = False
+
+    pnlStatus.Controls.Add(frmPanel)
+    frmPanel.Visible = True
   End Sub
 
   Private Sub frmMain_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
@@ -160,4 +166,16 @@ Public Class frmMain
   Private _gridSize As Single
   Private _undoStack As New Stack(Of ICommand)
   Private _modeStack As New Stack(Of IMode)
+
+  Private Sub VertexModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VertexModeToolStripMenuItem.Click
+    Mode = New VertexMode()
+  End Sub
+
+  Private Sub LinedefModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LinedefModeToolStripMenuItem.Click
+    Mode = New LineMode()
+  End Sub
+
+  Private Sub SectorModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SectorModeToolStripMenuItem.Click
+    Mode = New SectorMode()
+  End Sub
 End Class

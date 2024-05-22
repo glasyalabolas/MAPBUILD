@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <Reference Include="clipper_library">
-      <HintPath>..\..\..\..\..\..\Programming\clipper_ver6.4.2\C#\clipper_library\bin\Debug\clipper_library.dll</HintPath>
+      <HintPath>clipper-library\clipper_library.dll</HintPath>
     </Reference>
   </ItemGroup>
 

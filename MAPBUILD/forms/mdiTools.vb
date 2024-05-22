@@ -58,7 +58,7 @@ Public Class mdiTools
     ResumeLayout()
   End Sub
 
-  Public Sub ShowChild(f As Form)
+  Public Sub ShowChild(f As BaseToolForm)
     f.MdiParent = Me
     f.Show()
     f.Location = New Point(0, 0)
@@ -78,6 +78,7 @@ Public Class mdiTools
     Next
 
     f.BringToFront()
+    f.Mode = Mode
   End Sub
 
   Private Function GetClientMDIControl() As MdiClient

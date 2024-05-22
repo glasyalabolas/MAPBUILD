@@ -168,16 +168,6 @@ Public Class Sector
       If (Not ld.FacesInside(Me)) Then
         Return (False)
       End If
-      'Dim p0 = Layer.VertexById(ld.P0).Pos
-      'Dim p1 = Layer.VertexById(ld.P1).Pos
-
-      'Dim N = ld.Normal()
-      'Dim mp = p0 + (p1 - p0) * 0.5
-      'Dim p = mp + N
-
-      'If (Not Inside(p)) Then
-      '  Return (False)
-      'End If
     Next
 
     Return (result)
@@ -195,6 +185,8 @@ Public Class Sector
 
   Public Id As MAP_ID
   Public Layer As Layer
+  Public TopHeight As Single
+  Public BottomHeight As Single
 
   Private _vertices As New List(Of MAP_ID)
   Private _lineDefs As New List(Of MAP_ID)

@@ -42,3 +42,4 @@ C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\bin\Debug\net6.0-windows\cli
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.vbproj.AssemblyReference.cache
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.ClipperTest.resources
 C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.vbproj.CopyComplete
+C:\Users\Usuario\Documents\GitHub\MAPBUILD\MAPBUILD\obj\Debug\net6.0-windows\MAPBUILD.frmPanel.resources

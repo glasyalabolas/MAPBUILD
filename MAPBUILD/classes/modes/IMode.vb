@@ -2,6 +2,7 @@
   Event ModeChanged(sender As Object, e As ModeChangedEventArgs)
   Event ModeStarted(sender As Object, e As ModeChangedEventArgs)
   Event ModeFinished(sender As Object, e As ModeChangedEventArgs)
+  Event ModeEvent(sender As Object, eventInfo As Object, eventType As ModeEventType)
   Event HelpTextChanged(sender As Object, e As EventArgs)
   Event GridSizeChanged(sender As Object, e As EventArgs)
   Event Refresh(sender As Object, e As EventArgs)

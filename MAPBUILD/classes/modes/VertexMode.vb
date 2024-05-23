@@ -71,6 +71,16 @@ Public Class VertexMode
         _closestVertexId = NOT_FOUND
 
         SetHelpText("")
+      Else
+        If (_closestVertexId <> NOT_FOUND) Then
+          If (modifierKeys And Keys.Control) Then
+            RemoveSelected(_closestVertexId)
+          Else
+            _selected.Add(_closestVertexId)
+          End If
+
+          OnRefresh()
+        End If
       End If
     End If
   End Sub

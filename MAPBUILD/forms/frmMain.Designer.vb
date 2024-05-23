@@ -41,16 +41,17 @@ Partial Class frmMain
     TestToolStripMenuItem = New ToolStripMenuItem()
     LinesAndVectorsToolStripMenuItem = New ToolStripMenuItem()
     PolygonsToolStripMenuItem = New ToolStripMenuItem()
+    ModeToolStripMenuItem = New ToolStripMenuItem()
+    VertexModeToolStripMenuItem = New ToolStripMenuItem()
+    LinedefModeToolStripMenuItem = New ToolStripMenuItem()
+    SectorModeToolStripMenuItem = New ToolStripMenuItem()
     mvView = New MapView()
     pnlStatus = New Panel()
     lblHelp = New Label()
     lblLayer = New Label()
     lblGridSize = New Label()
     lblMode = New Label()
-    ModeToolStripMenuItem = New ToolStripMenuItem()
-    VertexModeToolStripMenuItem = New ToolStripMenuItem()
-    LinedefModeToolStripMenuItem = New ToolStripMenuItem()
-    SectorModeToolStripMenuItem = New ToolStripMenuItem()
+    Panel1 = New Panel()
     MenuStrip1.SuspendLayout()
     pnlStatus.SuspendLayout()
     SuspendLayout()
@@ -177,6 +178,31 @@ Partial Class frmMain
     PolygonsToolStripMenuItem.Size = New Size(318, 34)
     PolygonsToolStripMenuItem.Text = "Polygons"
     ' 
+    ' ModeToolStripMenuItem
+    ' 
+    ModeToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {VertexModeToolStripMenuItem, LinedefModeToolStripMenuItem, SectorModeToolStripMenuItem})
+    ModeToolStripMenuItem.Name = "ModeToolStripMenuItem"
+    ModeToolStripMenuItem.Size = New Size(76, 30)
+    ModeToolStripMenuItem.Text = "Mode"
+    ' 
+    ' VertexModeToolStripMenuItem
+    ' 
+    VertexModeToolStripMenuItem.Name = "VertexModeToolStripMenuItem"
+    VertexModeToolStripMenuItem.Size = New Size(258, 34)
+    VertexModeToolStripMenuItem.Text = "Vertex mode"
+    ' 
+    ' LinedefModeToolStripMenuItem
+    ' 
+    LinedefModeToolStripMenuItem.Name = "LinedefModeToolStripMenuItem"
+    LinedefModeToolStripMenuItem.Size = New Size(258, 34)
+    LinedefModeToolStripMenuItem.Text = "Linedef mode"
+    ' 
+    ' SectorModeToolStripMenuItem
+    ' 
+    SectorModeToolStripMenuItem.Name = "SectorModeToolStripMenuItem"
+    SectorModeToolStripMenuItem.Size = New Size(258, 34)
+    SectorModeToolStripMenuItem.Text = "Sector mode"
+    ' 
     ' mvView
     ' 
     mvView.BackColor = Color.FromArgb(CByte(0), CByte(0), CByte(0))
@@ -194,6 +220,7 @@ Partial Class frmMain
     pnlStatus.Controls.Add(lblLayer)
     pnlStatus.Controls.Add(lblGridSize)
     pnlStatus.Controls.Add(lblMode)
+    pnlStatus.Controls.Add(Panel1)
     pnlStatus.Dock = DockStyle.Bottom
     pnlStatus.Font = New Font("Consolas", 11F, FontStyle.Regular, GraphicsUnit.Point)
     pnlStatus.Location = New Point(0, 488)
@@ -203,64 +230,51 @@ Partial Class frmMain
     ' 
     ' lblHelp
     ' 
-    lblHelp.Location = New Point(0, 166)
+    lblHelp.Dock = DockStyle.Fill
+    lblHelp.Location = New Point(0, 173)
     lblHelp.Name = "lblHelp"
-    lblHelp.Size = New Size(554, 38)
+    lblHelp.Size = New Size(554, 31)
     lblHelp.TabIndex = 4
     lblHelp.Text = "Label1"
     lblHelp.TextAlign = ContentAlignment.MiddleLeft
     ' 
     ' lblLayer
     ' 
-    lblLayer.Location = New Point(554, 166)
+    lblLayer.Dock = DockStyle.Right
+    lblLayer.Location = New Point(554, 173)
     lblLayer.Name = "lblLayer"
-    lblLayer.Size = New Size(236, 38)
+    lblLayer.Size = New Size(236, 31)
     lblLayer.TabIndex = 3
     lblLayer.Text = "Layer"
     lblLayer.TextAlign = ContentAlignment.MiddleCenter
     ' 
     ' lblGridSize
     ' 
-    lblGridSize.Location = New Point(790, 166)
+    lblGridSize.Dock = DockStyle.Right
+    lblGridSize.Location = New Point(790, 173)
     lblGridSize.Name = "lblGridSize"
-    lblGridSize.Size = New Size(74, 38)
+    lblGridSize.Size = New Size(74, 31)
     lblGridSize.TabIndex = 2
     lblGridSize.Text = "BS"
     lblGridSize.TextAlign = ContentAlignment.MiddleCenter
     ' 
     ' lblMode
     ' 
-    lblMode.Location = New Point(864, 166)
+    lblMode.Dock = DockStyle.Right
+    lblMode.Location = New Point(864, 173)
     lblMode.Name = "lblMode"
-    lblMode.Size = New Size(270, 38)
+    lblMode.Size = New Size(270, 31)
     lblMode.TabIndex = 1
     lblMode.Text = "Mode"
     lblMode.TextAlign = ContentAlignment.MiddleCenter
     ' 
-    ' ModeToolStripMenuItem
+    ' Panel1
     ' 
-    ModeToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {VertexModeToolStripMenuItem, LinedefModeToolStripMenuItem, SectorModeToolStripMenuItem})
-    ModeToolStripMenuItem.Name = "ModeToolStripMenuItem"
-    ModeToolStripMenuItem.Size = New Size(76, 30)
-    ModeToolStripMenuItem.Text = "Mode"
-    ' 
-    ' VertexModeToolStripMenuItem
-    ' 
-    VertexModeToolStripMenuItem.Name = "VertexModeToolStripMenuItem"
-    VertexModeToolStripMenuItem.Size = New Size(270, 34)
-    VertexModeToolStripMenuItem.Text = "Vertex mode"
-    ' 
-    ' LinedefModeToolStripMenuItem
-    ' 
-    LinedefModeToolStripMenuItem.Name = "LinedefModeToolStripMenuItem"
-    LinedefModeToolStripMenuItem.Size = New Size(270, 34)
-    LinedefModeToolStripMenuItem.Text = "Linedef mode"
-    ' 
-    ' SectorModeToolStripMenuItem
-    ' 
-    SectorModeToolStripMenuItem.Name = "SectorModeToolStripMenuItem"
-    SectorModeToolStripMenuItem.Size = New Size(270, 34)
-    SectorModeToolStripMenuItem.Text = "Sector mode"
+    Panel1.Dock = DockStyle.Top
+    Panel1.Location = New Point(0, 0)
+    Panel1.Name = "Panel1"
+    Panel1.Size = New Size(1134, 173)
+    Panel1.TabIndex = 5
     ' 
     ' frmMain
     ' 
@@ -311,4 +325,5 @@ Partial Class frmMain
   Friend WithEvents VertexModeToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents LinedefModeToolStripMenuItem As ToolStripMenuItem
   Friend WithEvents SectorModeToolStripMenuItem As ToolStripMenuItem
+  Friend WithEvents Panel1 As Panel
 End Class

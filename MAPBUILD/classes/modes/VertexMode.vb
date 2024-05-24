@@ -102,6 +102,14 @@ Public Class VertexMode
         End If
       End If
     Next
+
+    If (_closestVertexId <> NOT_FOUND) Then
+      Dim p = T * Layer.VertexById(_closestVertexId).Pos
+      Dim pen = New Pen(VGAColors.White)
+      Dim sz As Single = Math.Min(10.0, 10.0 * z)
+
+      g.DrawRectangle(pen, New Rectangle(p.x - sz * 0.5 - 2, p.y - sz * 0.5 - 2, sz + 3, sz + 3))
+    End If
   End Sub
 
   Protected Overrides Sub OnSelect(e As Rect, modifierKeys As Keys)
@@ -116,9 +124,9 @@ Public Class VertexMode
       If (e.Inside(Layer.Vertex(i))) Then
         Dim selected As Boolean = IsSelected(Layer.Vertex(i).Id)
 
-        If (Not selected AndAlso Not removeFromSelection) Then
+        If (Not selected) Then
           _selected.Add(Layer.Vertex(i).Id)
-        Else
+        ElseIf (removefromselection) Then
           RemoveSelected(Layer.Vertex(i).Id)
         End If
       End If

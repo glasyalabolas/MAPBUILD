@@ -10,28 +10,11 @@ Public Class SectorMode
   End Sub
 
   Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
-    Dim p = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+    _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
 
-    Dim sID As MAP_ID = NOT_FOUND
+    Dim sID As MAP_ID = Layer.PointInSector(_mp)
 
-    '_highlightedSectorId = NOT_FOUND
-
-    For i As Integer = 0 To Layer.Sectors - 1
-      If (Layer.Sector(i).IsClosed()) Then
-        If (Layer.Sector(i).Inside(p)) Then
-          sID = Layer.Sector(i).Id
-          Exit For
-          '_highlightedSectorId = Layer.Sector(i).Id
-
-          'OnModeEvent(Layer.SectorById(_highlightedSectorId),
-          '  ModeEventType.EVENT_SECTOR_HIGHLIGHTED)
-
-          'SetHelpText("Sector #: " & Layer.Sector(i).Id)
-        End If
-      End If
-    Next
-
-    If (sID <> _highlightedSectorId) Then
+    If (sID <> _highlightedSectorId AndAlso Not Selecting AndAlso Not _ldragging) Then
       _highlightedSectorId = sID
 
       If (_highlightedSectorId <> NOT_FOUND) Then
@@ -40,6 +23,10 @@ Public Class SectorMode
 
         SetHelpText("Sector #: " & Layer.SectorById(_highlightedSectorId).Id)
       End If
+    End If
+
+    If (_highlightedSectorId = NOT_FOUND) Then
+      MyBase.OnMouseMove(e, modifierKeys)
     End If
   End Sub
 
@@ -50,7 +37,7 @@ Public Class SectorMode
       Dim p0 = T * ld.GetP0().Pos
       Dim p1 = T * ld.GetP1().Pos
 
-      RenderLineDef(g, p0, p1, c)
+      RenderLineDef(g, p0, p1, 10.0 / Camera.Zoom, c)
     Next
   End Sub
 
@@ -60,12 +47,14 @@ Public Class SectorMode
     Dim T = Camera.Projection() * Camera.Transform().Inversed()
 
     For i As Integer = 0 To Layer.Sectors - 1
-      RenderSector(g, Layer.Sector(i), T, VGAColors.Red)
+      RenderSector(g, Layer.Sector(i), T, VGAColors.DarkGray)
     Next
 
     If (_highlightedSectorId <> NOT_FOUND) Then
       RenderSector(g, Layer.SectorById(_highlightedSectorId), T, VGAColors.Yellow)
     End If
+
+    RenderVertices(g, VGAColors.DarkGray)
   End Sub
 
   Public Overrides Sub OnKeyPress(e As KeyEventArgs, modifierKeys As Keys)
@@ -79,10 +68,28 @@ Public Class SectorMode
       If (e.KeyCode = Keys.W) Then
         s.Rotate(Rad(15))
       End If
+
+      If (e.KeyCode = Keys.PageDown) Then
+        Layer.BringToFront(_highlightedSectorId)
+        SetHelpText("Sector #" & _highlightedSectorId & " brought to front")
+      End If
+
+      If (e.KeyCode = Keys.PageUp) Then
+        Layer.SendToBack(_highlightedSectorId)
+        SetHelpText("Sector #" & _highlightedSectorId & " sent to back")
+      End If
     End If
 
     OnRefresh()
   End Sub
 
+  Protected Overrides Sub OnSelect(e As Rect, modifierKeys As Keys)
+
+  End Sub
+
   Private _highlightedSectorId As Integer = NOT_FOUND
+  Private _ldelta As Vec2
+  Private _lstart As Vec2
+  Private _mp As New Vec2()
+  Private _ldragging As Boolean
 End Class

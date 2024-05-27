@@ -18,26 +18,18 @@ Public Module Rendering
     g.DrawLine(New Pen(c, 2), l.p0, l.GetPoint(100))
   End Sub
 
-  Public Sub RenderPoly(g As Graphics, p As Poly, c As Color)
-    Using nPen As New Pen(c)
-      For i As Integer = 0 To p.Count - 1
-        Dim v0 = p(i), v1 = p(i + 1)
-
-        g.DrawLine(nPen, v0, v1)
-      Next
-    End Using
-  End Sub
-
   Public Sub RenderVertex(g As Graphics, v As Vec2, s As Single, c As Color)
-    Dim br = New SolidBrush(c)
+    Dim p = New Pen(c)
 
-    g.FillRectangle(br, New Rectangle(v.x - s * 0.5, v.y - s * 0.5, s, s))
+    g.DrawRectangle(p, New Rectangle(v.x - s * 0.5, v.y - s * 0.5, s - 1, s - 1))
   End Sub
 
-  Public Sub RenderLineDef(g As Graphics, p0 As Vec2, p1 As Vec2, c As Color)
-    g.DrawLine(New Pen(c), p0, p1)
+  Public Sub RenderLineDef(g As Graphics, p0 As Vec2, p1 As Vec2, ns As Single, c As Color)
+    Dim p = New Pen(c)
+    Dim N = (p0 - p1).Normalize().TurnLeft()
+    Dim mp = p0 + (p1 - p0) * 0.5
 
-    RenderVertex(g, p0, 7, VGAColors.Green)
-    RenderVertex(g, p1, 7, VGAColors.LightRed)
+    g.DrawLine(p, p0, p1)
+    g.DrawLine(p, mp, mp + N * ns)
   End Sub
 End Module

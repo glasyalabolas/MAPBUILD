@@ -246,18 +246,67 @@ Public Class Layer
     Return (result)
   End Function
 
+  Public Function PointInSector(p As Vec2) As MAP_ID
+    Dim result As MAP_ID = NOT_FOUND
+
+    For i As Integer = 0 To _sector.Count - 1
+      If (_sector(i).IsClosed()) Then
+        If (_sector(i).Inside(p)) Then
+          result = _sector(i).Id
+        End If
+      End If
+    Next
+
+    Return (result)
+  End Function
+
+  Public Sub BringToFront(sID As MAP_ID)
+    Dim index As MAP_ID = GetSectorIndex(sID)
+
+    If (index <> NOT_FOUND) Then
+      If (index < _sector.Count - 1) Then
+        Dim tmp = _sector(index + 1)
+        _sector(index + 1) = _sector(index)
+        _sector(index) = tmp
+      End If
+    End If
+  End Sub
+
+  Public Sub SendToBack(sID As MAP_ID)
+    Dim index As MAP_ID = GetSectorIndex(sID)
+
+    If (index <> NOT_FOUND) Then
+      If (index > 0) Then
+        Dim tmp = _sector(index - 1)
+        _sector(index - 1) = _sector(index)
+        _sector(index) = tmp
+      End If
+    End If
+  End Sub
+
+  Private Function GetSectorIndex(sID As MAP_ID) As Integer
+    For i As Integer = 0 To _sector.Count - 1
+      If (_sector(i).Id = sID) Then
+        Return (i)
+      End If
+    Next
+
+    '' Should never happen
+    Return (NOT_FOUND)
+  End Function
+
   '' Lists for easy traversal
   Private _vertex As New List(Of Vertex)
   Private _lineDef As New List(Of LineDef)
   Private _sector As New List(Of Sector)
 
   '' Dictionaries for quick lookups by Id
-  Private _vertexById As New Dictionary(Of Integer, Vertex)
-  Private _lineDefById As New Dictionary(Of Integer, LineDef)
-  Private _sectorById As New Dictionary(Of Integer, Sector)
+  Private _vertexById As New Dictionary(Of MAP_ID, Vertex)
+  Private _lineDefById As New Dictionary(Of MAP_ID, LineDef)
+  Private _sectorById As New Dictionary(Of MAP_ID, Sector)
 
   '' Stacks used to recycle Ids
-  Private _vertexIDs As New Stack(Of Integer)
-  Private _lineDefIDs As New Stack(Of Integer)
-  Private _sectorIDs As New Stack(Of Integer)
+  Private _vertexIDs As New Stack(Of MAP_ID)
+  Private _lineDefIDs As New Stack(Of MAP_ID)
+  Private _sectorIDs As New Stack(Of MAP_ID)
 End Class

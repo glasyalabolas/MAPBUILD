@@ -65,20 +65,22 @@ Public Class PolyDrawMode
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
 
+    RenderVertices(g, VGAColors.DarkGray)
+    RenderLines(g, VGAColors.DarkGray)
+
     If (_drawing) Then
       Dim T = Camera.Projection() * Camera.Transform.Inversed()
+      Dim p = New Pen(VGAColors.LightBlue)
 
       For i As Integer = 0 To _vertices.Count - 2
         Dim lp0 = T * _vertices(i)
         Dim lp1 = T * _vertices(i + 1)
 
-        g.DrawLine(VGAColors.BrownPen, lp0, lp1)
+        g.DrawLine(p, lp0, lp1)
       Next
 
       Dim p0 = T * _vertices(_vertices.Count - 1)
       Dim p1 = T * _cp
-
-      Dim pn = VGAColors.BrownPen
 
       For i As Integer = 0 To Layer.LineDefs - 1
         Dim dP0 = _vertices(_vertices.Count - 1)
@@ -98,13 +100,13 @@ Public Class PolyDrawMode
             Dim t1 As Single = dotp1 / dotSq
 
             If (t0 >= 0.0 AndAlso t0 <= 1.0 AndAlso t1 >= 0.0 AndAlso t1 <= 1.0) Then
-              pn = VGAColors.MagentaPen
+              p = New Pen(VGAColors.Magenta)
             End If
           End If
         End If
       Next
 
-      g.DrawLine(pn, p0, p1)
+      g.DrawLine(p, p0, p1)
     End If
   End Sub
 

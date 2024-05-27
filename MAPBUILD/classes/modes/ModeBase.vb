@@ -17,6 +17,14 @@ Public MustInherit Class ModeBase
   '' Nearest linedef minimum distance, in map units
   Protected Const LINEDEF_NEAR_DISTANCE As Single = 100.0
 
+  '' Max drawing size for vertices
+  Protected Const MAX_VERTEX_SIZE As Single = 10.0
+
+  Protected Const UNSELECT_SINGLE_KEY As Keys = Keys.Shift
+
+  Protected Const ADD_TO_SELECTION_KEY = Keys.Shift
+  Protected Const REMOVE_FROM_SELECTION_KEY = Keys.Control
+
   Public Event ModeChanged(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeChanged
   Public Event ModeStarted(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeStarted
   Public Event ModeFinished(sender As Object, m As ModeChangedEventArgs) Implements IMode.ModeFinished
@@ -60,6 +68,44 @@ Public MustInherit Class ModeBase
     End Get
   End Property
 
+  Protected ReadOnly Property Selected(index As Integer) As MAP_ID
+    Get
+      Return (_selected(index))
+    End Get
+  End Property
+
+  Protected ReadOnly Property SelectedCount() As Integer
+    Get
+      Return (_selected.Count)
+    End Get
+  End Property
+
+  Protected Sub ClearSelection()
+    _selected.Clear()
+  End Sub
+
+  Protected Sub AddToSelection(id As MAP_ID)
+    _selected.Add(id)
+  End Sub
+
+  Protected Function IsSelected(id As MAP_ID) As Boolean
+    For i As Integer = 0 To _selected.Count - 1
+      If (_selected(i) = id) Then
+        Return (True)
+      End If
+    Next
+
+    Return (False)
+  End Function
+
+  Protected Sub RemoveSelected(id As MAP_ID)
+    For i As Integer = 0 To _selected.Count - 1
+      If (_selected(i) = id) Then
+        _selected.RemoveAt(i)
+        Return
+      End If
+    Next
+  End Sub
 
   Protected Sub SetName(value As String)
     _name = value
@@ -71,9 +117,6 @@ Public MustInherit Class ModeBase
     OnHelpTextChanged()
   End Sub
 
-  'Protected Overridable Sub OnSelectionChanged()
-  'End Sub
-
   Public Overridable Sub OnClearSelection() Implements IMode.OnClearSelection
   End Sub
 
@@ -81,8 +124,6 @@ Public MustInherit Class ModeBase
     If (GridSize / Camera.Zoom >= 20.0) Then
       RenderGrid(g, VGAColors.DarkGray)
     End If
-
-    RenderView(g)
 
     If (_selectRect IsNot Nothing) Then
       Dim p = New Pen(VGAColors.White, 1)
@@ -179,40 +220,6 @@ Public MustInherit Class ModeBase
   End Sub
 
   ''' <summary>
-  ''' Renders the base view for the mode.
-  ''' </summary>
-  ''' <param name="g">The Graphics context.</param>
-  Private Sub RenderView(g As Graphics)
-    If (Map IsNot Nothing) Then
-      PreProcess()
-
-      Dim T = Camera.Projection() * Camera.Transform().Inversed()
-      Dim Ns As Single = 10.0 / Camera.Zoom '' Normal size
-
-      For lay As Integer = 0 To _visibleLines.Count - 1
-        For ldef As Integer = 0 To _visibleLines(lay).Count - 1
-          Dim p As Pen = VGAColors.WhitePen
-
-          With Map.Layer(lay).LineDef(_visibleLines(lay)(ldef))
-            Dim p0 = Map.SelectedLayer.VertexById(.P0)
-            Dim p1 = Map.SelectedLayer.VertexById(.P1)
-
-            Dim pp0 = T * p0
-            Dim pp1 = T * p1
-
-            g.DrawLine(p, pp0, pp1)
-
-            Dim N = .Normal
-            Dim Np = pp0 + (pp1 - pp0) * 0.5
-
-            g.DrawLine(p, Np, Np + N * Ns)
-          End With
-        Next
-      Next
-    End If
-  End Sub
-
-  ''' <summary>
   ''' Renders the grid.
   ''' </summary>
   ''' <param name="g">The Graphics context.</param>
@@ -238,6 +245,47 @@ Public MustInherit Class ModeBase
       p.y += GridSize
       p.x = startP.x
     Loop
+  End Sub
+
+  Protected Sub RenderVertices(g As Graphics, c As Color)
+    Dim T = Camera.Projection() * Camera.Transform().Inversed()
+    Dim z As Single = 1.0 / Camera.Zoom
+
+    For i As Integer = 0 To Layer.Vertices - 1
+      Dim p = T * Layer.Vertex(i)
+
+      If (InsideView(p)) Then
+        RenderVertex(g, p, Math.Min(MAX_VERTEX_SIZE, MAX_VERTEX_SIZE * z), c)
+      End If
+    Next
+  End Sub
+
+  Protected Sub RenderLines(g As Graphics, c As Color)
+    PreProcess()
+
+    Dim T = Camera.Projection() * Camera.Transform().Inversed()
+    Dim Ns As Single = 10.0 / Camera.Zoom '' Normal size
+
+    For lay As Integer = 0 To _visibleLines.Count - 1
+      For ldef As Integer = 0 To _visibleLines(lay).Count - 1
+        Dim p = New Pen(c)
+
+        With Map.Layer(lay).LineDef(_visibleLines(lay)(ldef))
+          Dim p0 = Map.SelectedLayer.VertexById(.P0)
+          Dim p1 = Map.SelectedLayer.VertexById(.P1)
+
+          Dim pp0 = T * p0
+          Dim pp1 = T * p1
+
+          g.DrawLine(p, pp0, pp1)
+
+          Dim N = .Normal
+          Dim Np = pp0 + (pp1 - pp0) * 0.5
+
+          g.DrawLine(p, Np, Np + N * Ns)
+        End With
+      Next
+    Next
   End Sub
 
   ''' <summary>
@@ -334,7 +382,8 @@ Public MustInherit Class ModeBase
   Private _helpText As String
   Private _gridSize As Single
   Private _visibleLines As New List(Of List(Of MAP_ID))
-  Private _selecting As Boolean
   Private _sp As New Vec2, _ep As New Vec2
+  Private _selecting As Boolean
   Private _selectRect As Rect
+  Private _selected As New List(Of MAP_ID)
 End Class

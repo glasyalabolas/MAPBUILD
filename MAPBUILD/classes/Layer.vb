@@ -299,14 +299,17 @@ Public Class Layer
   Private _vertex As New List(Of Vertex)
   Private _lineDef As New List(Of LineDef)
   Private _sector As New List(Of Sector)
+  Private _thing As New List(Of Thing)
 
   '' Dictionaries for quick lookups by Id
   Private _vertexById As New Dictionary(Of MAP_ID, Vertex)
   Private _lineDefById As New Dictionary(Of MAP_ID, LineDef)
   Private _sectorById As New Dictionary(Of MAP_ID, Sector)
+  Private _thingById As New Dictionary(Of MAP_ID, Thing)
 
   '' Stacks used to recycle Ids
   Private _vertexIDs As New Stack(Of MAP_ID)
   Private _lineDefIDs As New Stack(Of MAP_ID)
   Private _sectorIDs As New Stack(Of MAP_ID)
+  Private _thingIDs As New Stack(Of MAP_ID)
 End Class

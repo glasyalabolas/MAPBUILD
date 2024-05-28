@@ -169,6 +169,10 @@ Public Class frmMain
     Mode = New SectorMode()
   End Sub
 
+  Private Sub ThingsModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ThingsModeToolStripMenuItem.Click
+    Mode = New ThingsMode()
+  End Sub
+
   Private WithEvents _mode As IMode
   Private WithEvents _map As Map
   Private _gridSize As Single

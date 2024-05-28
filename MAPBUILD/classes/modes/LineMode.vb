@@ -6,7 +6,24 @@ Public Class LineMode
   Inherits ModeBase
 
   Public Sub New()
-    SetName("Line mode")
+    SetName("Linedef mode")
+  End Sub
+
+  Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
+    MyBase.OnMouseDoubleClick(e, modifierKeys)
+
+    If (e.Button And MouseButtons.Left) Then
+      ClearSelection()
+
+      OnModeStarted()
+
+      Dim newModeArgs = New ModeChangedEventArgs() With {
+        .Mode = New PolyDrawMode()}
+
+      OnModeChanged(Me, newModeArgs)
+
+      newModeArgs.Mode.OnMouseDoubleClick(e, modifierKeys)
+    End If
   End Sub
 
   Public Overrides Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys)
@@ -81,22 +98,6 @@ Public Class LineMode
     End If
   End Sub
 
-  Private Sub DragLineDef(ld As LineDef)
-    Dim p0 = ld.GetP0.Id
-    Dim p1 = ld.GetP1.Id
-
-    '' Don't move already moved vertices twice
-    If (Not _vertices.Contains(p0)) Then
-      ld.GetP0.Pos += _ldelta
-      _vertices.Add(p0)
-    End If
-
-    If (Not _vertices.Contains(p1)) Then
-      ld.GetP1.Pos += _ldelta
-      _vertices.Add(p1)
-    End If
-  End Sub
-
   Public Overrides Sub OnMouseUp(e As MouseEventArgs, modifierKeys As Keys)
     MyBase.OnMouseUp(e, modifierKeys)
 
@@ -123,8 +124,8 @@ Public Class LineMode
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
 
-    RenderLines(g, VGAColors.LightGray)
-    RenderVertices(g, VGAColors.DarkGray)
+    RenderLines(g, VGAColors.Cyan)
+    RenderVertices(g, VGAColors.LightGray)
 
     Dim T = Camera.Projection() * Camera.Transform().Inversed()
 
@@ -187,6 +188,22 @@ Public Class LineMode
         End If
       End If
     Next
+  End Sub
+
+  Private Sub DragLineDef(ld As LineDef)
+    Dim p0 = ld.GetP0.Id
+    Dim p1 = ld.GetP1.Id
+
+    '' Don't move already moved vertices twice
+    If (Not _vertices.Contains(p0)) Then
+      ld.GetP0.Pos += _ldelta
+      _vertices.Add(p0)
+    End If
+
+    If (Not _vertices.Contains(p1)) Then
+      ld.GetP1.Pos += _ldelta
+      _vertices.Add(p1)
+    End If
   End Sub
 
   Private _ldelta As Vec2

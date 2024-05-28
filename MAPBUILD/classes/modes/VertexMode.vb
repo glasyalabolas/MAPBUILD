@@ -10,16 +10,18 @@ Public Class VertexMode
   Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
     MyBase.OnMouseDoubleClick(e, modifierKeys)
 
-    ClearSelection()
+    If (e.Button And MouseButtons.Left) Then
+      ClearSelection()
 
-    OnModeStarted()
+      OnModeStarted()
 
-    Dim newModeArgs = New ModeChangedEventArgs() With {
-      .Mode = New PolyDrawMode()}
+      Dim newModeArgs = New ModeChangedEventArgs() With {
+        .Mode = New PolyDrawMode()}
 
-    OnModeChanged(Me, newModeArgs)
+      OnModeChanged(Me, newModeArgs)
 
-    newModeArgs.Mode.OnMouseDoubleClick(e, modifierKeys)
+      newModeArgs.Mode.OnMouseDoubleClick(e, modifierKeys)
+    End If
   End Sub
 
   Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)

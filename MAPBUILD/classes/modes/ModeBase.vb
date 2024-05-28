@@ -79,6 +79,30 @@ Public MustInherit Class ModeBase
     End Get
   End Property
 
+  Protected ReadOnly Property HighlightedId() As MAP_ID
+    Get
+      Return (_highlightedId)
+    End Get
+  End Property
+
+  Protected ReadOnly Property MousePos() As Vec2
+    Get
+      Return (_mp)
+    End Get
+  End Property
+
+  Protected ReadOnly Property Dragging() As Boolean
+    Get
+      Return (_ldragging)
+    End Get
+  End Property
+
+  Protected ReadOnly Property Delta() As Vec2
+    Get
+      Return (_ldelta)
+    End Get
+  End Property
+
   Protected Sub ClearSelection()
     _selected.Clear()
   End Sub
@@ -119,29 +143,44 @@ Public MustInherit Class ModeBase
   Public Overridable Sub OnClearSelection() Implements IMode.OnClearSelection
   End Sub
 
-  Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
-    If (GridSize / Camera.Zoom >= 20.0) Then
-      RenderGrid(g, VGAColors.DarkGray)
-    End If
-
-    If (_selectRect IsNot Nothing) Then
-      Dim p = New Pen(VGAColors.White, 1)
-      p.DashPattern = {3, 2, 3, 2}
-      Dim sz = (_selectRect.BottomRight - _selectRect.TopLeft) / Camera.Zoom
-      Dim p0 = Camera.Projection() * Camera.Transform().Inversed() * _selectRect.TopLeft
-
-      g.DrawRectangle(p, New Rectangle(p0.x, p0.y, sz.x, sz.y))
-    End If
-  End Sub
-
   Public Overridable Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseMove
-    FindId()
+    _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+
+    If (Not Dragging AndAlso Not Selecting) Then
+      _highlightedId = FindNearestId()
+    End If
 
     If (e.Button And MouseButtons.Left) Then
+      If (Dragging AndAlso Not Selecting) Then
+        _ldelta = SnapToGrid(_mp) - _lstart
+        _lstart = SnapToGrid(_mp)
+
+        If (SelectedCount > 0) Then
+          '' Drag selection
+          'For i As Integer = 0 To SelectedCount - 1
+          '  Layer.VertexById(Selected(i)).Pos += _ldelta
+          'Next
+
+          If (_highlightedId <> NOT_FOUND AndAlso Not IsSelected(_highlightedId)) Then
+            '' Drag the closest vertex too even if it wasn't selected
+            OnDrag(_highlightedId, _ldelta)
+          End If
+        Else
+          '' Drag individual vertex
+          OnDrag(_highlightedId, _ldelta)
+        End If
+      Else
+        If (SelectedCount > 0 OrElse _highlightedId <> NOT_FOUND) Then
+          '' Start dragging selection
+          _ldragging = True
+          _lstart = SnapToGrid(_mp)
+        End If
+      End If
+
       If (_selecting) Then
         _ep = Camera.ViewToWorld(New Vec2(e.X, e.Y))
         _selectRect = New Rect(_sp.Clone(), _ep.Clone())
-      Else
+      ElseIf (_highlightedID = NOT_FOUND) Then
         _selecting = True
         _sp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
       End If
@@ -158,11 +197,28 @@ Public MustInherit Class ModeBase
         End If
 
         _selectRect = Nothing
+      End If
+
+      If (_ldragging) Then
+        _ldragging = False
+        _highlightedId = NOT_FOUND
+
+        SetHelpText("")
+      Else
+        If (_highlightedId <> NOT_FOUND) Then
+          If (modifierKeys And UNSELECT_SINGLE_KEY) Then
+            RemoveSelected(_highlightedId)
+          Else
+            AddToSelection(_highlightedId)
+          End If
+
+          OnRefresh()
         End If
       End If
+    End If
   End Sub
 
-  Protected Overridable Sub OnSelect(e As Rect, modifierKeys As Keys)
+  Protected Overridable Sub OnDrag(id As MAP_ID, delta As Vec2)
   End Sub
 
   Public Overridable Sub OnMouseDown(e As MouseEventArgs) Implements IMode.OnMouseDown
@@ -174,6 +230,28 @@ Public MustInherit Class ModeBase
   Public Overridable Sub OnKeyPress(e As KeyEventArgs, modifierKeys As Keys) Implements IMode.OnKeyPressed
   End Sub
   Public Overridable Sub OnMouseWheel(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseWheel
+  End Sub
+
+  Protected Overridable Function FindNearestId() As MAP_ID
+    Return (NOT_FOUND)
+  End Function
+
+  Protected Overridable Sub OnSelect(e As Rect, modifierKeys As Keys)
+  End Sub
+
+  Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
+    If (GridSize / Camera.Zoom >= 20.0) Then
+      RenderGrid(g, VGAColors.DarkGray)
+    End If
+
+    If (_selectRect IsNot Nothing) Then
+      Dim p = New Pen(VGAColors.White, 1)
+      p.DashPattern = {3, 2, 3, 2}
+      Dim sz = (_selectRect.BottomRight - _selectRect.TopLeft) / Camera.Zoom
+      Dim p0 = Camera.Projection() * Camera.Transform().Inversed() * _selectRect.TopLeft
+
+      g.DrawRectangle(p, New Rectangle(p0.x, p0.y, sz.x, sz.y))
+    End If
   End Sub
 
   Protected Sub OnModeChanged(sender As Object, e As ModeChangedEventArgs)
@@ -411,10 +489,6 @@ Public MustInherit Class ModeBase
     Return (NOT_FOUND)
   End Function
 
-  Protected Overridable Function FindId() As MAP_ID
-    Return (NOT_FOUND)
-  End Function
-
   Private _name As String
   Private _helpText As String
   Private _gridSize As Single
@@ -423,4 +497,9 @@ Public MustInherit Class ModeBase
   Private _selecting As Boolean
   Private _selectRect As Rect
   Private _selected As New List(Of MAP_ID)
+  Private _ldelta As Vec2
+  Private _lstart As Vec2
+  Private _mp As New Vec2()
+  Private _ldragging As Boolean
+  Private _highlightedId As MAP_ID = NOT_FOUND
 End Class

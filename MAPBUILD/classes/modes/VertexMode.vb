@@ -7,11 +7,6 @@ Public Class VertexMode
     SetName("Vertex mode")
   End Sub
 
-  Protected Overrides Function FindId() As Integer
-    Debug.Print("VertexMode::FindId")
-    Return MyBase.FindId()
-  End Function
-
   Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
     MyBase.OnMouseDoubleClick(e, modifierKeys)
 
@@ -29,69 +24,90 @@ Public Class VertexMode
     End If
   End Sub
 
-  Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
-    _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+  Protected Overrides Function FindNearestId() As MAP_ID
+    Dim closest As Single = Single.MaxValue
+    Dim result As MAP_ID = NOT_FOUND
+    Dim minDist As Single = VERTEX_NEAR_DISTANCE * Camera.Zoom
 
-    If (Not _ldragging AndAlso Not Selecting) Then
-      _closestVertexId = FindClosestVertexId(_mp)
-    End If
+    For i As Integer = 0 To Layer.Vertices - 1
+      Dim dist As Single = MousePos.DistanceToSq(Layer.Vertex(i))
 
-    If (e.Button And MouseButtons.Left) Then
-      If (_ldragging AndAlso Not Selecting) Then
-        _ldelta = SnapToGrid(_mp) - _lstart
-        _lstart = SnapToGrid(_mp)
-
-        If (SelectedCount > 0) Then
-          '' Drag selection
-          For i As Integer = 0 To SelectedCount - 1
-            Layer.VertexById(Selected(i)).Pos += _ldelta
-          Next
-
-          If (_closestVertexId <> NOT_FOUND AndAlso Not IsSelected(_closestVertexId)) Then
-            '' Drag the closest vertex too even if it wasn't selected
-            Layer.VertexById(_closestVertexId).Pos += _ldelta
-          End If
-        Else
-          '' Drag individual vertex
-          If (_closestVertexId <> NOT_FOUND) Then
-            Layer.VertexById(_closestVertexId).Pos += _ldelta
-          End If
-        End If
-      Else
-        If (SelectedCount > 0 OrElse _closestVertexId <> NOT_FOUND) Then
-          '' Start dragging selection
-          _ldragging = True
-          _lstart = SnapToGrid(_mp)
-        End If
+      If (dist < closest AndAlso dist <= minDist) Then
+        closest = dist
+        result = Layer.Vertex(i).Id
       End If
-    End If
+    Next
 
-    If (_closestVertexId = NOT_FOUND) Then
-      MyBase.OnMouseMove(e, modifierKeys)
-    End If
-  End Sub
+    Return (result)
+  End Function
 
-  Public Overrides Sub OnMouseUp(e As MouseEventArgs, modifierKeys As Keys)
-    MyBase.OnMouseUp(e, modifierKeys)
+  'Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
+  '  _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
 
-    If (e.Button And MouseButtons.Left) Then
-      If (_ldragging) Then
-        _ldragging = False
-        _closestVertexId = NOT_FOUND
+  '  If (Not _ldragging AndAlso Not Selecting) Then
+  '    _closestVertexId = FindClosestVertexId(_mp)
+  '  End If
 
-        SetHelpText("")
-      Else
-        If (_closestVertexId <> NOT_FOUND) Then
-          If (modifierKeys And UNSELECT_SINGLE_KEY) Then
-            RemoveSelected(_closestVertexId)
-          Else
-            AddToSelection(_closestVertexId)
-          End If
+  '  If (e.Button And MouseButtons.Left) Then
+  '    If (_ldragging AndAlso Not Selecting) Then
+  '      _ldelta = SnapToGrid(_mp) - _lstart
+  '      _lstart = SnapToGrid(_mp)
 
-          OnRefresh()
-        End If
-      End If
-    End If
+  '      If (SelectedCount > 0) Then
+  '        '' Drag selection
+  '        For i As Integer = 0 To SelectedCount - 1
+  '          Layer.VertexById(Selected(i)).Pos += _ldelta
+  '        Next
+
+  '        If (_closestVertexId <> NOT_FOUND AndAlso Not IsSelected(_closestVertexId)) Then
+  '          '' Drag the closest vertex too even if it wasn't selected
+  '          Layer.VertexById(_closestVertexId).Pos += _ldelta
+  '        End If
+  '      Else
+  '        '' Drag individual vertex
+  '        If (_closestVertexId <> NOT_FOUND) Then
+  '          Layer.VertexById(_closestVertexId).Pos += _ldelta
+  '        End If
+  '      End If
+  '    Else
+  '      If (SelectedCount > 0 OrElse _closestVertexId <> NOT_FOUND) Then
+  '        '' Start dragging selection
+  '        _ldragging = True
+  '        _lstart = SnapToGrid(_mp)
+  '      End If
+  '    End If
+  '  End If
+
+  '  If (_closestVertexId = NOT_FOUND) Then
+  '    MyBase.OnMouseMove(e, modifierKeys)
+  '  End If
+  'End Sub
+
+  'Public Overrides Sub OnMouseUp(e As MouseEventArgs, modifierKeys As Keys)
+  '  MyBase.OnMouseUp(e, modifierKeys)
+
+  '  If (e.Button And MouseButtons.Left) Then
+  '    If (_ldragging) Then
+  '      _ldragging = False
+  '      _closestVertexId = NOT_FOUND
+
+  '      SetHelpText("")
+  '    Else
+  '      If (_closestVertexId <> NOT_FOUND) Then
+  '        If (modifierKeys And UNSELECT_SINGLE_KEY) Then
+  '          RemoveSelected(_closestVertexId)
+  '        Else
+  '          AddToSelection(_closestVertexId)
+  '        End If
+
+  '        OnRefresh()
+  '      End If
+  '    End If
+  '  End If
+  'End Sub
+
+  Protected Overrides Sub OnDrag(id As MAP_ID, delta As Vec2)
+    Layer.VertexById(id).Pos += delta
   End Sub
 
   Public Overrides Sub OnRender(g As Graphics)
@@ -101,9 +117,9 @@ Public Class VertexMode
     RenderLines(g, VGAColors.DarkGray)
     RenderVertices(g, VGAColors.LightCyan)
 
-    If (_closestVertexId <> NOT_FOUND) Then
+    If (HighlightedId <> NOT_FOUND) Then
       Dim T = Camera.Projection() * Camera.Transform().Inversed()
-      Dim p = T * Layer.VertexById(_closestVertexId).Pos
+      Dim p = T * Layer.VertexById(HighlightedId).Pos
       Dim z As Single = 1.0 / Camera.Zoom
       Dim pen = New Pen(VGAColors.White)
       Dim sz As Single = Math.Min(10.0, 10.0 * z)
@@ -146,9 +162,9 @@ Public Class VertexMode
     Next
   End Sub
 
-  Private _ldelta As Vec2
-  Private _lstart As Vec2
-  Private _mp As New Vec2()
-  Private _ldragging As Boolean
-  Private _closestVertexId As MAP_ID = NOT_FOUND
+  'Private _ldelta As Vec2
+  'Private _lstart As Vec2
+  'Private _mp As New Vec2()
+  'Private _ldragging As Boolean
+  'Private _closestVertexId As MAP_ID = NOT_FOUND
 End Class

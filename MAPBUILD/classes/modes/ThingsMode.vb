@@ -9,11 +9,6 @@ Public Class ThingsMode
     SetName("Things mode")
   End Sub
 
-  Protected Overrides Function FindId() As Integer
-    Debug.Print("ThingsMode::FindId")
-    Return MyBase.FindId()
-  End Function
-
   Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
     MyBase.OnMouseDoubleClick(e, modifierKeys)
 

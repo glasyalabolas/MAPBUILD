@@ -5,6 +5,10 @@ Imports MAP_ID = System.Int32
 Public Class Layer
   Private Const NOT_FOUND As MAP_ID = -1
 
+  Public Sub New()
+    Visible = True
+  End Sub
+
   Public Name As String
 
   Public Property Visible() As Boolean
@@ -24,6 +28,12 @@ Public Class Layer
   Public ReadOnly Property Sectors() As Integer
     Get
       Return (_sector.Count)
+    End Get
+  End Property
+
+  Public ReadOnly Property Things() As Integer
+    Get
+      Return (_thing.Count)
     End Get
   End Property
 
@@ -72,6 +82,18 @@ Public Class Layer
   Public ReadOnly Property SectorById(id As MAP_ID) As Sector
     Get
       Return (FindSectorById(id))
+    End Get
+  End Property
+
+  Public ReadOnly Property Thing(index As Integer) As Thing
+    Get
+      Return (_thing(index))
+    End Get
+  End Property
+
+  Public ReadOnly Property ThingById(id As MAP_ID) As Thing
+    Get
+      Return (FindThingById(id))
     End Get
   End Property
 
@@ -144,6 +166,27 @@ Public Class Layer
     _sectorById.Add(s.Id, s)
   End Sub
 
+  Public Function AddThing(t As Thing) As MAP_ID
+    _thing.Add(t)
+
+    If (_thingIDs.Count = 0) Then
+      t.Id = _thing.Count - 1
+    Else
+      t.Id = _thingIDs.Pop()
+    End If
+
+    _thingById.Add(t.Id, t)
+
+    Return (t.Id)
+  End Function
+
+  Public Sub AddThing(t As Thing, id As MAP_ID)
+    t.Id = id
+
+    _thing.Add(t)
+    _thingById.Add(t.Id, t)
+  End Sub
+
   Public Sub DeleteVertex(id As MAP_ID)
     Dim v = _vertexById(id)
 
@@ -176,35 +219,31 @@ Public Class Layer
   End Sub
 
   Public Sub DeleteSector(id As MAP_ID)
-    Debug.Print("Deleting sector: " & id)
-
     _sectorIDs.Push(id)
     _sector.Remove(_sectorById(id))
     _sectorById.Remove(id)
-
-    Debug.Print("Layer sectors: " & _sector.Count)
   End Sub
 
-  ''' <summary>
-  ''' Returns a vertex given its id.
-  ''' </summary>
-  ''' <param name="id">The id of the vertex to find.</param>
-  ''' <returns></returns>
+  Public Sub DeleteThing(id As MAP_ID)
+    _thingIDs.Push(id)
+    _thing.Remove(_thingById(id))
+    _thingById.Remove(id)
+  End Sub
+
   Private Function FindVertexByID(id As MAP_ID) As Vertex
     Return (IIf(_vertexById.ContainsKey(id), _vertexById(id), Nothing))
   End Function
 
-  ''' <summary>
-  ''' Returns a linedef given its id.
-  ''' </summary>
-  ''' <param name="id">The id of the linedef to find.</param>
-  ''' <returns></returns>
   Private Function FindLineDefByID(id As MAP_ID) As LineDef
     Return (IIf(_lineDefById.ContainsKey(id), _lineDefById(id), Nothing))
   End Function
 
   Private Function FindSectorById(id As MAP_ID) As Sector
     Return (IIf(_sectorById.ContainsKey(id), _sectorById(id), Nothing))
+  End Function
+
+  Private Function FindThingById(id As MAP_ID) As Thing
+    Return (IIf(_thingById.ContainsKey(id), _thingById(id), Nothing))
   End Function
 
   ''' <summary>

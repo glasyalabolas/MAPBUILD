@@ -21,21 +21,4 @@ Public Class VGAColors
   Public Shared ReadOnly Index() As Color = {Black, Blue, Green, Cyan, Red,
     Magenta, Brown, LightGray, DarkGray, LightBlue, LightGreen, LightCyan,
     LightRed, LightMagenta, Yellow, White}
-
-  Public Shared ReadOnly BlackPen As Pen = New Pen(Black)
-  Public Shared ReadOnly BluePen As Pen = New Pen(Blue)
-  Public Shared ReadOnly GreenPen As Pen = New Pen(Green)
-  Public Shared ReadOnly CyanPen As Pen = New Pen(Cyan)
-  Public Shared ReadOnly RedPen As Pen = New Pen(Red)
-  Public Shared ReadOnly MagentaPen As Pen = New Pen(Magenta)
-  Public Shared ReadOnly BrownPen As Pen = New Pen(Brown)
-  Public Shared ReadOnly LightGrayPen As Pen = New Pen(LightGray)
-  Public Shared ReadOnly DarkGrayPen As Pen = New Pen(DarkGray)
-  Public Shared ReadOnly LightBluePen As Pen = New Pen(LightBlue)
-  Public Shared ReadOnly LightGreenPen As Pen = New Pen(LightGreen)
-  Public Shared ReadOnly LightCyanPen As Pen = New Pen(LightCyan)
-  Public Shared ReadOnly LightRedPen As Pen = New Pen(LightRed)
-  Public Shared ReadOnly LightMagentaPen As Pen = New Pen(LightMagenta)
-  Public Shared ReadOnly YellowPen As Pen = New Pen(Yellow)
-  Public Shared ReadOnly WhitePen As Pen = New Pen(White)
 End Class

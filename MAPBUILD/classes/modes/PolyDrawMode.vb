@@ -65,6 +65,7 @@ Public Class PolyDrawMode
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
 
+    RenderThings(g, VGAColors.DarkGray)
     RenderVertices(g, VGAColors.DarkGray)
     RenderLines(g, VGAColors.DarkGray)
 

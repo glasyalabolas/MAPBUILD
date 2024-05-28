@@ -124,6 +124,7 @@ Public Class LineMode
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
 
+    RenderThings(g, VGAColors.DarkGray)
     RenderLines(g, VGAColors.Cyan)
     RenderVertices(g, VGAColors.LightGray)
 

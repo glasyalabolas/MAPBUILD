@@ -73,9 +73,9 @@ Public Class SectorMode
         If (SelectedCount > 0) Then
           '' Drag selection
           For i As Integer = 0 To SelectedCount - 1
-            Dim ld = Layer.SectorById(Selected(i))
+            Dim s = Layer.SectorById(Selected(i))
 
-            DragSector(ld)
+            DragSector(s)
           Next
 
           If (_highlightedSectorId <> NOT_FOUND AndAlso Not IsSelected(_highlightedSectorId)) Then
@@ -114,6 +114,8 @@ Public Class SectorMode
 
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
+
+    RenderThings(g, VGAColors.DarkGray)
 
     Dim T = Camera.Projection() * Camera.Transform().Inversed()
 

@@ -7,6 +7,11 @@ Public Class VertexMode
     SetName("Vertex mode")
   End Sub
 
+  Protected Overrides Function FindId() As Integer
+    Debug.Print("VertexMode::FindId")
+    Return MyBase.FindId()
+  End Function
+
   Public Overrides Sub OnMouseDoubleClick(e As MouseEventArgs, modifierKeys As Keys)
     MyBase.OnMouseDoubleClick(e, modifierKeys)
 
@@ -92,6 +97,7 @@ Public Class VertexMode
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
 
+    RenderThings(g, VGAColors.DarkGray)
     RenderLines(g, VGAColors.DarkGray)
     RenderVertices(g, VGAColors.LightCyan)
 

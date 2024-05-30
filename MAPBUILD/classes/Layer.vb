@@ -285,44 +285,6 @@ Public Class Layer
     Return (result)
   End Function
 
-  Public Function PointInSector(p As Vec2) As MAP_ID
-    Dim result As MAP_ID = NOT_FOUND
-
-    For i As Integer = 0 To _sector.Count - 1
-      If (_sector(i).IsClosed()) Then
-        If (_sector(i).Inside(p)) Then
-          result = _sector(i).Id
-        End If
-      End If
-    Next
-
-    Return (result)
-  End Function
-
-  Public Sub BringToFront(sID As MAP_ID)
-    Dim index As MAP_ID = GetSectorIndex(sID)
-
-    If (index <> NOT_FOUND) Then
-      If (index < _sector.Count - 1) Then
-        Dim tmp = _sector(index + 1)
-        _sector(index + 1) = _sector(index)
-        _sector(index) = tmp
-      End If
-    End If
-  End Sub
-
-  Public Sub SendToBack(sID As MAP_ID)
-    Dim index As MAP_ID = GetSectorIndex(sID)
-
-    If (index <> NOT_FOUND) Then
-      If (index > 0) Then
-        Dim tmp = _sector(index - 1)
-        _sector(index - 1) = _sector(index)
-        _sector(index) = tmp
-      End If
-    End If
-  End Sub
-
   Private Function GetSectorIndex(sID As MAP_ID) As Integer
     For i As Integer = 0 To _sector.Count - 1
       If (_sector(i).Id = sID) Then
@@ -332,6 +294,62 @@ Public Class Layer
 
     '' Should never happen
     Return (NOT_FOUND)
+  End Function
+
+  Public Function PointInSector2(p As Vec2) As MAP_ID
+    Dim sectors As New List(Of MAP_ID)
+
+    For i As Integer = 0 To _sector.Count - 1
+      If (_sector(i).Inside(p)) Then
+        sectors.Add(_sector(i).Id)
+      End If
+    Next
+
+    Dim sID As MAP_ID = NOT_FOUND
+    Dim closest As Single = Single.MaxValue
+
+    For i As Integer = 0 To sectors.Count - 1
+      Dim s = SectorById(sectors(i))
+
+      For w As Integer = 0 To s.LineDefs - 1
+        Dim dist = p.DistanceToSq(LineDefById(s.LineDef(w)).GetClosestPoint(p))
+
+        If (dist < closest) Then
+          closest = dist
+          sID = s.Id
+        End If
+      Next
+    Next
+
+    Return (sID)
+  End Function
+
+  Public Function PointInSector(p As Vec2) As MAP_ID
+    Dim sectors As New List(Of Sector)
+
+    For i As Integer = 0 To _sector.Count - 1
+      If (_sector(i).Inside(p)) Then
+        sectors.Add(_sector(i))
+      End If
+    Next
+
+    Dim sID As MAP_ID = NOT_FOUND
+    Dim closest As Single = Single.MaxValue
+
+    For i As Integer = 0 To sectors.Count - 1
+      Dim s = sectors(i)
+      Dim centroid = s.GetCentroid()
+      Dim bb = s.GetBoundingBox()
+
+      Dim dist = bb.TopLeft.DistanceToSq(bb.BottomRight) * 0.7 + p.DistanceToSq(centroid) * 0.3
+
+      If (dist < closest) Then
+        closest = dist
+        sID = s.Id
+      End If
+    Next
+
+    Return (sID)
   End Function
 
   '' Lists for easy traversal
@@ -351,4 +369,6 @@ Public Class Layer
   Private _lineDefIDs As New Stack(Of MAP_ID)
   Private _sectorIDs As New Stack(Of MAP_ID)
   Private _thingIDs As New Stack(Of MAP_ID)
+
+
 End Class

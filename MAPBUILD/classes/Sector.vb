@@ -146,6 +146,24 @@ Public Class Sector
     Return (centroid / _vertices.Count)
   End Function
 
+  Public Function GetBoundingBox() As Rect
+    Dim maxX As Single = Single.MinValue
+    Dim maxY As Single = Single.MinValue
+    Dim minX As Single = Single.MaxValue
+    Dim minY As Single = Single.MaxValue
+
+    For i As Integer = 0 To Vertices - 1
+      Dim v = Layer.VertexById(_vertices(i)).Pos
+
+      minX = Math.Min(minX, v.x)
+      minY = Math.Min(minY, v.y)
+      maxX = Math.Max(maxX, v.x)
+      maxY = Math.Max(maxY, v.y)
+    Next
+
+    Return (New Rect(New Vec2(minX, minY), New Vec2(maxX, maxY)))
+  End Function
+
   Public Sub Rotate(a As Single)
     Dim c = GetCentroid()
 

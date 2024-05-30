@@ -21,72 +21,6 @@ Public Class ThingsMode
     End If
   End Sub
 
-  Public Overrides Sub OnMouseUp(e As MouseEventArgs, modifierKeys As Keys)
-    MyBase.OnMouseUp(e, modifierKeys)
-
-    If (e.Button And MouseButtons.Left) Then
-      If (_ldragging) Then
-        _ldragging = False
-        _hoverThingId = NOT_FOUND
-
-        SetHelpText("")
-      Else
-        If (_hoverThingId <> NOT_FOUND) Then
-          If (modifierKeys And UNSELECT_SINGLE_KEY) Then
-            RemoveSelected(_hoverThingId)
-          Else
-            AddToSelection(_hoverThingId)
-          End If
-
-          OnRefresh()
-        End If
-      End If
-    End If
-  End Sub
-  Public Overrides Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys)
-    Dim p = Camera.ViewToWorld(New Vec2(e.X, e.Y))
-
-    _mp = SnapToGrid(p)
-
-    If (Not _ldragging AndAlso Not Selecting) Then
-      _hoverThingId = FindClosestThingId(p)
-    End If
-
-    If (e.Button And MouseButtons.Left) Then
-      If (_ldragging AndAlso Not Selecting) Then
-        _ldelta = SnapToGrid(_mp) - _lstart
-        _lstart = SnapToGrid(_mp)
-
-        If (SelectedCount > 0) Then
-          '' Drag selection
-          For i As Integer = 0 To SelectedCount - 1
-            Layer.ThingById(Selected(i)).Pos += _ldelta
-          Next
-
-          If (_hoverThingId <> NOT_FOUND AndAlso Not IsSelected(_hoverThingId)) Then
-            '' Drag the closest thing too even if it wasn't selected
-            Layer.ThingById(_hoverThingId).Pos += _ldelta
-          End If
-        Else
-          '' Drag individual thing
-          If (_hoverThingId <> NOT_FOUND) Then
-            Layer.ThingById(_hoverThingId).Pos += _ldelta
-          End If
-        End If
-      Else
-        If (SelectedCount > 0 OrElse _hoverThingId <> NOT_FOUND) Then
-          '' Start dragging selection
-          _ldragging = True
-          _lstart = SnapToGrid(_mp)
-        End If
-      End If
-    End If
-
-    If (_hoverThingId = NOT_FOUND) Then
-      MyBase.OnMouseMove(e, modifierKeys)
-    End If
-  End Sub
-
   Public Overrides Sub OnRender(g As Graphics)
     MyBase.OnRender(g)
 
@@ -104,22 +38,32 @@ Public Class ThingsMode
       Next
     End If
 
-    If (_hoverThingId <> NOT_FOUND) Then
-      Dim t = Layer.ThingById(_hoverThingId)
+    If (HighlightedId <> NOT_FOUND) Then
+      Dim t = Layer.ThingById(HighlightedId)
       Dim center = Camera.Projection * Camera.Transform().Inversed() * t.Pos
 
       RenderThing(g, t, center, VGAColors.Yellow)
     End If
   End Sub
 
-  Protected Overrides Sub OnSelect(e As Rect, modifierKeys As Keys)
-    Dim selectionClear As Boolean = Not CBool(modifierKeys And ADD_TO_SELECTION_KEY)
-    Dim removeFromSelection As Boolean = modifierKeys And REMOVE_FROM_SELECTION_KEY
+  Protected Overrides Function FindNearestId() As MAP_ID
+    With Layer
+      For i As Integer = 0 To .Things - 1
+        Dim t = .Thing(i)
+        Dim hs As Single = t.Size * 0.5
 
-    If (selectionClear AndAlso Not removeFromSelection) Then
-      ClearSelection()
-    End If
+        If (MousePos.x >= t.Pos.x - hs AndAlso MousePos.y >= t.Pos.y - hs AndAlso
+          MousePos.x <= t.Pos.x + hs AndAlso MousePos.y <= t.Pos.y + hs) Then
 
+          Return (t.Id)
+        End If
+      Next
+    End With
+
+    Return (NOT_FOUND)
+  End Function
+
+  Protected Overrides Sub OnSelect(e As Rect, removeFromSelection As Boolean)
     For i As Integer = 0 To Layer.Things - 1
       If (e.Inside(Layer.Thing(i).Pos)) Then
         Dim selected As Boolean = IsSelected(Layer.Thing(i).Id)
@@ -133,9 +77,13 @@ Public Class ThingsMode
     Next
   End Sub
 
-  Private _ldelta As Vec2
-  Private _lstart As Vec2
-  Private _mp As New Vec2()
-  Private _ldragging As Boolean
-  Private _hoverThingId As MAP_ID = NOT_FOUND
+  Protected Overrides Sub OnDrag(id As MAP_ID, delta As Vec2)
+    Layer.ThingById(id).Pos += delta
+  End Sub
+
+  Protected Overrides Sub OnDragSelection(selected As List(Of MAP_ID), delta As Vec2)
+    For i As Integer = 0 To selected.Count - 1
+      Layer.ThingById(selected(i)).Pos += delta
+    Next
+  End Sub
 End Class

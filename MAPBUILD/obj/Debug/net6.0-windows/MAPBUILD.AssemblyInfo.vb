@@ -16,7 +16,7 @@ Imports System.Reflection
 <Assembly: System.Reflection.AssemblyCompanyAttribute("MAPBUILD"),  _
  Assembly: System.Reflection.AssemblyConfigurationAttribute("Debug"),  _
  Assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0"),  _
- Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bbf366b0be1fd4b944c8dbd0b8aea6ae9b86fd7f"),  _
+ Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0"),  _
  Assembly: System.Reflection.AssemblyProductAttribute("MAPBUILD"),  _
  Assembly: System.Reflection.AssemblyTitleAttribute("MAPBUILD"),  _
  Assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0"),  _

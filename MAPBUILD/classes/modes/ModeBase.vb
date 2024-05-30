@@ -79,27 +79,19 @@ Public MustInherit Class ModeBase
     End Get
   End Property
 
-  Protected ReadOnly Property HighlightedId() As MAP_ID
+  Protected Property HighlightedId() As MAP_ID
     Get
       Return (_highlightedId)
     End Get
+
+    Set(value As MAP_ID)
+      _highlightedId = value
+    End Set
   End Property
 
   Protected ReadOnly Property MousePos() As Vec2
     Get
-      Return (_mp)
-    End Get
-  End Property
-
-  Protected ReadOnly Property Dragging() As Boolean
-    Get
-      Return (_ldragging)
-    End Get
-  End Property
-
-  Protected ReadOnly Property Delta() As Vec2
-    Get
-      Return (_ldelta)
+      Return (_mousePos)
     End Get
   End Property
 
@@ -143,44 +135,47 @@ Public MustInherit Class ModeBase
   Public Overridable Sub OnClearSelection() Implements IMode.OnClearSelection
   End Sub
 
-  Public Overridable Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseMove
-    _mp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+  Protected Overridable Sub OnSelect(e As Rect, removeFromSelection As Boolean)
+  End Sub
 
-    If (Not Dragging AndAlso Not Selecting) Then
+  Public Overridable Sub OnMouseMove(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseMove
+    _mousePos = Camera.ViewToWorld(New Vec2(e.X, e.Y))
+
+    If (Not _dragging AndAlso Not Selecting) Then
       _highlightedId = FindNearestId()
     End If
 
+    'Debug.Print("Sector references: " & Layer.CountSectorReferences(_mousePos))
+
     If (e.Button And MouseButtons.Left) Then
-      If (Dragging AndAlso Not Selecting) Then
-        _ldelta = SnapToGrid(_mp) - _lstart
-        _lstart = SnapToGrid(_mp)
+      If (_dragging AndAlso Not Selecting) Then
+        _delta = SnapToGrid(_mousePos) - _lstart
+        _lstart = SnapToGrid(_mousePos)
 
         If (SelectedCount > 0) Then
           '' Drag selection
-          'For i As Integer = 0 To SelectedCount - 1
-          '  Layer.VertexById(Selected(i)).Pos += _ldelta
-          'Next
+          OnDragSelection(_selected, _delta)
 
           If (_highlightedId <> NOT_FOUND AndAlso Not IsSelected(_highlightedId)) Then
             '' Drag the closest vertex too even if it wasn't selected
-            OnDrag(_highlightedId, _ldelta)
+            OnDrag(_highlightedId, _delta)
           End If
         Else
           '' Drag individual vertex
-          OnDrag(_highlightedId, _ldelta)
+          OnDrag(_highlightedId, _delta)
         End If
       Else
         If (SelectedCount > 0 OrElse _highlightedId <> NOT_FOUND) Then
           '' Start dragging selection
-          _ldragging = True
-          _lstart = SnapToGrid(_mp)
+          _dragging = True
+          _lstart = SnapToGrid(_mousePos)
         End If
       End If
 
       If (_selecting) Then
         _ep = Camera.ViewToWorld(New Vec2(e.X, e.Y))
-        _selectRect = New Rect(_sp.Clone(), _ep.Clone())
-      ElseIf (_highlightedID = NOT_FOUND) Then
+        _selectionRect = New Rect(_sp.Clone(), _ep.Clone())
+      ElseIf (_highlightedId = NOT_FOUND) Then
         _selecting = True
         _sp = Camera.ViewToWorld(New Vec2(e.X, e.Y))
       End If
@@ -192,15 +187,22 @@ Public MustInherit Class ModeBase
       If (_selecting) Then
         _selecting = False
 
-        If (_selectRect IsNot Nothing) Then
-          OnSelect(_selectRect, modifierKeys)
+        If (_selectionRect IsNot Nothing) Then
+          Dim selectionClear As Boolean = Not CBool(modifierKeys And ADD_TO_SELECTION_KEY)
+          Dim removeFromSelection As Boolean = modifierKeys And REMOVE_FROM_SELECTION_KEY
+
+          If (selectionClear AndAlso Not removeFromSelection) Then
+            ClearSelection()
+          End If
+
+          OnSelect(_selectionRect, removeFromSelection)
         End If
 
-        _selectRect = Nothing
+        _selectionRect = Nothing
       End If
 
-      If (_ldragging) Then
-        _ldragging = False
+      If (_dragging) Then
+        _dragging = False
         _highlightedId = NOT_FOUND
 
         SetHelpText("")
@@ -221,6 +223,9 @@ Public MustInherit Class ModeBase
   Protected Overridable Sub OnDrag(id As MAP_ID, delta As Vec2)
   End Sub
 
+  Protected Overridable Sub OnDragSelection(selected As List(Of MAP_ID), delta As Vec2)
+  End Sub
+
   Public Overridable Sub OnMouseDown(e As MouseEventArgs) Implements IMode.OnMouseDown
   End Sub
   Public Overridable Sub OnMouseClick(e As MouseEventArgs, modifierKeys As Keys) Implements IMode.OnMouseClick
@@ -236,19 +241,16 @@ Public MustInherit Class ModeBase
     Return (NOT_FOUND)
   End Function
 
-  Protected Overridable Sub OnSelect(e As Rect, modifierKeys As Keys)
-  End Sub
-
   Public Overridable Sub OnRender(g As Graphics) Implements IMode.OnRender
     If (GridSize / Camera.Zoom >= 20.0) Then
       RenderGrid(g, VGAColors.DarkGray)
     End If
 
-    If (_selectRect IsNot Nothing) Then
+    If (_selectionRect IsNot Nothing) Then
       Dim p = New Pen(VGAColors.White, 1)
       p.DashPattern = {3, 2, 3, 2}
-      Dim sz = (_selectRect.BottomRight - _selectRect.TopLeft) / Camera.Zoom
-      Dim p0 = Camera.Projection() * Camera.Transform().Inversed() * _selectRect.TopLeft
+      Dim sz = (_selectionRect.BottomRight - _selectionRect.TopLeft) / Camera.Zoom
+      Dim p0 = Camera.Projection() * Camera.Transform().Inversed() * _selectionRect.TopLeft
 
       g.DrawRectangle(p, New Rectangle(p0.x, p0.y, sz.x, sz.y))
     End If
@@ -404,102 +406,20 @@ Public MustInherit Class ModeBase
       v.y >= 0 AndAlso v.y <= ViewRect.Height - 1)
   End Function
 
-  ''' <summary>
-  ''' Returns whether v1 is the closest vertex to v2 in the selected layer.
-  ''' </summary>
-  ''' <param name="v1">The vertex to check.</param>
-  ''' <param name="v2">The vertex in the selected layer to check against.</param>
-  ''' <returns></returns>
-  'Public Function IsClosestVertex(v1 As Vec2, v2 As Vec2) As Boolean
-  '  Dim closest = Integer.MaxValue
-  '  Dim closestV As New Vec2
-
-  '  For i As Integer = 0 To Layer.Vertices - 1
-  '    Dim dist = v2.DistanceToSq(Layer.Vertex(i))
-
-  '    If (dist < closest) Then
-  '      closest = dist
-  '      closestV = Layer.Vertex(i)
-  '    End If
-  '  Next
-
-  '  Return (closestV.x = v1.x AndAlso closestV.y = v1.y)
-  'End Function
-
-  ''' <summary>
-  ''' Finds the vertex id in the selected layer closest to the specified position.
-  ''' </summary>
-  ''' <param name="v">The position to check against.</param>
-  ''' <returns></returns>
-  Public Function FindClosestVertexId(p As Vec2) As MAP_ID
-    Dim closest As Single = Single.MaxValue
-    Dim result As Integer = NOT_FOUND
-    Dim minDist As Single = VERTEX_NEAR_DISTANCE * Camera.Zoom
-
-    For i As Integer = 0 To Layer.Vertices - 1
-      Dim dist As Single = p.DistanceToSq(Layer.Vertex(i))
-
-      If (dist < closest AndAlso dist <= minDist) Then
-        closest = dist
-        result = Layer.Vertex(i).Id
-      End If
-    Next
-
-    Return (result)
-  End Function
-
-  ''' <summary>
-  ''' Finds the closest linedef id to the specified position.
-  ''' </summary>
-  ''' <param name="v">The position to check against.</param>
-  ''' <returns></returns>
-  Protected Function FindClosestLineDefId(p As Vec2) As MAP_ID
-    Dim result As Integer = NOT_FOUND
-    Dim closest As Single = Single.MaxValue
-    Dim minDist As Single = LINEDEF_NEAR_DISTANCE * Camera.Zoom
-
-    With Layer
-      For i As Integer = 0 To .LineDefs - 1
-        Dim dist = .LineDef(i).GetClosestPoint(p).DistanceToSq(p)
-
-        If (dist < closest AndAlso dist <= minDist) Then
-          closest = dist
-          result = .LineDef(i).Id
-        End If
-      Next
-    End With
-
-    Return (result)
-  End Function
-
-  Protected Function FindClosestThingId(p As Vec2) As MAP_ID
-    With Layer
-      For i As Integer = 0 To .Things - 1
-        Dim t = .Thing(i)
-        Dim hs As Single = t.Size * 0.5
-
-        If (p.x >= t.Pos.x - hs AndAlso p.y >= t.Pos.y - hs AndAlso
-          p.x <= t.Pos.x + hs AndAlso p.y <= t.Pos.y + hs) Then
-
-          Return (t.Id)
-        End If
-      Next
-    End With
-
-    Return (NOT_FOUND)
-  End Function
-
   Private _name As String
   Private _helpText As String
   Private _gridSize As Single
   Private _visibleLines As New List(Of List(Of MAP_ID))
+
   Private _sp As New Vec2, _ep As New Vec2
+  Private _selectionRect As Rect
+
   Private _selecting As Boolean
-  Private _selectRect As Rect
   Private _selected As New List(Of MAP_ID)
-  Private _ldelta As Vec2
+
+  Private _delta As Vec2
   Private _lstart As Vec2
-  Private _mp As New Vec2()
-  Private _ldragging As Boolean
+  Private _mousePos As New Vec2()
+  Private _dragging As Boolean
   Private _highlightedId As MAP_ID = NOT_FOUND
 End Class
